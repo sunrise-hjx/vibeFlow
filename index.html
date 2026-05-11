@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VibeFlow — An intelligent CFD workstation for traceable engineering research.">
+  <title>VibeFlow — Intelligent CFD Workstation</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #05080F;
+      --bg2:       #09101C;
+      --bg3:       #0F1828;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(34,211,238,0.28);
+      --cyan:      #22D3EE;
+      --cyan-glow: rgba(34,211,238,0.18);
+      --red:       #EF4444;
+      --amber:     #F59E0B;
+      --purple:    #A78BFA;
+      --text:      #E8EFF8;
+      --text2:     #8B98AE;
+      --text3:     #445065;
+      --display:   'Syne', sans-serif;
+      --body:      'DM Sans', sans-serif;
+      --mono:      'JetBrains Mono', monospace;
+      --r:         12px;
+      --r-sm:      8px;
+      --ease:      cubic-bezier(.4,0,.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.65; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--text3); border-radius: 3px; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 22px;
+    }
+    .eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--cyan); }
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .section { padding: 120px 0; }
+    .section-alt { background: var(--bg2); }
+    .sec-head { margin-bottom: 68px; }
+    .sec-title {
+      font-family: var(--display); font-size: clamp(30px, 4.5vw, 48px);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.08; margin-bottom: 16px;
+    }
+    .sec-sub { font-size: 16px; color: var(--text2); max-width: 520px; line-height: 1.75; }
+
+    /* reveal */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+    .reveal.on { opacity: 1; transform: none; }
+    .reveal.d1 { transition-delay: .1s; } .reveal.d2 { transition-delay: .2s; }
+    .reveal.d3 { transition-delay: .3s; } .reveal.d4 { transition-delay: .4s; }
+    .reveal.d5 { transition-delay: .5s; }
+
+    /* bilingual */
+    .en, .zh { display: inline; }
+    body.lang-zh .en { display: none; }
+    body.lang-en .zh { display: none; }
+
+    /* buttons */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--cyan); color: #05080F; font-weight: 600; font-size: 14px;
+      padding: 13px 26px; border-radius: var(--r-sm); text-decoration: none; transition: .25s;
+    }
+    .btn-primary:hover { background: #38BDF8; transform: translateY(-1px); box-shadow: 0 10px 28px rgba(34,211,238,.35); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--border); color: var(--text2); font-size: 14px;
+      padding: 13px 26px; border-radius: var(--r-sm); text-decoration: none; transition: .25s;
+    }
+    .btn-ghost:hover { border-color: var(--border-hi); color: var(--text); background: rgba(34,211,238,.05); }
+
+    /* ── NAV ── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 90; padding: 22px 0;
+      transition: padding .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    #nav.stuck { padding: 14px 0; background: rgba(5,8,15,.85); backdrop-filter: blur(20px) saturate(1.4); border-color: var(--border); }
+    .nav-row { display: flex; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; margin-right: auto; }
+    .nav-logo img { height: 30px; }
+    .nav-logo-name { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 32px; margin-right: 32px; }
+    .nav-links a { font-size: 14px; color: var(--text2); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-btns { display: flex; align-items: center; gap: 10px; }
+    .btn-lang { padding: 7px 14px; border: 1px solid var(--border); background: none; color: var(--text2); font-family: var(--mono); font-size: 11px; border-radius: 6px; cursor: pointer; transition: .25s; }
+    .btn-lang:hover { border-color: var(--border-hi); color: var(--cyan); }
+    .btn-dl { padding: 8px 20px; background: var(--cyan); color: #05080F; font-weight: 600; font-size: 13px; border-radius: var(--r-sm); text-decoration: none; transition: .25s; }
+    .btn-dl:hover { background: #38BDF8; box-shadow: 0 0 24px rgba(34,211,238,.4); }
+
+    /* ── HERO ── */
+    #hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
+    #hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    #hero::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, var(--bg) 100%); }
+    #flow-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .55; }
+    .hero-body { position: relative; z-index: 2; text-align: center; width: 100%; padding: 140px 28px 100px; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(34,211,238,.1); border: 1px solid rgba(34,211,238,.2);
+      border-radius: 999px; padding: 5px 16px; font-family: var(--mono); font-size: 11px;
+      color: var(--cyan); letter-spacing: .05em; margin-bottom: 36px;
+    }
+    .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+    .hero-h1 { font-family: var(--display); font-size: clamp(72px, 13vw, 148px); font-weight: 800; line-height: .92; letter-spacing: -.05em; margin-bottom: 14px; }
+    .hero-tagline { font-family: var(--display); font-size: clamp(18px, 2.8vw, 28px); font-weight: 400; color: var(--text2); letter-spacing: -.01em; margin-bottom: 22px; }
+    .hero-sub { font-size: 16px; color: var(--text3); max-width: 540px; margin: 0 auto 52px; line-height: 1.75; }
+    .hero-ctas { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .hero-kpis { display: flex; justify-content: center; gap: 60px; margin-top: 90px; flex-wrap: wrap; }
+    .kpi { text-align: center; }
+    .kpi-val { font-family: var(--display); font-size: 30px; font-weight: 800; letter-spacing: -.03em; }
+    .kpi-val em { color: var(--cyan); font-style: normal; }
+    .kpi-lbl { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-top: 5px; }
+
+    /* ── MODES SECTION ── */
+    .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .mode-card {
+      border-radius: var(--r); border: 1px solid var(--border);
+      padding: 40px 36px; position: relative; overflow: hidden; transition: border-color .3s;
+    }
+    .mode-card::before { content: ''; position: absolute; inset: 0; opacity: 0; transition: opacity .4s; }
+    .mode-card.usage::before { background: radial-gradient(circle at 0% 0%, rgba(34,211,238,.12) 0%, transparent 55%); }
+    .mode-card.dev::before   { background: radial-gradient(circle at 100% 0%, rgba(167,139,250,.12) 0%, transparent 55%); }
+    .mode-card:hover { border-color: var(--border-hi); }
+    .mode-card:hover::before { opacity: 1; }
+    .mode-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 999px; margin-bottom: 22px;
+    }
+    .mode-badge.usage { background: rgba(34,211,238,.1); border: 1px solid rgba(34,211,238,.2); color: var(--cyan); }
+    .mode-badge.dev   { background: rgba(167,139,250,.1); border: 1px solid rgba(167,139,250,.2); color: var(--purple); }
+    .mode-title { font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 14px; }
+    .mode-desc { font-size: 14px; color: var(--text2); line-height: 1.8; margin-bottom: 24px; }
+    .mode-stages { display: flex; flex-direction: column; gap: 8px; }
+    .mode-stage-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; color: var(--text2);
+    }
+    .mode-stage-item .num {
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; border: 1px solid var(--border); color: var(--text3);
+    }
+    .mode-card.usage .mode-stage-item:hover .num { border-color: var(--cyan); color: var(--cyan); }
+    .mode-card.dev   .mode-stage-item:hover .num { border-color: var(--purple); color: var(--purple); }
+
+    /* ── FEATURES ── */
+    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border-radius: var(--r); overflow: hidden; }
+    .feat-card { background: var(--bg2); padding: 40px 32px; position: relative; overflow: hidden; transition: background .3s var(--ease); }
+    .feat-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 0% 0%, var(--cyan-glow) 0%, transparent 55%); opacity: 0; transition: opacity .4s; }
+    .feat-card:hover { background: var(--bg3); }
+    .feat-card:hover::before { opacity: 1; }
+    .feat-icon { width: 46px; height: 46px; border-radius: 10px; background: var(--bg3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 22px; }
+    .feat-title { font-family: var(--display); font-size: 16px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 10px; }
+    .feat-desc { font-size: 14px; color: var(--text2); line-height: 1.75; }
+
+    /* ── WORKFLOW ── */
+    .wf-mode-toggle { display: flex; gap: 4px; padding: 4px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; width: fit-content; margin-bottom: 56px; }
+    .wf-mode-btn {
+      padding: 9px 22px; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 600;
+      border: none; background: none; color: var(--text3); transition: .25s; font-family: var(--body);
+    }
+    .wf-mode-btn.active { background: var(--bg2); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.4); }
+    .wf-mode-btn.usage.active { color: var(--cyan); }
+    .wf-mode-btn.dev.active   { color: var(--purple); }
+
+    .wf-panel { display: none; }
+    .wf-panel.open { display: block; }
+
+    .wf-row { display: grid; position: relative; gap: 4px; }
+    .wf-row.usage-row { grid-template-columns: repeat(6, 1fr); }
+    .wf-row.dev-row   { grid-template-columns: repeat(5, 1fr); }
+    .wf-row::before {
+      content: ''; position: absolute; z-index: 0; top: 30px;
+      left: 5%; right: 5%; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--border) 10%, var(--border) 90%, transparent 100%);
+    }
+    .wf-stage { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 6px; cursor: pointer; position: relative; z-index: 1; }
+    .wf-circle {
+      width: 62px; height: 62px; border-radius: 50%; background: var(--bg2); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--text3); margin-bottom: 20px; transition: .3s var(--ease);
+    }
+    .wf-panel.usage-panel .wf-stage.active .wf-circle,
+    .wf-panel.usage-panel .wf-stage:hover .wf-circle { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 24px var(--cyan-glow); background: rgba(34,211,238,.08); }
+    .wf-panel.dev-panel .wf-stage.active .wf-circle,
+    .wf-panel.dev-panel .wf-stage:hover .wf-circle { border-color: var(--purple); color: var(--purple); box-shadow: 0 0 24px rgba(167,139,250,.2); background: rgba(167,139,250,.08); }
+    .wf-name { font-family: var(--display); font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+    .wf-hint { font-size: 11px; color: var(--text3); line-height: 1.55; }
+    .wf-detail { margin-top: 48px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 36px 40px; display: none; animation: fadeUp .35s var(--ease); }
+    .wf-detail.open { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .wf-detail h3 { font-family: var(--display); font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 14px; }
+    .usage-panel .wf-detail h3 { color: var(--cyan); }
+    .dev-panel   .wf-detail h3 { color: var(--purple); }
+    .wf-detail p { font-size: 15px; color: var(--text2); line-height: 1.85; max-width: 780px; }
+
+    /* ── FLUID DEMO ── */
+    #demo { position: relative; overflow: hidden; }
+    .demo-scene-wrap {
+      position: relative; width: 100%; height: 520px;
+      border-radius: var(--r); overflow: hidden;
+      border: 1px solid var(--border); background: #020811;
+    }
+    .demo-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .demo-overlay {
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(to bottom, rgba(2,8,17,.0) 60%, rgba(2,8,17,.9) 100%);
+    }
+    .demo-hud {
+      position: absolute; bottom: 0; left: 0; right: 0; padding: 28px 32px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+    }
+    .demo-label { font-family: var(--display); font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
+    .demo-desc { font-size: 12px; color: var(--text2); margin-top: 4px; font-family: var(--mono); }
+    .demo-tabs { display: flex; gap: 8px; }
+    .demo-tab {
+      padding: 7px 16px; border-radius: 6px; cursor: pointer; font-size: 12px;
+      font-family: var(--mono); border: 1px solid var(--border);
+      background: rgba(5,8,15,.6); color: var(--text3); transition: .2s;
+    }
+    .demo-tab.active { border-color: var(--cyan); color: var(--cyan); background: rgba(34,211,238,.08); }
+    .demo-stat-bar {
+      position: absolute; top: 20px; right: 20px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .demo-stat {
+      background: rgba(5,8,15,.75); border: 1px solid var(--border);
+      border-radius: 6px; padding: 7px 12px; font-family: var(--mono); font-size: 10px; color: var(--text2); min-width: 130px;
+    }
+    .demo-stat-val { color: var(--cyan); }
+
+    /* ── TECH STRIP ── */
+    #tech { padding: 64px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .tech-label { text-align: center; font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 36px; }
+    .tech-list { display: flex; justify-content: center; align-items: center; gap: 48px; flex-wrap: wrap; }
+    .tech-item { font-family: var(--mono); font-size: 13px; color: var(--text3); transition: color .25s; letter-spacing: .04em; font-weight: 500; }
+    .tech-item:hover { color: var(--text2); }
+
+    /* ── PRICING ── */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .price-card {
+      border-radius: var(--r); border: 1px solid var(--border);
+      padding: 36px 30px; position: relative; overflow: hidden; transition: .3s;
+    }
+    .price-card:hover { border-color: var(--border-hi); transform: translateY(-4px); }
+    .price-card.featured { border-color: rgba(34,211,238,.35); background: var(--bg3); }
+    .price-card.featured::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(circle at 50% -10%, rgba(34,211,238,.12) 0%, transparent 60%);
+    }
+    .price-badge {
+      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+      font-family: var(--mono); font-size: 10px; letter-spacing: .1em;
+      padding: 4px 14px; border-radius: 0 0 8px 8px;
+      background: var(--cyan); color: #05080F; font-weight: 600;
+    }
+    .price-tier { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 18px; }
+    .price-val { font-family: var(--display); font-size: 44px; font-weight: 800; letter-spacing: -.04em; margin-bottom: 4px; }
+    .price-val .symbol { font-size: 22px; font-weight: 600; vertical-align: top; margin-top: 8px; display: inline-block; }
+    .price-val .period { font-size: 14px; font-weight: 400; color: var(--text3); }
+    .price-desc { font-size: 13px; color: var(--text2); line-height: 1.7; margin: 16px 0 24px; }
+    .price-feats { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .price-feats li { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text2); }
+    .price-feats li::before { content: '✓'; color: var(--cyan); font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .price-btn {
+      display: block; text-align: center; padding: 12px 20px; border-radius: var(--r-sm);
+      font-size: 14px; font-weight: 600; text-decoration: none; transition: .25s;
+    }
+    .price-btn.outline { border: 1px solid var(--border); color: var(--text2); }
+    .price-btn.outline:hover { border-color: var(--border-hi); color: var(--text); }
+    .price-btn.fill { background: var(--cyan); color: #05080F; }
+    .price-btn.fill:hover { background: #38BDF8; box-shadow: 0 8px 22px rgba(34,211,238,.3); }
+    .price-trial-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--text3); }
+    .price-trial-note em { color: var(--text2); font-style: normal; }
+
+    /* ── LINKS ── */
+    .links-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .link-card {
+      border-radius: var(--r-sm); border: 1px solid var(--border);
+      padding: 22px 20px; text-decoration: none; background: var(--bg3);
+      transition: .25s; display: flex; flex-direction: column; gap: 8px;
+    }
+    .link-card:hover { border-color: var(--border-hi); background: rgba(34,211,238,.04); transform: translateY(-2px); }
+    .link-icon { font-size: 22px; margin-bottom: 2px; }
+    .link-name { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--text); }
+    .link-desc { font-size: 12px; color: var(--text3); line-height: 1.55; }
+    .link-arrow { font-size: 11px; color: var(--cyan); font-family: var(--mono); margin-top: auto; padding-top: 8px; }
+
+    /* ── DOWNLOAD ── */
+    .dl-center { max-width: 960px; margin: 0 auto; text-align: center; }
+    .dl-title { font-family: var(--display); font-size: clamp(32px, 5vw, 50px); font-weight: 800; letter-spacing: -.04em; margin-bottom: 16px; }
+    .dl-sub { font-size: 16px; color: var(--text2); margin-bottom: 52px; }
+    /* platform tabs */
+    .dl-tabs { display: flex; max-width: 480px; margin: 0 auto 32px; border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+    .dl-tab { flex: 1; padding: 13px 0; background: var(--bg3); color: var(--text3); font-family: var(--display); font-size: 14px; font-weight: 700; letter-spacing: -.01em; border: none; cursor: pointer; transition: background .2s, color .2s; border-right: 1px solid var(--border); }
+    .dl-tab:last-child { border-right: none; }
+    .dl-tab:hover { color: var(--text2); background: var(--bg); }
+    .dl-tab.active { background: rgba(34,211,238,.08); color: var(--cyan); }
+    .dl-pane { display: none; max-width: 560px; margin: 0 auto; }
+    .dl-pane.active { display: block; }
+    .dl-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r-sm); text-decoration: none; transition: .25s; margin-bottom: 16px; }
+    .dl-card:hover { border-color: var(--border-hi); background: rgba(34,211,238,.06); }
+    .dl-card-icon { width: 40px; height: 40px; background: rgba(34,211,238,.08); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .dl-card-icon svg { width: 20px; height: 20px; color: var(--cyan); }
+    .dl-card-body { display: flex; flex-direction: column; gap: 3px; }
+    .dl-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .dl-ext { font-family: var(--mono); font-size: 11px; color: var(--cyan); }
+    .dl-platform { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .04em; }
+    .install-block { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 16px 18px; font-family: var(--mono); font-size: 12px; color: var(--text2); line-height: 1.9; }
+    .install-block .cm { color: var(--text3); }
+    .install-block .kw { color: var(--cyan); }
+    .dl-soon { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 52px 20px; color: var(--text3); font-size: 13px; border: 1px dashed var(--border); border-radius: var(--r-sm); }
+    .dl-soon-dots { display: flex; gap: 7px; }
+    .dl-soon-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); opacity: .4; animation: dl-pulse 1.4s ease-in-out infinite; }
+    .dl-soon-dot:nth-child(2) { animation-delay: .22s; }
+    .dl-soon-dot:nth-child(3) { animation-delay: .44s; }
+    @keyframes dl-pulse { 0%,100%{opacity:.25} 50%{opacity:.85} }
+    /* community qr hover */
+    .link-card-community { position: relative; cursor: default; }
+    .link-card-community .qr-popup {
+      position: absolute; bottom: calc(100% + 14px); left: 50%; transform: translateX(-50%) translateY(6px) scale(.95);
+      background: #fff; border-radius: 14px; padding: 14px; width: 180px;
+      opacity: 0; pointer-events: none; transition: opacity .25s var(--ease), transform .25s var(--ease);
+      box-shadow: 0 24px 64px rgba(0,0,0,.55);
+      z-index: 20;
+    }
+    .link-card-community:hover .qr-popup { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto; }
+    .link-card-community .qr-popup img { width: 152px; height: 152px; display: block; border-radius: 8px; }
+    .link-card-community .qr-popup .qr-tip { text-align: center; font-size: 11px; color: #666; margin-top: 8px; font-family: var(--body); }
+    .link-card-community .qr-popup::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 7px solid transparent; border-top-color: #fff;
+    }
+
+    /* ── FOOTER ── */
+    footer { padding: 72px 0 40px; border-top: 1px solid var(--border); }
+    .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
+    .foot-brand img { height: 28px; margin-bottom: 14px; }
+    .foot-brand .name { font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 12px; }
+    .foot-brand p { font-size: 13px; color: var(--text3); line-height: 1.7; max-width: 250px; }
+    .foot-col h4 { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); margin-bottom: 18px; }
+    .foot-col a { display: block; color: var(--text2); text-decoration: none; font-size: 14px; margin-bottom: 11px; transition: color .2s; }
+    .foot-col a:hover { color: var(--cyan); }
+    .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .feat-grid { grid-template-columns: repeat(2, 1fr); }
+      .modes-grid { grid-template-columns: 1fr; }
+      .wf-row.usage-row { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .wf-row.dev-row   { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .wf-row::before { display: none; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+      .links-grid { grid-template-columns: repeat(2, 1fr); }
+      .foot-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+    @media (max-width: 768px) {
+      .feat-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .wf-row.usage-row, .wf-row.dev-row { grid-template-columns: repeat(2, 1fr); }
+      .hero-kpis { gap: 32px; }
+      .links-grid { grid-template-columns: 1fr 1fr; }
+      .foot-grid { grid-template-columns: 1fr; }
+      .foot-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .demo-scene-wrap { height: 340px; }
+    }
+
+    /* lightbox */
+    .lb { position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: zoom-out; backdrop-filter: blur(6px); animation: lbIn .2s; }
+    @keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
+    .lb img { max-width: 92vw; max-height: 90vh; border-radius: 10px; box-shadow: 0 48px 96px rgba(0,0,0,.8); }
+  </style>
+</head>
+
+<body class="lang-en">
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="nav">
+  <div class="nav-row">
+    <a href="#" class="nav-logo">
+      <img src="assets/logo.svg" alt="VibeFlow">
+      <span class="nav-logo-name">VibeFlow</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#modes"><span class="en">Modes</span><span class="zh">模式</span></a>
+      <a href="#features"><span class="en">Features</span><span class="zh">功能</span></a>
+      <a href="#workflow"><span class="en">Workflow</span><span class="zh">工作流</span></a>
+      <a href="#gallery"><span class="en">Gallery</span><span class="zh">展示</span></a>
+      <a href="#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
+      <a href="#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
+      <a href="#links"><span class="en">Links</span><span class="zh">链接</span></a>
+    </nav>
+    <div class="nav-btns">
+      <button class="btn-lang" id="langBtn" onclick="toggleLang()">中文</button>
+      <a href="#download" class="btn-dl"><span class="en">Get Studio</span><span class="zh">下载 Studio</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section id="hero">
+  <canvas id="flow-canvas"></canvas>
+  <div class="hero-body">
+    <div class="hero-pill">
+      <span class="dot"></span>
+      <span class="en">VibeFlow Studio v0.2.0 · Now Available for Linux</span>
+      <span class="zh">VibeFlow Studio v0.2.0 · 现已面向 Linux 发布</span>
+    </div>
+    <h1 class="hero-h1 gradient-text">VibeFlow</h1>
+    <p class="hero-tagline">
+      <span class="en">The Intelligent CFD Workstation: the best way to use AI-Assisted CFD</span>
+      <span class="zh">智能 CFD 工作台：使用 AI 辅助 CFD 的最佳方式</span>
+    </p>
+    <p class="hero-sub">
+      <span class="en">From natural language to traceable research reports. Two modes: Usage Mode for the full CFD workflow, Development Mode for custom solvers and libraries — all powered by AI.</span>
+      <span class="zh">从自然语言描述到可追溯的研究报告。两种模式：使用模式覆盖完整 CFD 工作流，开发模式用于自定义求解器与库——全程由 AI 驱动。</span>
+    </p>
+    <div class="hero-ctas">
+      <a href="downloads/vibeflow-studio_0.2.0_amd64.deb" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v11.17l-3.13-3.04-1.41 1.41L12 22l6.54-6.46-1.41-1.41L14 17.17V2h-2z"/></svg>
+        <span class="en">Download Studio</span><span class="zh">下载 Studio</span>
+      </a>
+      <a href="#demo" class="btn-ghost">
+        <span class="en">Watch Demo</span><span class="zh">查看演示</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </a>
+    </div>
+    <div class="hero-kpis">
+      <div class="kpi">
+        <div class="kpi-val"><em>2</em></div>
+        <div class="kpi-lbl"><span class="en">Agent Modes</span><span class="zh">智能体模式</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val"><em>6</em> <span style="font-size:.55em;color:var(--text2)"><span class="en">stages</span><span class="zh">阶段</span></span></div>
+        <div class="kpi-lbl"><span class="en">Usage Pipeline</span><span class="zh">使用模式</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val"><em>100%</em></div>
+        <div class="kpi-lbl"><span class="en">Traceable Results</span><span class="zh">结果可追溯</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">LLM <em>×</em> CFD</div>
+        <div class="kpi-lbl"><span class="en">Intelligence</span><span class="zh">人工智能</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TWO MODES ══════════════ -->
+<section id="modes" class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="en">Two Agent Modes</span><span class="zh">两种智能体模式</span></div>
+      <h2 class="sec-title">
+        <span class="en">Choose Your Workflow Mode</span>
+        <span class="zh">选择您的工作流模式</span>
+      </h2>
+      <p class="sec-sub">
+        <span class="en">VibeFlow operates in two distinct modes, each with dedicated stage pipelines and specialized AI skills tailored to different research objectives.</span>
+        <span class="zh">VibeFlow 以两种独立模式运行，每种模式都有专属的阶段流程和针对不同研究目标定制的 AI skills。</span>
+      </p>
+    </div>
+    <div class="modes-grid">
+      <!-- Usage Mode -->
+      <div class="mode-card usage reveal">
+        <div class="mode-badge usage">
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+          <span class="en">Usage Mode</span><span class="zh">使用模式</span>
+        </div>
+        <h3 class="mode-title"><span class="en">Run the Full CFD Pipeline</span><span class="zh">运行完整 CFD 流程</span></h3>
+        <p class="mode-desc">
+          <span class="en">Use <code style="font-family:var(--mono);font-size:12px;color:var(--cyan)">A-geo/caseDict</code> as the single source of truth and advance through requirement clarification, parametric geometry, meshing, simulation, post-processing, and report generation. Every stage gates the next; all artifacts trace back to caseDict.</span>
+          <span class="zh">以 <code style="font-family:var(--mono);font-size:12px;color:var(--cyan)">A-geo/caseDict</code> 为单一事实源，逐步推进需求澄清、参数化几何、网格划分、仿真求解、后处理与报告生成。每个阶段对下一阶段进行门控，所有产物均可追溯至 caseDict。</span>
+        </p>
+        <div class="mode-stages">
+          <div class="mode-stage-item"><span class="num">01</span><span class="en">Requirements Clarification → caseDict</span><span class="zh">需求澄清 → caseDict</span></div>
+          <div class="mode-stage-item"><span class="num">02</span><span class="en">Parametric Geometry (CadQuery)</span><span class="zh">参数化几何建模（CadQuery）</span></div>
+          <div class="mode-stage-item"><span class="num">03</span><span class="en">Mesh Generation &amp; Quality Gates</span><span class="zh">网格划分与质量门控</span></div>
+          <div class="mode-stage-item"><span class="num">04</span><span class="en">OpenFOAM Simulation &amp; Diagnostics</span><span class="zh">OpenFOAM 求解与诊断</span></div>
+          <div class="mode-stage-item"><span class="num">05</span><span class="en">Post-Processing (ParaView + Python)</span><span class="zh">后处理（ParaView + Python）</span></div>
+          <div class="mode-stage-item"><span class="num">06</span><span class="en">Evidence-Traced Report Generation</span><span class="zh">证据追溯报告生成</span></div>
+        </div>
+      </div>
+      <!-- Dev Mode -->
+      <div class="mode-card dev reveal d2">
+        <div class="mode-badge dev">
+          <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+          <span class="en">Development Mode</span><span class="zh">开发模式</span>
+        </div>
+        <h3 class="mode-title"><span class="en">Build Custom CFD Code</span><span class="zh">构建自定义 CFD 代码</span></h3>
+        <p class="mode-desc">
+          <span class="en">Develop custom OpenFOAM solvers, libraries, boundary conditions, turbulence models, functionObjects, fvOptions, and post-processing tools. All UDF code lives under <code style="font-family:var(--mono);font-size:12px;color:var(--purple)">UDF/</code> and integrates seamlessly into Usage Mode cases.</span>
+          <span class="zh">开发自定义 OpenFOAM 求解器、库、边界条件、湍流模型、functionObjects、fvOptions 及后处理工具。所有 UDF 代码位于 <code style="font-family:var(--mono);font-size:12px;color:var(--purple)">UDF/</code> 目录下，可无缝集成到使用模式算例中。</span>
+        </p>
+        <div class="mode-stages">
+          <div class="mode-stage-item"><span class="num">D1</span><span class="en">Requirement &amp; Boundary Confirmation</span><span class="zh">需求与边界确认</span></div>
+          <div class="mode-stage-item"><span class="num">D2</span><span class="en">Development Design Document</span><span class="zh">开发设计文档</span></div>
+          <div class="mode-stage-item"><span class="num">D3</span><span class="en">Implementation &amp; Organization (UDF/)</span><span class="zh">实现与组织（UDF/）</span></div>
+          <div class="mode-stage-item"><span class="num">D4</span><span class="en">Compilation &amp; Minimal Validation</span><span class="zh">编译与最小化验证</span></div>
+          <div class="mode-stage-item"><span class="num">D5</span><span class="en">Case Integration &amp; Delivery</span><span class="zh">算例集成与交付</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FEATURES ══════════════ -->
+<section id="features" class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="en">Core Capabilities</span><span class="zh">核心能力</span></div>
+      <h2 class="sec-title"><span class="en">Built for Engineering Precision</span><span class="zh">为工程精度而生</span></h2>
+      <p class="sec-sub">
+        <span class="en">Every component ensures physical accuracy, parameter traceability, and reproducible outcomes.</span>
+        <span class="zh">每个组件均确保物理精度、参数可追溯性与可复现的研究结果。</span>
+      </p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon">📋</div>
+        <h3 class="feat-title"><span class="en">caseDict — Single Source of Truth</span><span class="zh">caseDict — 单一事实源</span></h3>
+        <p class="feat-desc"><span class="en">Every parameter, assumption, and boundary condition in one verified caseDict. Geometry, mesh, solver, and report all derive consistently — no hidden state, no parameter drift.</span><span class="zh">每个参数、假设和边界条件均存储在唯一经验证的 caseDict 中。几何、网格、求解器和报告均从同一事实源一致派生，无隐含状态，无参数漂移。</span></p>
+      </div>
+      <div class="feat-card reveal d1">
+        <div class="feat-icon">🤝</div>
+        <h3 class="feat-title"><span class="en">Stage-Gated Human-AI Collaboration</span><span class="zh">阶段门控人机协同</span></h3>
+        <p class="feat-desc"><span class="en">Six usage stages and five development stages, each with human confirmation gates. AI handles geometry, meshing, solver setup, and reporting. You own the critical physics decisions.</span><span class="zh">六个使用阶段与五个开发阶段，每个阶段配备人类确认门控。AI 处理几何、网格、求解器和报告，关键物理决策由您掌控。</span></p>
+      </div>
+      <div class="feat-card reveal d2">
+        <div class="feat-icon">🔍</div>
+        <h3 class="feat-title"><span class="en">Source-First Knowledge Access</span><span class="zh">源码优先知识访问</span></h3>
+        <p class="feat-desc"><span class="en">Direct access to local OpenFOAM tutorials, solver source code, and official docs. Verified facts from real source files — not hallucinated summaries or stale RAG chunks.</span><span class="zh">直接访问本地 OpenFOAM 教程、求解器源码和官方文档，从真实源文件验证事实，而非幻觉摘要或过时的 RAG 片段。</span></p>
+      </div>
+      <div class="feat-card reveal d3">
+        <div class="feat-icon">⚡</div>
+        <h3 class="feat-title"><span class="en">Physical Fidelity &amp; Evidence Traceability</span><span class="zh">物理保真度与证据可追溯</span></h3>
+        <p class="feat-desc"><span class="en">Every report claim links to a specific file, log, measurement, or reference. VibeFlow measures S<sub>phys</sub> and S<sub>trace</sub> — not just execution success rate.</span><span class="zh">报告中每个结论均链接到特定文件、日志或测量值。VibeFlow 评估 S<sub>phys</sub>（物理保真度）与 S<sub>trace</sub>（证据可追溯性），而非仅追求运行成功率。</span></p>
+      </div>
+      <div class="feat-card reveal d4">
+        <div class="feat-icon">🌊</div>
+        <h3 class="feat-title"><span class="en">OpenFOAM Deep Integration</span><span class="zh">OpenFOAM 深度集成</span></h3>
+        <p class="feat-desc"><span class="en">Fully adaptive to your local OpenFOAM installation. Auto-discovers tutorials, solver families, boundary condition patterns, and custom UDF libraries for seamless version-aware case generation.</span><span class="zh">完全自适应本地 OpenFOAM 安装，自动发现教程、求解器族、边界条件模式及自定义 UDF 库，实现版本感知的算例生成。</span></p>
+      </div>
+      <div class="feat-card reveal d5">
+        <div class="feat-icon">📐</div>
+        <h3 class="feat-title"><span class="en">Parametric Geometry &amp; Intelligent Meshing</span><span class="zh">参数化几何与智能网格</span></h3>
+        <p class="feat-desc"><span class="en">CadQuery parametric CAD, Gmsh, blockMesh, snappyHexMesh — all driven from caseDict. Reproducible geometry with boundary layer control, y+ targeting, and checkMesh quality gates.</span><span class="zh">CadQuery 参数化 CAD、Gmsh、blockMesh、snappyHexMesh，均由 caseDict 驱动。可复现几何，具备边界层控制、y+ 目标与 checkMesh 质量门控。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ WORKFLOW ══════════════ -->
+<section id="workflow" class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="en">Interactive Pipeline</span><span class="zh">交互式工作流</span></div>
+      <h2 class="sec-title"><span class="en">Two Modes. Seven Total Stages.</span><span class="zh">两种模式，共七组阶段。</span></h2>
+      <p class="sec-sub"><span class="en">Switch between Usage Mode and Development Mode. Click any stage to expand details.</span><span class="zh">在使用模式与开发模式之间切换，点击任意阶段展开详情。</span></p>
+    </div>
+
+    <div class="wf-mode-toggle">
+      <button class="wf-mode-btn usage active" onclick="switchWfMode('usage')">
+        <span class="en">⚡ Usage Mode</span><span class="zh">⚡ 使用模式</span>
+      </button>
+      <button class="wf-mode-btn dev" onclick="switchWfMode('dev')">
+        <span class="en">🔧 Development Mode</span><span class="zh">🔧 开发模式</span>
+      </button>
+    </div>
+
+    <!-- Usage Panel -->
+    <div class="wf-panel usage-panel open" id="usage-panel">
+      <div class="wf-row usage-row">
+        <div class="wf-stage" onclick="openStage('usage',0)"><div class="wf-circle">01</div><div class="wf-name"><span class="en">Requirements</span><span class="zh">需求澄清</span></div><div class="wf-hint"><span class="en">Physics, params &amp; caseDict</span><span class="zh">物理、参数与 caseDict</span></div></div>
+        <div class="wf-stage" onclick="openStage('usage',1)"><div class="wf-circle">02</div><div class="wf-name"><span class="en">Geometry</span><span class="zh">参数化几何</span></div><div class="wf-hint"><span class="en">CadQuery / OCP</span><span class="zh">CadQuery 建模</span></div></div>
+        <div class="wf-stage" onclick="openStage('usage',2)"><div class="wf-circle">03</div><div class="wf-name"><span class="en">Meshing</span><span class="zh">网格划分</span></div><div class="wf-hint"><span class="en">Gmsh / blockMesh / SHM</span><span class="zh">多种网格工具</span></div></div>
+        <div class="wf-stage" onclick="openStage('usage',3)"><div class="wf-circle">04</div><div class="wf-name"><span class="en">Simulation</span><span class="zh">CFD 求解</span></div><div class="wf-hint"><span class="en">OpenFOAM solvers</span><span class="zh">OpenFOAM 求解器</span></div></div>
+        <div class="wf-stage" onclick="openStage('usage',4)"><div class="wf-circle">05</div><div class="wf-name"><span class="en">Post-Processing</span><span class="zh">后处理</span></div><div class="wf-hint"><span class="en">ParaView + Python</span><span class="zh">ParaView + Python</span></div></div>
+        <div class="wf-stage" onclick="openStage('usage',5)"><div class="wf-circle">06</div><div class="wf-name"><span class="en">Report</span><span class="zh">报告生成</span></div><div class="wf-hint"><span class="en">Evidence-traced Markdown</span><span class="zh">证据追溯报告</span></div></div>
+      </div>
+      <div class="wf-detail" id="usage-detail"></div>
+    </div>
+
+    <!-- Dev Panel -->
+    <div class="wf-panel dev-panel" id="dev-panel">
+      <div class="wf-row dev-row">
+        <div class="wf-stage" onclick="openStage('dev',0)"><div class="wf-circle">D1</div><div class="wf-name"><span class="en">Requirement</span><span class="zh">需求确认</span></div><div class="wf-hint"><span class="en">Task type &amp; scope</span><span class="zh">任务类型与边界</span></div></div>
+        <div class="wf-stage" onclick="openStage('dev',1)"><div class="wf-circle">D2</div><div class="wf-name"><span class="en">Design Doc</span><span class="zh">设计文档</span></div><div class="wf-hint"><span class="en">UDF/README.md</span><span class="zh">UDF/README.md</span></div></div>
+        <div class="wf-stage" onclick="openStage('dev',2)"><div class="wf-circle">D3</div><div class="wf-name"><span class="en">Implementation</span><span class="zh">代码实现</span></div><div class="wf-hint"><span class="en">UDF/src/ &amp; UDF/solver/</span><span class="zh">UDF/src/ &amp; solver/</span></div></div>
+        <div class="wf-stage" onclick="openStage('dev',3)"><div class="wf-circle">D4</div><div class="wf-name"><span class="en">Compilation</span><span class="zh">编译验证</span></div><div class="wf-hint"><span class="en">wmake + test</span><span class="zh">wmake + 测试</span></div></div>
+        <div class="wf-stage" onclick="openStage('dev',4)"><div class="wf-circle">D5</div><div class="wf-name"><span class="en">Integration</span><span class="zh">集成交付</span></div><div class="wf-hint"><span class="en">Case integration</span><span class="zh">算例集成</span></div></div>
+      </div>
+      <div class="wf-detail" id="dev-detail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ OPERATION DEMO ══════════════ -->
+<section id="demo" class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="en">Operation Demo</span><span class="zh">操作演示</span></div>
+      <h2 class="sec-title"><span class="en">See VibeFlow in Action</span><span class="zh">亲历 VibeFlow 完整工作流</span></h2>
+      <p class="sec-sub">
+        <span class="en">Watch a hands-on walkthrough of the complete VibeFlow workflow — from requirements to report, driven entirely by natural language.</span>
+        <span class="zh">观看完整操作演示——从需求描述到报告交付，全程由自然语言驱动，无需手动配置任何文件。</span>
+      </p>
+    </div>
+    <div style="position:relative;width:100%;padding-top:56.25%;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:#020811;">
+      <iframe
+        src="//player.bilibili.com/player.html?isOutside=true&bvid=BV1MWEez6EZx&p=1"
+        scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"
+        style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TECH STRIP ══════════════ -->
+<section id="tech">
+  <div class="wrap">
+    <div class="tech-label"><span class="en">Powered by industry-standard tools</span><span class="zh">基于行业标准工具</span></div>
+    <div class="tech-list">
+      <span class="tech-item">OpenFOAM</span>
+      <span class="tech-item">Python</span>
+      <span class="tech-item">CadQuery / OCP</span>
+      <span class="tech-item">Gmsh</span>
+      <span class="tech-item">ParaView</span>
+      <span class="tech-item">LLM Agent</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ GALLERY / FEATURE SHOWCASE ══════════════ -->
+<section id="gallery" class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="en">Feature Showcase</span><span class="zh">功能展示</span></div>
+      <h2 class="sec-title"><span class="en">Every Capability, In Detail</span><span class="zh">每一项能力，逐一呈现</span></h2>
+      <p class="sec-sub">
+        <span class="en">From geometry to report — see exactly what VibeFlow delivers at every stage of your CFD research workflow.</span>
+        <span class="zh">从几何建模到报告生成，逐阶段查看 VibeFlow 在每个 CFD 研究步骤中的真实交付成果。</span>
+      </p>
+    </div>
+
+    <style>
+      .gallery-item { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 88px; }
+      .gallery-item.reverse { direction: rtl; }
+      .gallery-item.reverse > * { direction: ltr; }
+      .gallery-img-wrap { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); cursor: zoom-in; position: relative; }
+      .gallery-img-wrap img { width: 100%; display: block; transition: transform .4s var(--ease); }
+      .gallery-img-wrap:hover img { transform: scale(1.025); }
+      .gallery-text { }
+      .gallery-num { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
+      .gallery-title { font-family: var(--display); font-size: clamp(20px, 2.5vw, 26px); font-weight: 700; letter-spacing: -.02em; margin-bottom: 14px; }
+      .gallery-desc { font-size: 15px; color: var(--text2); line-height: 1.85; }
+      @media (max-width: 900px) {
+        .gallery-item, .gallery-item.reverse { grid-template-columns: 1fr; direction: ltr; }
+        .gallery-item { margin-bottom: 56px; }
+      }
+    </style>
+
+    <!-- v1 -->
+    <div class="gallery-item reveal">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v1.png" alt="VibeFlow Studio 主界面">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">01 · <span class="en">Project Overview</span><span class="zh">项目全景</span></div>
+        <h3 class="gallery-title"><span class="en">Unified Project Workspace</span><span class="zh">统一项目工作空间</span></h3>
+        <p class="gallery-desc">
+          <span class="en">The main interface opens with a full project file tree on the left — every case file, dictionary, log, and artifact is instantly accessible and editable. On the right, the Agent entry panel lets you choose any LLM tool you prefer, seamlessly bridging your research intent with the full CFD pipeline.</span>
+          <span class="zh">启动后左侧呈现完整项目文件树，涵盖所有算例文件、字典、日志与产物，可随时查看与修改。右侧为 Agent 入口，支持选择您习惯使用的任何 LLM 工具，将研究意图与完整 CFD 流程无缝衔接。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v2 -->
+    <div class="gallery-item reverse reveal d1">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v2.png" alt="Agent 文献阅读">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">02 · <span class="en">Literature & Research Integration</span><span class="zh">文献与研究集成</span></div>
+        <h3 class="gallery-title"><span class="en">AI-Assisted Literature Reading</span><span class="zh">Agent 辅助文献阅读</span></h3>
+        <p class="gallery-desc">
+          <span class="en">VibeFlow is not just a simulation tool — it is a seamless research platform. The Agent can read, summarize, and cross-reference CFD papers, extracting boundary conditions, physical parameters, and validation data directly into your caseDict without manual transcription errors.</span>
+          <span class="zh">VibeFlow 不只是仿真工具，更是无缝集成的 CFD 研究人员工作流平台。Agent 可阅读、摘要和交叉引用 CFD 文献，直接将边界条件、物理参数与验证数据提取写入 caseDict，无需手动转录，杜绝抄录错误。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v3 -->
+    <div class="gallery-item reveal d2">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v3.png" alt="Codex 全流程测试">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">03 · <span class="en">Autonomous Testing & Error Fixing</span><span class="zh">自主测试与错误修复</span></div>
+        <h3 class="gallery-title"><span class="en">Full-Pipeline Autonomous Testing</span><span class="zh">Codex 全流程自主测试</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Powered by Codex, VibeFlow autonomously runs the complete CFD pipeline end-to-end, detects errors at every stage, and self-repairs them without user intervention. The final result is delivered with verified accuracy — no more manual debugging loops.</span>
+          <span class="zh">借助 Codex，VibeFlow 自主执行完整 CFD 流程，在每个阶段检测错误并自主修复，无需用户干预。最终以准确的结果交付，彻底告别手动调试的反复循环。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v4 -->
+    <div class="gallery-item reverse reveal">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v4.png" alt="日志解析与残差图">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">04 · <span class="en">Log Parsing & Residuals</span><span class="zh">日志解析与残差监控</span></div>
+        <h3 class="gallery-title"><span class="en">Real-Time Solver Monitoring</span><span class="zh">实时求解状态可视化</span></h3>
+        <p class="gallery-desc">
+          <span class="en">One click plots live residual curves from solver logs, updating as the simulation runs. The Agent independently watches logs, identifies convergence issues or divergence events, and takes autonomous corrective action — keeping your simulation on track without babysitting.</span>
+          <span class="zh">一键解析日志并实时绘制与更新残差图，随仿真进行动态刷新。Agent 自主观测日志、识别收敛异常或发散事件，并自主接管全流程纠偏，让您从盯屏守候中彻底解放。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v5 -->
+    <div class="gallery-item reveal d1">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v5.png" alt="结果对比图">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">05 · <span class="en">Physical Accuracy & Validation</span><span class="zh">物理准确与结果验证</span></div>
+        <h3 class="gallery-title"><span class="en">Automated Benchmark Comparison</span><span class="zh">自动结果对比与验证</span></h3>
+        <p class="gallery-desc">
+          <span class="en">VibeFlow automatically generates comparison plots against reference data, experimental measurements, or analytical solutions — ensuring physical fidelity at every run. Intelligence does not come at the cost of rigor: AI4CFD should be a credible research tool, not a toy.</span>
+          <span class="zh">VibeFlow 自动给出与参考数据、实验测量或解析解的对比图，每次运行均保证严格的物理准确性。智能化不以严谨性为代价——AI4CFD 应当是可信赖的研究工具，而非玩具。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v6 -->
+    <div class="gallery-item reverse reveal d2">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v6.png" alt="几何建模与网格">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">06 · <span class="en">Geometry & Intelligent Meshing</span><span class="zh">几何建模与智能网格</span></div>
+        <h3 class="gallery-title"><span class="en">Natural Language to Complex Geometry</span><span class="zh">自然语言一句话构建复杂模型</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Describe your geometry in plain language and VibeFlow constructs precise parametric CAD using CadQuery. The meshing strategy — structured, unstructured, or hybrid — is decided intelligently based on the physics, ensuring simulation-ready quality without manual tuning.</span>
+          <span class="zh">用自然语言描述几何形状，VibeFlow 即可使用 CadQuery 准确构建参数化 CAD 模型。网格策略（结构化、非结构化或混合）根据物理问题智能决策，无需手动调优即可达到仿真就绪质量。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v7 -->
+    <div class="gallery-item reveal">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v7.png" alt="后处理自然语言控制">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">07 · <span class="en">Natural Language Post-Processing</span><span class="zh">自然语言后处理</span></div>
+        <h3 class="gallery-title"><span class="en">Say It, See It Rendered</span><span class="zh">语言描述，自动加载渲染</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Forget complex ParaView button sequences. Simply describe what you want to visualize — a pressure slice, a velocity isosurface, a streamline field — and VibeFlow translates your words into a fully rendered ParaView scene, automatically loaded and displayed.</span>
+          <span class="zh">不再需要记忆复杂的 ParaView 操作路径。只需用语言描述想要的可视化内容——压力切片、速度等值面、流线场——VibeFlow 将自动将描述转化为完整 ParaView 场景并加载呈现。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v8 -->
+    <div class="gallery-item reverse reveal d1">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v8.png" alt="计算报告">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">08 · <span class="en">Traceable Research Report</span><span class="zh">可追溯研究报告</span></div>
+        <h3 class="gallery-title"><span class="en">Complete, Evidence-Backed Reports</span><span class="zh">完整清晰的计算报告</span></h3>
+        <p class="gallery-desc">
+          <span class="en">VibeFlow automatically assembles a structured research report from all upstream artifacts. Every key result — drag coefficients, pressure distributions, convergence history — is linked to specific files, logs, and references, producing a self-contained, publication-quality document.</span>
+          <span class="zh">VibeFlow 从所有上游产物自动组装结构化研究报告。每项关键结果——阻力系数、压力分布、收敛历史——均链接至具体文件、日志和文献，生成自洽的、具有发表质量的完整报告。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v9 -->
+    <div class="gallery-item reveal d2">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v9.png" alt="截图涂鸦辅助">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">09 · <span class="en">Screenshot Annotation Assist</span><span class="zh">截图标注辅助</span></div>
+        <h3 class="gallery-title"><span class="en">Sketch Your Intent, AI Understands</span><span class="zh">随意涂鸦，Agent 精准理解</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Want to modify the geometry or adjust a boundary? Use the built-in screenshot key to capture the current view, annotate it freely — arrows, circles, highlights — and the Agent interprets your markup to construct a precise, actionable prompt. No rigid interface forms required.</span>
+          <span class="zh">想要修改模型或调整边界？使用内置截图键捕获当前视图，随意涂鸦标注——箭头、圈选、高亮——Agent 将理解您的标记内容，高效构建准确的执行 prompt，无需填写任何繁琐表单。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v10 -->
+    <div class="gallery-item reverse reveal">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v10.png" alt="黑色主题">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">10 · <span class="en">Dark Theme</span><span class="zh">暗色主题</span></div>
+        <h3 class="gallery-title"><span class="en">Designed for Long Research Sessions</span><span class="zh">专为长时间研究会话而设计</span></h3>
+        <p class="gallery-desc">
+          <span class="en">VibeFlow features a refined dark theme optimized for long coding and simulation sessions. High-contrast, low-fatigue aesthetics keep the focus on your results — not the interface. Because great CFD research deserves a workspace that feels as good as it performs.</span>
+          <span class="zh">VibeFlow 配备精心调校的暗色主题，专为长时间编码与仿真会话优化。高对比、低疲劳的视觉设计让您聚焦于研究结果本身，而非界面操作——因为优秀的 CFD 研究值得一个既高效又舒适的工作环境。</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ PRICING ══════════════ -->
+<section id="pricing" class="section">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center">
+      <div class="eyebrow" style="justify-content:center"><span class="en">Pricing</span><span class="zh">定价</span></div>
+      <h2 class="sec-title"><span class="en">Simple, Transparent Pricing</span><span class="zh">简单透明的定价</span></h2>
+      <p class="sec-sub" style="margin:0 auto">
+        <span class="en">Start for free. Upgrade when you need more power.</span>
+        <span class="zh">免费开始，按需升级。</span>
+      </p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Free -->
+      <div class="price-card featured reveal">
+        <div class="price-badge"><span class="en">Recommended</span><span class="zh">推荐</span></div>
+        <div class="price-tier"><span class="en">Free Trial</span><span class="zh">免费试用</span></div>
+        <div class="price-val"><span class="symbol">¥</span>0<span class="period"> / <span class="en">15 days</span><span class="zh">15天</span></span></div>
+        <p class="price-desc">
+          <span class="en">Full-featured trial. No credit card required. Explore the complete workflow and both agent modes.</span>
+          <span class="zh">全功能试用，无需信用卡。探索完整工作流与两种智能体模式。</span>
+        </p>
+        <ul class="price-feats">
+          <li><span class="en">Usage Mode — 6 stages</span><span class="zh">使用模式 — 6 阶段</span></li>
+          <li><span class="en">Development Mode — 5 stages</span><span class="zh">开发模式 — 5 阶段</span></li>
+          <li><span class="en">OpenFOAM integration</span><span class="zh">OpenFOAM 集成</span></li>
+          <li><span class="en">CadQuery + Gmsh + ParaView</span><span class="zh">CadQuery + Gmsh + ParaView</span></li>
+          <li><span class="en">15-day full access</span><span class="zh">15 天完整访问</span></li>
+        </ul>
+        <a href="#download" class="price-btn fill"><span class="en">Start Free Trial</span><span class="zh">开始免费试用</span></a>
+      </div>
+      <!-- Monthly -->
+      <div class="price-card reveal d1">
+        <div class="price-tier"><span class="en">Monthly</span><span class="zh">月度订阅</span></div>
+        <div class="price-val"><span class="symbol">¥</span>19.9<span class="period"> / <span class="en">month</span><span class="zh">月</span></span></div>
+        <p class="price-desc">
+          <span class="en">Everything in Free, plus unlimited cases, priority support, and access to all future features as they ship.</span>
+          <span class="zh">包含试用版所有功能，另加无限算例、优先支持及所有新功能的第一时间访问。</span>
+        </p>
+        <ul class="price-feats">
+          <li><span class="en">Everything in Free Trial</span><span class="zh">包含试用版全部功能</span></li>
+          <li><span class="en">Unlimited cases &amp; runs</span><span class="zh">无限算例与运行次数</span></li>
+          <li><span class="en">Early access to new features</span><span class="zh">新功能抢先体验</span></li>
+          <li><span class="en">Community support</span><span class="zh">社区技术支持</span></li>
+          <li><span class="en">Full AI-driven workflow</span><span class="zh">完整AI驱动工作流</span></li>
+        </ul>
+        <a href="#" class="price-btn outline"><span class="en">Get Monthly</span><span class="zh">开通月度订阅</span></a>
+      </div>
+      <!-- Quarterly -->
+      <div class="price-card reveal d2">
+        <div class="price-tier"><span class="en">Quarterly</span><span class="zh">季度订阅</span></div>
+        <div class="price-val"><span class="symbol">¥</span>49.9<span class="period"> / <span class="en">quarter</span><span class="zh">季度</span></span></div>
+        <p class="price-desc">
+          <span class="en">Best value for sustained research projects. Save over 16% compared to monthly billing.</span>
+          <span class="zh">持续研究项目的最优选择，相比按月计费节省逾 16%。</span>
+        </p>
+        <ul class="price-feats">
+          <li><span class="en">Everything in Monthly</span><span class="zh">包含月度版全部功能</span></li>
+          <li><span class="en">3-month continuous access</span><span class="zh">3 个月持续访问</span></li>
+          <li><span class="en">Save 16% vs. monthly</span><span class="zh">相比月付节省 16%</span></li>
+          <li><span class="en">Extended case history</span><span class="zh">扩展算例历史记录</span></li>
+          <li><span class="en">Priority feature requests</span><span class="zh">优先功能需求响应</span></li>
+        </ul>
+        <a href="#" class="price-btn outline"><span class="en">Get Quarterly</span><span class="zh">开通季度订阅</span></a>
+      </div>
+    </div>
+    <p class="price-trial-note">
+      <span class="en">All plans include a <em>15-day free trial</em>. No credit card required to start.</span>
+      <span class="zh">所有方案均包含 <em>15 天免费试用</em>，无需绑定任何支付方式。</span>
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════ LINKS ══════════════ -->
+<section id="links" class="section section-alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow"><span class="en">Resources &amp; Links</span><span class="zh">资源与链接</span></div>
+      <h2 class="sec-title"><span class="en">Explore VibeFlow</span><span class="zh">探索 VibeFlow</span></h2>
+      <p class="sec-sub">
+        <span class="en">Documentation, tutorials, community, and integrations — everything you need to get started.</span>
+        <span class="zh">文档、教程、社区与集成——一切您需要的入门资源。</span>
+      </p>
+    </div>
+    <div class="links-grid">
+      <a href="#" class="link-card reveal">
+        <span class="link-icon">📖</span>
+        <span class="link-name"><span class="en">Documentation</span><span class="zh">使用文档</span></span>
+        <span class="link-desc"><span class="en">Full API reference, workflow guides, and caseDict schema</span><span class="zh">完整 API 参考、工作流指南与 caseDict Schema</span></span>
+        <span class="link-arrow">→ docs</span>
+      </a>
+      <a href="#" class="link-card reveal d1">
+        <span class="link-icon">🎓</span>
+        <span class="link-name"><span class="en">Tutorials</span><span class="zh">教程案例</span></span>
+        <span class="link-desc"><span class="en">Step-by-step CFD workflows from lid-driven cavity to dam break</span><span class="zh">从顶盖方腔到溃坝的逐步 CFD 工作流</span></span>
+        <span class="link-arrow">→ tutorials</span>
+      </a>
+      <div class="link-card link-card-community reveal d2">
+        <div class="qr-popup">
+          <img src="assets/wechat.png" alt="WeChat QR Code">
+          <div class="qr-tip"><span class="en">Scan to join community</span><span class="zh">扫码加入社区</span></div>
+        </div>
+        <span class="link-icon">💬</span>
+        <span class="link-name"><span class="en">Community</span><span class="zh">社区论坛</span></span>
+        <span class="link-desc"><span class="en">Join the VibeFlow WeChat community — discuss cases, share results, and get peer support</span><span class="zh">加入 VibeFlow 微信社区，讨论算例、分享结果，获取社区支持</span></span>
+        <span class="link-arrow" style="color:var(--cyan);font-family:var(--mono);font-size:11px;margin-top:auto;padding-top:8px;"><span class="en">↑ hover to scan</span><span class="zh">↑ 悬浮查看二维码</span></span>
+      </div>
+      <a href="#" class="link-card reveal d3">
+        <span class="link-icon">🔬</span>
+        <span class="link-name"><span class="en">VibeFlowBench</span><span class="zh">VibeFlowBench</span></span>
+        <span class="link-desc"><span class="en">Benchmark suite: canonical CFD cases with reference data and evaluation scripts</span><span class="zh">基准测试套件，含参考数据与评估脚本</span></span>
+        <span class="link-arrow">→ benchmark</span>
+      </a>
+      <a href="https://www.openfoam.com/" target="_blank" rel="noopener" class="link-card reveal">
+        <span class="link-icon">🌊</span>
+        <span class="link-name">OpenFOAM</span>
+        <span class="link-desc"><span class="en">Open-source CFD toolbox powering VibeFlow simulations</span><span class="zh">驱动 VibeFlow 仿真的开源 CFD 工具箱</span></span>
+        <span class="link-arrow">→ openfoam.com</span>
+      </a>
+      <a href="https://cadquery.readthedocs.io/" target="_blank" rel="noopener" class="link-card reveal d1">
+        <span class="link-icon">📐</span>
+        <span class="link-name">CadQuery</span>
+        <span class="link-desc"><span class="en">Parametric CAD scripting library used for VibeFlow geometry</span><span class="zh">VibeFlow 几何建模使用的参数化 CAD 脚本库</span></span>
+        <span class="link-arrow">→ cadquery.io</span>
+      </a>
+      <a href="https://gmsh.info/" target="_blank" rel="noopener" class="link-card reveal d2">
+        <span class="link-icon">🔺</span>
+        <span class="link-name">Gmsh</span>
+        <span class="link-desc"><span class="en">3D finite element mesh generator with Python API integration</span><span class="zh">集成 Python API 的 3D 有限元网格生成器</span></span>
+        <span class="link-arrow">→ gmsh.info</span>
+      </a>
+      <a href="https://www.paraview.org/" target="_blank" rel="noopener" class="link-card reveal d3">
+        <span class="link-icon">🎨</span>
+        <span class="link-name">ParaView</span>
+        <span class="link-desc"><span class="en">Scientific visualization platform for VibeFlow post-processing and scene rendering</span><span class="zh">VibeFlow 后处理与场景渲染使用的科学可视化平台</span></span>
+        <span class="link-arrow">→ paraview.org</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DOWNLOAD ══════════════ -->
+<section id="download" class="section">
+  <div class="wrap">
+    <div class="dl-center">
+      <div class="eyebrow" style="justify-content:center"><span class="en">Get Started</span><span class="zh">开始使用</span></div>
+      <h2 class="dl-title"><span class="en">Download VibeFlow Studio</span><span class="zh">下载 VibeFlow Studio</span></h2>
+      <p class="dl-sub"><span class="en">Free 15-day trial included on all platforms.</span><span class="zh">所有平台均含 15 天免费试用。</span></p>
+
+      <div class="dl-tabs">
+        <button class="dl-tab active" onclick="dlSwitch('linux',this)">Linux</button>
+        <button class="dl-tab" onclick="dlSwitch('windows',this)">Windows</button>
+        <button class="dl-tab" onclick="dlSwitch('macos',this)">macOS</button>
+      </div>
+
+      <div id="dl-linux" class="dl-pane active">
+        <a href="downloads/vibeflow-studio_0.2.0_amd64.deb" class="dl-card">
+          <div class="dl-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v13"/><path d="M8 12l4 4 4-4"/><line x1="3" y1="21" x2="21" y2="21"/>
+            </svg>
+          </div>
+          <div class="dl-card-body">
+            <span class="dl-name">VibeFlow Studio 0.2.0</span>
+            <span class="dl-platform">Ubuntu / Debian · x86_64</span>
+            <span class="dl-ext">.deb package</span>
+          </div>
+        </a>
+        <div class="install-block">
+          <span class="cm"># Quick install</span><br>
+          <span class="kw">sudo</span> dpkg -i vibeflow-studio_0.2.0_amd64.deb<br>
+          <span class="kw">vibeflow-studio</span>
+        </div>
+      </div>
+
+      <div id="dl-windows" class="dl-pane">
+        <div class="dl-soon">
+          <div class="dl-soon-dots"><div class="dl-soon-dot"></div><div class="dl-soon-dot"></div><div class="dl-soon-dot"></div></div>
+          <span><span class="en">Windows support is under development</span><span class="zh">Windows 版本正在开发中</span></span>
+        </div>
+      </div>
+
+      <div id="dl-macos" class="dl-pane">
+        <div class="dl-soon">
+          <div class="dl-soon-dots"><div class="dl-soon-dot"></div><div class="dl-soon-dot"></div><div class="dl-soon-dot"></div></div>
+          <span><span class="en">macOS support is under development</span><span class="zh">macOS 版本正在开发中</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="assets/logo.svg" alt="VibeFlow">
+        <div class="name">VibeFlow</div>
+        <p><span class="en">An intelligent CFD workstation for traceable engineering research.</span><span class="zh">面向可追溯工程研究的智能 CFD 工作台</span></p>
+      </div>
+      <div class="foot-col">
+        <h4><span class="en">Product</span><span class="zh">产品</span></h4>
+        <a href="#modes"><span class="en">Modes</span><span class="zh">工作模式</span></a>
+        <a href="#features"><span class="en">Features</span><span class="zh">功能特性</span></a>
+        <a href="#workflow"><span class="en">Workflow</span><span class="zh">工作流程</span></a>
+        <a href="#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
+        <a href="#download"><span class="en">Download</span><span class="zh">下载</span></a>
+      </div>
+      <div class="foot-col">
+        <h4><span class="en">Technology</span><span class="zh">技术</span></h4>
+        <a href="https://www.openfoam.com/" target="_blank" rel="noopener">OpenFOAM</a>
+        <a href="https://cadquery.readthedocs.io/" target="_blank" rel="noopener">CadQuery</a>
+        <a href="https://gmsh.info/" target="_blank" rel="noopener">Gmsh</a>
+        <a href="https://www.paraview.org/" target="_blank" rel="noopener">ParaView</a>
+      </div>
+      <div class="foot-col">
+        <h4><span class="en">Resources</span><span class="zh">资源</span></h4>
+        <a href="#"><span class="en">Documentation</span><span class="zh">文档</span></a>
+        <a href="#"><span class="en">Tutorials</span><span class="zh">教程</span></a>
+        <a href="#"><span class="en">VibeFlowBench</span><span class="zh">VibeFlowBench</span></a>
+        <a href="#"><span class="en">Community</span><span class="zh">社区</span></a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 VibeFlow</span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">
+        <span class="en">Powered by OpenFOAM</span>
+        <span class="zh">基于 OpenFOAM</span>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Gallery Lightbox ───────────── */
+function openLb(wrap) {
+  const src = wrap.querySelector('img').src;
+  const lb = document.createElement('div');
+  lb.className = 'lb';
+  lb.innerHTML = `<img src="${src}" alt="">`;
+  lb.addEventListener('click', () => lb.remove());
+  document.body.appendChild(lb);
+}
+
+/* ── Language toggle ─────────────── */
+let lang = 'en';
+function toggleLang() {
+  lang = lang === 'en' ? 'zh' : 'en';
+  document.body.classList.toggle('lang-zh', lang === 'zh');
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'English';
+  document.title = lang === 'zh' ? 'VibeFlow — 智能 CFD 工作台' : 'VibeFlow — Intelligent CFD Workstation';
+  if (activeUsageStage >= 0) renderStage('usage', activeUsageStage);
+  if (activeDevStage   >= 0) renderStage('dev',   activeDevStage);
+}
+document.body.classList.add('lang-en');
+
+/* ── Navbar scroll ──────────────── */
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => { navEl.classList.toggle('stuck', scrollY > 50); }, { passive: true });
+
+/* ── Scroll reveal ──────────────── */
+const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+/* ── Workflow modes ─────────────── */
+function switchWfMode(mode) {
+  document.querySelectorAll('.wf-mode-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.wf-mode-btn.${mode}`).classList.add('active');
+  document.querySelectorAll('.wf-panel').forEach(p => p.classList.remove('open'));
+  document.getElementById(`${mode}-panel`).classList.add('open');
+}
+
+const stageData = {
+  usage: {
+    en: [
+      { t: '01 · Requirements Clarification', d: 'Convert user intent and reference materials (papers, CAD, experimental data) into a structured caseDict. Key parameters are elicited systematically: geometry dimensions, physics model, boundary conditions, mesh strategy, solver family, and post-processing objectives. All ambiguities are resolved with structured follow-up before the pipeline advances.' },
+      { t: '02 · Parametric Geometry', d: 'Generate reproducible parametric CAD using CadQuery/OCP Python. Named modeling stages, STEP/STL export, and Studio preview validation ensure geometry is correct and meshing-ready. The model rebuilds deterministically from caseDict parameters — change a value, rebuild the geometry.' },
+      { t: '03 · Mesh Generation', d: 'Select meshing strategy based on physics: structured (blockMesh), unstructured (Gmsh), or hybrid (snappyHexMesh). Boundary layer control, y+ targeting, and checkMesh quality gates ensure simulation-ready meshes. All patch names are verified against caseDict before handoff.' },
+      { t: '04 · OpenFOAM Simulation', d: 'Select the closest baseline tutorial, configure all dictionaries from caseDict, convert the mesh, and run the solver. Error Locator reports diagnose failures to the specific file and caseDict field. Logs, residuals, and Courant numbers are tracked for full traceability.' },
+      { t: '05 · Post-Processing', d: 'Extract plots, field visualizations, and derived data using Python scripts and ParaView/pvpython. Results are compared against reference data or experimental measurements. Every figure and CSV is linked to the evidence chain in the report.' },
+      { t: '06 · Report Generation', d: 'Produce a structured research report from all upstream artifacts. Every key claim — pressure peaks, impulse, drag, Nusselt number — links to a specific file, log, measurement, or reference. The report distinguishes verified facts, engineering assumptions, and open limitations.' }
+    ],
+    zh: [
+      { t: '01 · 需求澄清', d: '将您的需求和参考资料（论文、CAD、实验数据）转化为结构化 caseDict。系统性提取关键参数：几何尺寸、物理模型、边界条件、网格策略、求解器族和后处理目标。在流程推进前，所有歧义均通过结构化追问解决。' },
+      { t: '02 · 参数化几何', d: '使用 CadQuery/OCP Python 生成可复现的参数化 CAD 模型。命名建模阶段、STEP/STL 导出和 Studio 预览验证确保几何正确并准备好网格划分。模型从 caseDict 参数确定性重建——修改数值，重建几何。' },
+      { t: '03 · 网格划分', d: '根据物理问题选择网格策略：结构化（blockMesh）、非结构化（Gmsh）或混合（snappyHexMesh）。边界层控制、y+ 目标设定和 checkMesh 质量门控确保仿真就绪的网格质量。所有 patch 名称在交接前均对照 caseDict 验证。' },
+      { t: '04 · OpenFOAM 求解', d: '选择最接近的基准教程，从 caseDict 配置所有字典，转换网格并运行求解器。错误定位报告将失败诊断到具体文件和 caseDict 字段。日志、残差和 Courant 数均被跟踪以保证完整可追溯性。' },
+      { t: '05 · 后处理', d: '使用 Python 脚本和 ParaView/pvpython 提取图表、场可视化和派生数据。结果与参考数据或实验测量进行比较。每个图表和 CSV 文件均链接至报告中的证据链。' },
+      { t: '06 · 报告生成', d: '从所有上游产物生成结构化研究报告。每个关键结论——压力峰值、冲量、阻力、Nusselt 数——均链接至特定文件、日志、测量值或文献参考。报告区分已验证事实、工程假设和未解决限制。' }
+    ]
+  },
+  dev: {
+    en: [
+      { t: 'D1 · Requirement & Boundary Confirmation', d: 'Identify the task type: new solver, new library, boundary condition, functionObject, fvOption, or code repair. Clarify target capability, inputs/outputs, applicable physical model, OpenFOAM version, integration method, and validation case. All scope and acceptance criteria are written to UDF/README.md before implementation begins.' },
+      { t: 'D2 · Development Design Document', d: 'Read the closest native OpenFOAM solver, library, or tutorial. Complete the design section in UDF/README.md: mathematical model, key classes/files, dictionary interface, run method, build method, and validation method. Prefer implementing new UDF code without modifying $WM_PROJECT_DIR core source.' },
+      { t: 'D3 · Implementation & Organization', d: 'Copy the minimum necessary skeleton from the closest OpenFOAM source into UDF/solver/&lt;name&gt; or UDF/src/&lt;name&gt;. Each compilable target must contain Make/files and Make/options. Custom libraries compile to $(FOAM_USER_LIBBIN); custom solvers to $(FOAM_USER_APPBIN).' },
+      { t: 'D4 · Compilation & Minimal Validation', d: 'Load the OpenFOAM environment and compile libraries before solvers. Record build logs and errors in UDF/README.md. Perform at least one lightweight test: solver -help verification, successful loading through libs (...), or reasonable iteration startup on a minimal case.' },
+      { t: 'D5 · Case Integration & Delivery', d: 'If needed, update C-run/case-* system/controlDict and relevant dictionaries to use the new solver/library. Keep UDF code and case dictionaries decoupled: source stays under UDF/, cases call it through application, libs, and dictionary keywords. Document how to compile, enable, and validate in UDF/README.md.' }
+    ],
+    zh: [
+      { t: 'D1 · 需求与边界确认', d: '确定任务类型：新求解器、新库、边界条件、functionObject、fvOption 或代码修复。明确目标能力、输入/输出、适用物理模型、OpenFOAM 版本、集成方法和验证算例。所有范围和验收标准在实现开始前写入 UDF/README.md。' },
+      { t: 'D2 · 开发设计文档', d: '阅读最接近的原生 OpenFOAM 求解器、库或教程。在 UDF/README.md 中完善设计章节：数学模型、关键类/文件、字典接口、运行方法、构建方法和验证方法。优先在不修改 $WM_PROJECT_DIR 核心源码的情况下实现新 UDF 代码。' },
+      { t: 'D3 · 实现与组织', d: '从最接近的 OpenFOAM 源码中复制最小必要框架到 UDF/solver/&lt;name&gt; 或 UDF/src/&lt;name&gt;。每个可编译目标必须包含 Make/files 和 Make/options。自定义库编译到 $(FOAM_USER_LIBBIN)，自定义求解器编译到 $(FOAM_USER_APPBIN)。' },
+      { t: 'D4 · 编译与最小化验证', d: '加载 OpenFOAM 环境，先编译库再编译求解器。在 UDF/README.md 中记录构建日志和错误。至少进行一次轻量级测试：求解器 -help 验证、通过 libs (...) 成功加载，或在最小算例上合理启动迭代。' },
+      { t: 'D5 · 算例集成与交付', d: '如需要，更新 C-run/case-* 的 system/controlDict 和相关字典以使用新求解器/库。保持 UDF 代码与算例字典解耦：源码留在 UDF/，算例通过 application、libs 和字典关键字调用。在 UDF/README.md 中清晰记录编译、启用和验证方法。' }
+    ]
+  }
+};
+
+let activeUsageStage = -1, activeDevStage = -1;
+
+function renderStage(mode, idx) {
+  const d = stageData[mode][lang][idx];
+  document.getElementById(`${mode}-detail`).innerHTML = `<h3>${d.t}</h3><p>${d.d}</p>`;
+}
+
+function openStage(mode, idx) {
+  const panel  = document.getElementById(`${mode}-panel`);
+  const stages = panel.querySelectorAll('.wf-stage');
+  const detail = document.getElementById(`${mode}-detail`);
+  const active = mode === 'usage' ? activeUsageStage : activeDevStage;
+  if (active === idx) {
+    stages[idx].classList.remove('active');
+    detail.classList.remove('open');
+    mode === 'usage' ? (activeUsageStage = -1) : (activeDevStage = -1);
+    return;
+  }
+  stages.forEach((s, i) => s.classList.toggle('active', i === idx));
+  mode === 'usage' ? (activeUsageStage = idx) : (activeDevStage = idx);
+  renderStage(mode, idx);
+  detail.classList.add('open');
+}
+
+/* ── Hero canvas ─────────────────── */
+(function () {
+  const canvas = document.getElementById('flow-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+  const N = 240;
+  class P {
+    constructor(rand) { this.reset(rand); }
+    reset(rand) {
+      this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+      this.life = rand ? Math.random() * 220 : 0; this.max = 160 + Math.random() * 160;
+      this.spd = 0.7 + Math.random() * 1.6; this.sz = 0.4 + Math.random() * 1.4;
+      this.hue = 182 + Math.random() * 28;
+    }
+    step(t) {
+      const nx = this.x / canvas.width, ny = this.y / canvas.height;
+      const a = Math.sin(nx * 4.2 + t * 0.16) * Math.PI * 2 + Math.cos(ny * 3.1 + t * 0.11) * Math.PI + Math.sin((nx + ny) * 2.8 + t * 0.07) * Math.PI * 0.6;
+      this.x += Math.cos(a) * this.spd; this.y += Math.sin(a) * this.spd; this.life++;
+      if (this.life > this.max || this.x < -4 || this.x > canvas.width + 4 || this.y < -4 || this.y > canvas.height + 4) this.reset(false);
+    }
+    draw() {
+      const a = Math.sin((this.life / this.max) * Math.PI) * 0.65;
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.sz, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${this.hue},78%,65%,${a})`; ctx.fill();
+    }
+  }
+  const pts = Array.from({ length: N }, () => new P(true));
+  let t = 0;
+  function frame() {
+    ctx.fillStyle = 'rgba(5,8,15,.09)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    t += 0.003; pts.forEach(p => { p.step(t); p.draw(); }); requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+function dlSwitch(id, btn) {
+  document.querySelectorAll('.dl-tab').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.dl-pane').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('dl-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>
