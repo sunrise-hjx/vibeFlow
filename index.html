@@ -6,10 +6,57 @@
   <meta name="description" content="VibeFlow — An intelligent CFD workstation for traceable engineering research.">
   <title>VibeFlow — Intelligent CFD Workstation</title>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'Syne Local';
+      src: url('assets/fonts/syne-latin.woff2') format('woff2');
+      font-weight: 400 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'DM Sans Local';
+      src: url('assets/fonts/dm-sans-latin.woff2') format('woff2');
+      font-weight: 300 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono Local';
+      src: url('assets/fonts/jetbrains-mono-latin.woff2') format('woff2');
+      font-weight: 400 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-400-subset.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-600-subset.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-700-subset.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-800-subset.woff2') format('woff2');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -26,9 +73,10 @@
       --text:      #E8EFF8;
       --text2:     #8B98AE;
       --text3:     #445065;
-      --display:   'Syne', sans-serif;
-      --body:      'DM Sans', sans-serif;
-      --mono:      'JetBrains Mono', monospace;
+      --display:   'Syne Local', 'Noto Sans SC Local', sans-serif;
+      --body:      'DM Sans Local', 'Noto Sans SC Local', sans-serif;
+      --mono:      'JetBrains Mono Local', 'Noto Sans SC Local', monospace;
+      --cjk:       'Noto Sans SC Local', 'Noto Sans CJK SC', 'Source Han Sans SC', sans-serif;
       --r:         12px;
       --r-sm:      8px;
       --ease:      cubic-bezier(.4,0,.2,1);
@@ -70,6 +118,10 @@
     .en, .zh { display: inline; }
     body.lang-zh .en { display: none; }
     body.lang-en .zh { display: none; }
+    .zh,
+    body.lang-zh .wf-detail,
+    body.lang-zh .wf-detail h3,
+    body.lang-zh .wf-detail p { font-family: var(--cjk); }
 
     /* buttons */
     .btn-primary {
@@ -405,31 +457,71 @@
     /* ── MOBILE PORTRAIT ── */
     @media (max-width: 480px) {
       /* global */
-      .wrap { padding: 0 18px; }
-      .section { padding: 72px 0; }
+      .wrap { padding: 0 16px; }
+      .section { padding: 56px 0; }
+      .sec-head { margin-bottom: 36px; }
+      .eyebrow { gap: 8px; font-size: 9.5px; letter-spacing: .1em; margin-bottom: 14px; }
+      .eyebrow::before { width: 14px; }
+      .sec-title { font-size: clamp(24px, 8vw, 32px); line-height: 1.16; margin-bottom: 12px; }
+      .sec-sub { font-size: 13px; line-height: 1.65; }
       /* nav */
-      .nav-row { padding: 0 18px; }
-      .btn-dl { font-size: 12px; padding: 7px 14px; }
+      #nav { padding: 16px 0; }
+      #nav.stuck { padding: 10px 0; }
+      .nav-row { padding: 0 16px; }
+      .nav-logo { gap: 8px; }
+      .nav-logo img { height: 26px; }
+      .nav-logo-name { font-size: 17px; }
+      .nav-btns { gap: 6px; }
+      .btn-lang { font-size: 10px; padding: 6px 10px; }
+      .btn-dl { font-size: 12px; padding: 7px 12px; }
       /* hero */
-      .hero-body { padding: 110px 18px 72px; }
-      .hero-h1 { font-size: clamp(48px, 14vw, 72px); }
-      .hero-tagline { font-size: clamp(15px, 4vw, 20px); }
-      .hero-sub { font-size: 14px; margin-bottom: 36px; }
+      #hero { min-height: 92svh; align-items: flex-start; }
+      .hero-body { padding: 96px 16px 58px; }
+      .hero-pill { max-width: 100%; padding: 5px 12px; font-size: 9.5px; line-height: 1.4; margin-bottom: 26px; }
+      .hero-h1 { font-size: clamp(44px, 15vw, 58px); margin-bottom: 10px; }
+      .hero-tagline { font-size: clamp(15px, 4vw, 18px); line-height: 1.35; margin-bottom: 16px; }
+      .hero-sub { font-size: 13px; line-height: 1.65; margin-bottom: 30px; }
       .hero-ctas { gap: 10px; }
-      .hero-ctas a, .hero-ctas button { padding: 11px 20px; font-size: 13px; }
-      .hero-kpis { gap: 24px; margin-top: 56px; }
-      .kpi-val { font-size: 24px; }
+      .hero-ctas a, .hero-ctas button { flex: 1 1 150px; justify-content: center; padding: 10px 14px; font-size: 13px; }
+      .hero-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; max-width: 320px; margin: 46px auto 0; }
+      .kpi-val { font-size: 21px; }
+      .kpi-lbl { font-size: 9px; line-height: 1.35; }
       /* modes */
-      .mode-card { padding: 28px 22px; }
+      .mode-card { padding: 22px 18px; }
+      .mode-badge { font-size: 9px; margin-bottom: 16px; }
+      .mode-title { font-size: 19px; line-height: 1.25; }
+      .mode-desc { font-size: 13px; line-height: 1.65; margin-bottom: 18px; }
+      .mode-stage-item { gap: 9px; font-size: 12px; line-height: 1.45; }
+      .mode-stage-item .num { width: 22px; height: 22px; font-size: 9px; }
       /* features */
-      .feat-card { padding: 28px 22px; }
+      .feat-card { padding: 22px 18px; }
+      .feat-icon { width: 38px; height: 38px; font-size: 18px; margin-bottom: 16px; }
+      .feat-title { font-size: 15px; line-height: 1.35; }
+      .feat-desc { font-size: 13px; line-height: 1.65; }
       /* workflow */
+      .wf-mode-toggle { width: 100%; margin-bottom: 32px; }
+      .wf-mode-btn { flex: 1; padding: 8px 10px; font-size: 12px; }
       .wf-row.usage-row,
-      .wf-row.dev-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .wf-detail { padding: 24px 20px; }
+      .wf-row.dev-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .wf-stage { padding: 0 3px; }
+      .wf-circle { width: 44px; height: 44px; font-size: 12px; margin-bottom: 10px; }
+      .wf-name { font-size: 11px; line-height: 1.35; }
+      .wf-hint { font-size: 10px; line-height: 1.35; }
+      .wf-detail { margin-top: 28px; padding: 20px 18px; }
+      .wf-detail h3 { font-size: 17px; }
+      .wf-detail p { font-size: 13px; line-height: 1.7; }
       /* demo */
       #demo .section-header { margin-bottom: 28px; }
+      .demo-scene-wrap { height: 280px; }
+      .demo-hud { padding: 18px; flex-direction: column; align-items: flex-start; gap: 14px; }
+      .demo-label { font-size: 17px; }
+      .demo-tabs { width: 100%; }
+      .demo-tab { flex: 1; padding: 7px 8px; font-size: 10px; }
+      .demo-stat-bar { top: 12px; right: 12px; }
+      .demo-stat { min-width: 112px; padding: 6px 9px; font-size: 9px; }
       /* tech strip */
+      #tech { padding: 42px 0; }
+      .tech-label { font-size: 9.5px; margin-bottom: 24px; }
       .tech-list { gap: 24px; }
       .tech-item { font-size: 12px; }
       /* gallery */
