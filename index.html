@@ -357,8 +357,21 @@
       border: 7px solid transparent; border-top-color: #fff;
     }
 
-    /* ── FOOTER ── */
-    footer { padding: 72px 0 40px; border-top: 1px solid var(--border); }
+    /* ── FAQ ── */
+    .faq-center { max-width: 800px; margin: 0 auto; }
+    .faq-list { display: flex; flex-direction: column; margin-top: 56px; border-top: 1px solid var(--border); }
+    .faq-item { border-bottom: 1px solid var(--border); overflow: hidden; transition: box-shadow .25s var(--ease); }
+    .faq-item.open { box-shadow: inset 3px 0 0 var(--cyan); }
+    .faq-q { display: flex; align-items: center; gap: 20px; padding: 22px 6px; cursor: pointer; user-select: none; }
+    .faq-num { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .08em; flex-shrink: 0; min-width: 26px; transition: color .25s; }
+    .faq-item.open .faq-num { color: var(--cyan); }
+    .faq-q-text { flex: 1; font-family: var(--display); font-size: 15px; font-weight: 700; letter-spacing: -.02em; color: var(--text); line-height: 1.45; }
+    .faq-chevron { flex-shrink: 0; width: 16px; height: 16px; color: var(--text3); transition: transform .35s var(--ease), color .25s; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); color: var(--cyan); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .45s cubic-bezier(.4,0,.2,1); }
+    .faq-item.open .faq-a { max-height: 600px; }
+    .faq-a-inner { padding: 2px 6px 26px 46px; font-size: 14px; color: var(--text2); line-height: 1.85; }
+    .faq-a-inner code { font-family: var(--mono); font-size: 12px; color: var(--cyan); background: rgba(34,211,238,.07); padding: 2px 6px; border-radius: 4px; }
     .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
     .foot-brand img { height: 28px; margin-bottom: 14px; }
     .foot-brand .name { font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 12px; }
@@ -413,6 +426,7 @@
       <a href="#gallery"><span class="en">Gallery</span><span class="zh">展示</span></a>
       <a href="#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
       <a href="#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
+      <a href="#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
       <a href="#links"><span class="en">Links</span><span class="zh">链接</span></a>
     </nav>
     <div class="nav-btns">
@@ -1035,6 +1049,106 @@
   </div>
 </section>
 
+<!-- ══════════════ FAQ ══════════════ -->
+<section id="faq" style="padding:112px 0;">
+  <div class="wrap">
+    <div class="faq-center">
+      <div class="eyebrow" style="justify-content:center"><span class="en">FAQ</span><span class="zh">常见问题</span></div>
+      <h2 style="font-family:var(--display);font-size:clamp(30px,4.5vw,46px);font-weight:800;letter-spacing:-.04em;text-align:center;margin-top:12px;">
+        <span class="en">Frequently Asked Questions</span><span class="zh">常见问题解答</span>
+      </h2>
+
+      <div class="faq-list">
+
+        <div class="faq-item reveal" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">01</span>
+            <span class="faq-q-text"><span class="en">What is VibeFlow Studio?</span><span class="zh">VibeFlow Studio 是什么？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en">VibeFlow Studio is an AI-powered CFD workstation built on top of OpenFOAM, CadQuery, Gmsh, and ParaView. It provides two agent modes: <strong>Usage Mode</strong> — a 6-stage workflow from requirements to traceable research reports; and <strong>Development Mode</strong> — a 5-stage pipeline for creating custom solvers, boundary conditions, turbulence models, and other OpenFOAM extensions. All stages are driven by natural language through a large language model.</span>
+            <span class="zh">VibeFlow Studio 是一个基于 OpenFOAM、CadQuery、Gmsh 与 ParaView 构建的 AI 驱动 CFD 工作台。它提供两种智能体模式：<strong>使用模式</strong>（六阶段工作流，从需求到可追溯研究报告）与<strong>开发模式</strong>（五阶段流程，用于开发自定义求解器、边界条件、湍流模型等 OpenFOAM 扩展）。所有阶段均通过自然语言驱动。</span>
+          </div></div>
+        </div>
+
+        <div class="faq-item reveal d1" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">02</span>
+            <span class="faq-q-text"><span class="en">What are the system requirements?</span><span class="zh">系统要求是什么？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en">VibeFlow Studio currently supports <strong>Linux x86_64</strong> (Ubuntu 22.04+ / Debian 11+). It requires a working OpenFOAM 2406 environment, Python 3.10+, and a valid API key for the LLM backend. A GPU is not required for the CFD workload, but a modern multi-core CPU and at least 16 GB RAM are recommended for typical engineering simulations.</span>
+            <span class="zh">VibeFlow Studio 目前支持 <strong>Linux x86_64</strong>（Ubuntu 22.04+ / Debian 11+）。需要已配置的 OpenFOAM 2406 环境、Python 3.10+ 以及有效的 LLM 后端 API Key。CFD 计算本身不需要 GPU，但建议使用现代多核 CPU 与至少 16 GB 内存。</span>
+          </div></div>
+        </div>
+
+        <div class="faq-item reveal d1" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">03</span>
+            <span class="faq-q-text"><span class="en">Do I need to be an OpenFOAM expert to use VibeFlow?</span><span class="zh">使用 VibeFlow 需要熟悉 OpenFOAM 吗？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en">No. VibeFlow is designed so that users who understand their physics problem — but may not know OpenFOAM dictionary syntax or meshing details — can still run production-quality simulations. The AI agent selects the closest tutorial baseline, configures all dictionaries, converts the mesh, and diagnoses errors. That said, deeper knowledge of OpenFOAM helps you make better use of Development Mode and interpret edge-case results.</span>
+            <span class="zh">不需要。VibeFlow 的设计理念是：只要您明白自己的物理问题，即使不熟悉 OpenFOAM 字典语法或网格分割细节，也能完成生产级仿真。AI 智能体会自动选取最接近的教程基准、配置所有字典、转换网格并诊断错误。当然，更深入的 OpenFOAM 知识能帮助您更好地使用开发模式并解读边界情尺结果。</span>
+          </div></div>
+        </div>
+
+        <div class="faq-item reveal d2" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">04</span>
+            <span class="faq-q-text"><span class="en">What is <code>caseDict</code> and why is it the single source of truth?</span><span class="zh"><code>caseDict</code> 是什么，为什么是单一事实源？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en"><code>A-geo/caseDict</code> is a structured text file that defines every parameter of your simulation case — geometry dimensions, material properties, boundary conditions, mesh targets, solver settings, and post-processing objectives. All six stages of Usage Mode read from and write back to this file. This means that every artifact (geometry, mesh, simulation, figures, report) is traceable to a single versioned document, ensuring full reproducibility.</span>
+            <span class="zh"><code>A-geo/caseDict</code> 是一个结构化文本文件，定义了仿真算例的所有参数：几何尺寸、材料属性、边界条件、网格目标、求解器设置与后处理目标。使用模式的六个阶段均从该文件读取并回写。这意味着所有产物（几何、网格、仿真、图表、报告）均可追溯至同一个版本化文档，确保完全可复现性。</span>
+          </div></div>
+        </div>
+
+        <div class="faq-item reveal d3" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">05</span>
+            <span class="faq-q-text"><span class="en">What happens when the free trial ends?</span><span class="zh">免费试用到期后有什么影响？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en">After the 15-day trial, the Studio will enter a read-only mode — you can still view all your previous cases, artifacts, and reports, but cannot start new simulations. Subscribing to the Monthly or Quarterly plan instantly restores full access with no data loss.</span>
+            <span class="zh">15 天试用期结束后，Studio 将进入只读模式：您仍可查看所有历史算例、产物与报告，但无法启动新算例。订阅月度或季度计划后可立即恢复完整访问，数据不会丢失。</span>
+          </div></div>
+        </div>
+
+        <div class="faq-item reveal d3" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">06</span>
+            <span class="faq-q-text"><span class="en">Are my simulation files stored in the cloud?</span><span class="zh">我的仿真文件会上传到云端吗？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en">No. All simulation data — geometry, mesh, case files, results, and reports — remain entirely on your local machine. VibeFlow Studio only sends the conversation context (natural language instructions and structured case parameters) to the LLM API endpoint. Your CFD data never leaves your workstation.</span>
+            <span class="zh">不会。所有仿真数据——几何、网格、算例文件、计算结果与报告——均完全保存在您的本地机器上。VibeFlow Studio 仅将对话上下文（自然语言指令与结构化算例参数）发送到 LLM API。您的 CFD 数据永远不会离开您的工作站。</span>
+          </div></div>
+        </div>
+
+        <div class="faq-item reveal d3" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">07</span>
+            <span class="faq-q-text"><span class="en">How do I report a bug or request a feature?</span><span class="zh">如何反馈问题或请求新功能？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en">You can reach us by email at <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> or join the WeChat community (scan the QR code in the Links section).</span>
+            <span class="zh">可通过邮箱 <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> 联系我们，或扫描链接区的二维码加入微信社区。</span>
+          </div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════════ FOOTER ══════════════ -->
 <footer>
   <div class="wrap">
@@ -1064,7 +1178,8 @@
         <a href="#"><span class="en">Documentation</span><span class="zh">文档</span></a>
         <a href="#"><span class="en">Tutorials</span><span class="zh">教程</span></a>
         <a href="#"><span class="en">VibeFlowBench</span><span class="zh">VibeFlowBench</span></a>
-        <a href="#"><span class="en">Community</span><span class="zh">社区</span></a>
+        <a href="#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
+        <a href="mailto:asdvvcasc@163.com" style="word-break:break-all;">asdvvcasc@163.com</a>
       </div>
     </div>
     <div class="foot-bottom">
@@ -1220,6 +1335,12 @@ function dlSwitch(id, btn) {
   document.querySelectorAll('.dl-pane').forEach(function(p){ p.classList.remove('active'); });
   btn.classList.add('active');
   document.getElementById('dl-' + id).classList.add('active');
+}
+
+function toggleFaq(item) {
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(el){ el.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
 }
 
 (function loadBiliDemo() {
