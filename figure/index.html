@@ -402,60 +402,6 @@
       .foot-bottom { flex-direction: column; gap: 10px; text-align: center; }
       .demo-scene-wrap { height: 340px; }
     }
-    /* ── MOBILE PORTRAIT ── */
-    @media (max-width: 480px) {
-      /* global */
-      .wrap { padding: 0 18px; }
-      .section { padding: 72px 0; }
-      /* nav */
-      .nav-row { padding: 0 18px; }
-      .btn-dl { font-size: 12px; padding: 7px 14px; }
-      /* hero */
-      .hero-body { padding: 110px 18px 72px; }
-      .hero-h1 { font-size: clamp(48px, 14vw, 72px); }
-      .hero-tagline { font-size: clamp(15px, 4vw, 20px); }
-      .hero-sub { font-size: 14px; margin-bottom: 36px; }
-      .hero-ctas { gap: 10px; }
-      .hero-ctas a, .hero-ctas button { padding: 11px 20px; font-size: 13px; }
-      .hero-kpis { gap: 24px; margin-top: 56px; }
-      .kpi-val { font-size: 24px; }
-      /* modes */
-      .mode-card { padding: 28px 22px; }
-      /* features */
-      .feat-card { padding: 28px 22px; }
-      /* workflow */
-      .wf-row.usage-row,
-      .wf-row.dev-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .wf-detail { padding: 24px 20px; }
-      /* demo */
-      #demo .section-header { margin-bottom: 28px; }
-      /* tech strip */
-      .tech-list { gap: 24px; }
-      .tech-item { font-size: 12px; }
-      /* gallery */
-      .gallery-item,
-      .gallery-item.reverse { grid-template-columns: 1fr; }
-      .gallery-text { padding: 24px 0 8px; }
-      /* pricing */
-      .price-card { padding: 28px 22px; }
-      /* links */
-      .links-grid { grid-template-columns: 1fr; }
-      /* download */
-      .dl-tabs { max-width: 100%; }
-      .dl-tab { font-size: 13px; padding: 11px 0; }
-      .install-block { font-size: 11px; word-break: break-all; }
-      /* gallery (supplement scoped style) */
-      .gallery-item { margin-bottom: 40px; }
-      .gallery-text { padding-top: 20px; }
-      /* faq */
-      .faq-q { padding: 18px 4px; gap: 12px; }
-      .faq-q-text { font-size: 14px; }
-      .faq-a-inner { padding: 2px 4px 22px 36px; font-size: 13px; }
-      /* footer */
-      .foot-grid { gap: 28px; }
-      /* section headings */
-      h2[style] { font-size: clamp(24px, 7vw, 38px) !important; }
-    }
 
     /* lightbox */
     .lb { position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: zoom-out; backdrop-filter: blur(6px); animation: lbIn .2s; }
@@ -1404,3 +1350,4 @@ function toggleFaq(item) {
 </script>
 </body>
 </html>
+
