@@ -553,6 +553,100 @@
     .lb { position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: zoom-out; backdrop-filter: blur(6px); animation: lbIn .2s; }
     @keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
     .lb img { max-width: 92vw; max-height: 90vh; border-radius: 10px; box-shadow: 0 48px 96px rgba(0,0,0,.8); }
+
+    /* ── THEME TOGGLE ── */
+    .btn-theme {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 7px 14px; border: 1px solid var(--border); background: none;
+      color: var(--text2); font-family: var(--mono); font-size: 11px;
+      border-radius: 6px; cursor: pointer; transition: .25s;
+    }
+    .btn-theme:hover { border-color: var(--border-hi); color: var(--cyan); }
+
+    /* ── LIGHT THEME ── */
+    body.theme-light {
+      --bg:        #F8FAFC;
+      --bg2:       #F1F5F9;
+      --bg3:       #E2E8F0;
+      --border:    rgba(15,23,42,0.08);
+      --border-hi: rgba(34,211,238,0.50);
+      --text:      #0F172A;
+      --text2:     #475569;
+      --text3:     #94A3B8;
+      --cyan-glow: rgba(34,211,238,0.15);
+    }
+    body.theme-light .gradient-text {
+      background: linear-gradient(135deg, #0F172A 30%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    body.theme-light #hero::before {
+      background-image: linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px);
+    }
+    body.theme-light #nav.stuck {
+      background: rgba(248,250,252,.88);
+    }
+    body.theme-light .hero-pill {
+      background: rgba(34,211,238,.15);
+      border-color: rgba(34,211,238,.35);
+    }
+    body.theme-light .mode-badge.usage {
+      background: rgba(34,211,238,.15);
+      border-color: rgba(34,211,238,.35);
+    }
+    body.theme-light .mode-badge.dev {
+      background: rgba(167,139,250,.15);
+      border-color: rgba(167,139,250,.35);
+    }
+    body.theme-light .mode-card.usage::before {
+      background: radial-gradient(circle at 0% 0%, rgba(34,211,238,.08) 0%, transparent 55%);
+    }
+    body.theme-light .mode-card.dev::before {
+      background: radial-gradient(circle at 100% 0%, rgba(167,139,250,.08) 0%, transparent 55%);
+    }
+    body.theme-light .demo-scene-wrap,
+    body.theme-light #demo .wrap > div[style*="background:#020811"] {
+      background: #E2E8F0 !important;
+    }
+    body.theme-light .demo-overlay {
+      background: linear-gradient(to bottom, rgba(248,250,252,0) 60%, rgba(248,250,252,.9) 100%);
+    }
+    body.theme-light .demo-stat {
+      background: rgba(255,255,255,.78);
+    }
+    body.theme-light .demo-tab {
+      background: rgba(255,255,255,.65);
+    }
+    body.theme-light .demo-tab.active {
+      background: rgba(34,211,238,.15);
+    }
+    body.theme-light .price-card.featured {
+      border-color: rgba(34,211,238,.55);
+    }
+    body.theme-light .price-card.featured::before {
+      background: radial-gradient(circle at 50% -10%, rgba(34,211,238,.18) 0%, transparent 60%);
+    }
+    body.theme-light .link-card:hover {
+      background: rgba(34,211,238,.08);
+    }
+    body.theme-light .dl-card:hover {
+      background: rgba(34,211,238,.12);
+    }
+    body.theme-light .btn-ghost:hover {
+      background: rgba(34,211,238,.1);
+    }
+    body.theme-light .wf-mode-btn.active {
+      box-shadow: 0 1px 4px rgba(0,0,0,.12);
+    }
+    body.theme-light .faq-a-inner code {
+      background: rgba(34,211,238,.12);
+    }
+    body.theme-light .link-card-community .qr-popup {
+      box-shadow: 0 24px 64px rgba(0,0,0,.35);
+    }
+
+    @media (max-width: 480px) {
+      .btn-theme { padding: 6px 10px; }
+    }
   </style>
 </head>
 
@@ -577,6 +671,10 @@
     </nav>
     <div class="nav-btns">
       <button class="btn-lang" id="langBtn" onclick="toggleLang()">中文</button>
+      <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+
       <a href="#download" class="btn-dl"><span class="en">Get Studio</span><span class="zh">下载 Studio</span></a>
     </div>
   </div>
@@ -601,7 +699,7 @@
       <span class="zh">从自然语言描述到可追溯的研究报告。两种模式：使用模式覆盖完整 CFD 工作流，开发模式用于自定义求解器与库——全程由 AI 驱动。</span>
     </p>
     <div class="hero-ctas">
-      <a href="downloads/vibeflow-studio_0.2.0_amd64.deb" class="btn-primary">
+      <a href="https://github.com/sunrise-hjx/vfReleases/releases/download/v0.2.0/vibeflow-studio_0.2.0_amd64.deb" class="btn-primary">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
         <span class="en">Download Studio</span><span class="zh">下载 Studio</span>
       </a>
@@ -796,7 +894,7 @@
         id="bili-demo-player"
         title="VibeFlow Bilibili demo"
         src="about:blank"
-        data-bili-src="https://player.bilibili.com/player.html?isOutside=true&aid=114504599934282&bvid=BV1MWEez6EZx&cid=29952051745&p=1&autoplay=0"
+        data-bili-src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1c15u6eEoy&cid=38283707715&p=1&autoplay=0"
         scrolling="no" border="0" frameborder="no" framespacing="0"
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen
@@ -849,7 +947,101 @@
         .gallery-item, .gallery-item.reverse { grid-template-columns: 1fr; direction: ltr; }
         .gallery-item { margin-bottom: 56px; }
       }
-    </style>
+  
+    /* ── THEME TOGGLE ── */
+    .btn-theme {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 7px 14px; border: 1px solid var(--border); background: none;
+      color: var(--text2); font-family: var(--mono); font-size: 11px;
+      border-radius: 6px; cursor: pointer; transition: .25s;
+    }
+    .btn-theme:hover { border-color: var(--border-hi); color: var(--cyan); }
+
+    /* ── LIGHT THEME ── */
+    body.theme-light {
+      --bg:        #F8FAFC;
+      --bg2:       #F1F5F9;
+      --bg3:       #E2E8F0;
+      --border:    rgba(15,23,42,0.08);
+      --border-hi: rgba(34,211,238,0.50);
+      --text:      #0F172A;
+      --text2:     #475569;
+      --text3:     #94A3B8;
+      --cyan-glow: rgba(34,211,238,0.15);
+    }
+    body.theme-light .gradient-text {
+      background: linear-gradient(135deg, #0F172A 30%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    body.theme-light #hero::before {
+      background-image: linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px);
+    }
+    body.theme-light #nav.stuck {
+      background: rgba(248,250,252,.88);
+    }
+    body.theme-light .hero-pill {
+      background: rgba(34,211,238,.15);
+      border-color: rgba(34,211,238,.35);
+    }
+    body.theme-light .mode-badge.usage {
+      background: rgba(34,211,238,.15);
+      border-color: rgba(34,211,238,.35);
+    }
+    body.theme-light .mode-badge.dev {
+      background: rgba(167,139,250,.15);
+      border-color: rgba(167,139,250,.35);
+    }
+    body.theme-light .mode-card.usage::before {
+      background: radial-gradient(circle at 0% 0%, rgba(34,211,238,.08) 0%, transparent 55%);
+    }
+    body.theme-light .mode-card.dev::before {
+      background: radial-gradient(circle at 100% 0%, rgba(167,139,250,.08) 0%, transparent 55%);
+    }
+    body.theme-light .demo-scene-wrap,
+    body.theme-light #demo .wrap > div[style*="background:#020811"] {
+      background: #E2E8F0 !important;
+    }
+    body.theme-light .demo-overlay {
+      background: linear-gradient(to bottom, rgba(248,250,252,0) 60%, rgba(248,250,252,.9) 100%);
+    }
+    body.theme-light .demo-stat {
+      background: rgba(255,255,255,.78);
+    }
+    body.theme-light .demo-tab {
+      background: rgba(255,255,255,.65);
+    }
+    body.theme-light .demo-tab.active {
+      background: rgba(34,211,238,.15);
+    }
+    body.theme-light .price-card.featured {
+      border-color: rgba(34,211,238,.55);
+    }
+    body.theme-light .price-card.featured::before {
+      background: radial-gradient(circle at 50% -10%, rgba(34,211,238,.18) 0%, transparent 60%);
+    }
+    body.theme-light .link-card:hover {
+      background: rgba(34,211,238,.08);
+    }
+    body.theme-light .dl-card:hover {
+      background: rgba(34,211,238,.12);
+    }
+    body.theme-light .btn-ghost:hover {
+      background: rgba(34,211,238,.1);
+    }
+    body.theme-light .wf-mode-btn.active {
+      box-shadow: 0 1px 4px rgba(0,0,0,.12);
+    }
+    body.theme-light .faq-a-inner code {
+      background: rgba(34,211,238,.12);
+    }
+    body.theme-light .link-card-community .qr-popup {
+      box-shadow: 0 24px 64px rgba(0,0,0,.35);
+    }
+
+    @media (max-width: 480px) {
+      .btn-theme { padding: 6px 10px; }
+    }
+  </style>
 
     <!-- v1 -->
     <div class="gallery-item reveal">
@@ -1102,12 +1294,12 @@
       </a>
       <div class="link-card link-card-community reveal d2">
         <div class="qr-popup">
-          <img src="assets/wechat.png" alt="WeChat QR Code">
+          <img src="assets/qq.png" alt="QQ Group QR Code">
           <div class="qr-tip"><span class="en">Scan to join community</span><span class="zh">扫码加入社区</span></div>
         </div>
         <span class="link-icon">💬</span>
         <span class="link-name"><span class="en">Community</span><span class="zh">社区论坛</span></span>
-        <span class="link-desc"><span class="en">Join the VibeFlow WeChat community — discuss cases, share results, and get peer support</span><span class="zh">加入 VibeFlow 微信社区，讨论算例、分享结果，获取社区支持</span></span>
+        <span class="link-desc"><span class="en">Join the VibeFlow QQ community — discuss cases, share results, and get peer support</span><span class="zh">加入 VibeFlow QQ社区，讨论算例、分享结果，获取社区支持</span></span>
         <span class="link-arrow" style="color:var(--cyan);font-family:var(--mono);font-size:11px;margin-top:auto;padding-top:8px;"><span class="en">↑ hover to scan</span><span class="zh">↑ 悬浮查看二维码</span></span>
       </div>
       <a href="#" class="link-card reveal d3">
@@ -1159,7 +1351,7 @@
       </div>
 
       <div id="dl-linux" class="dl-pane active">
-        <a href="downloads/vibeflow-studio_0.2.0_amd64.deb" class="dl-card">
+        <a href="https://github.com/sunrise-hjx/vfReleases/releases/download/v0.2.0/vibeflow-studio_0.2.0_amd64.deb" class="dl-card">
           <div class="dl-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3v13"/><path d="M8 12l4 4 4-4"/><line x1="3" y1="21" x2="21" y2="21"/>
@@ -1273,8 +1465,8 @@
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en">You can reach us by email at <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> or join the WeChat community (scan the QR code in the Links section).</span>
-            <span class="zh">可通过邮箱 <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> 联系我们，或扫描链接区的二维码加入微信社区。</span>
+            <span class="en">You can reach us by email at <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> or join the QQ community (scan the QR code in the Links section).</span>
+            <span class="zh">可通过邮箱 <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> 联系我们，或扫描链接区的二维码加入QQ社区。</span>
           </div></div>
         </div>
 
@@ -1349,6 +1541,26 @@ function toggleLang() {
   if (activeDevStage   >= 0) renderStage('dev',   activeDevStage);
 }
 document.body.classList.add('lang-en');
+
+/* ── Theme toggle ───────────────── */
+let theme = localStorage.getItem('vf-theme') || 'dark';
+function applyTheme() {
+  document.body.classList.toggle('theme-light', theme === 'light');
+  const btn = document.getElementById('themeBtn');
+  if (btn) {
+    btn.innerHTML = theme === 'light'
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    btn.title = theme === 'light' ? 'Switch to Dark' : 'Switch to Light';
+  }
+}
+function toggleTheme() {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('vf-theme', theme);
+  applyTheme();
+}
+applyTheme();
+
 
 /* ── Navbar scroll ──────────────── */
 const navEl = document.getElementById('nav');
@@ -1449,17 +1661,20 @@ function openStage(mode, idx) {
       this.x += Math.cos(a) * this.spd; this.y += Math.sin(a) * this.spd; this.life++;
       if (this.life > this.max || this.x < -4 || this.x > canvas.width + 4 || this.y < -4 || this.y > canvas.height + 4) this.reset(false);
     }
-    draw() {
+    draw(isLight) {
       const a = Math.sin((this.life / this.max) * Math.PI) * 0.65;
+      const l = isLight ? '50%' : '65%';
       ctx.beginPath(); ctx.arc(this.x, this.y, this.sz, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${this.hue},78%,65%,${a})`; ctx.fill();
+      ctx.fillStyle = `hsla(${this.hue},78%,${l},${a})`; ctx.fill();
     }
   }
   const pts = Array.from({ length: N }, () => new P(true));
   let t = 0;
   function frame() {
-    ctx.fillStyle = 'rgba(5,8,15,.09)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    t += 0.003; pts.forEach(p => { p.step(t); p.draw(); }); requestAnimationFrame(frame);
+    const isLight = document.body.classList.contains('theme-light');
+    ctx.fillStyle = isLight ? 'rgba(226,232,240,.55)' : 'rgba(5,8,15,.09)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    t += 0.003; pts.forEach(p => { p.step(t); p.draw(isLight); }); requestAnimationFrame(frame);
   }
   frame();
 })();
