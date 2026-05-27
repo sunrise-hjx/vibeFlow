@@ -346,6 +346,37 @@
     .price-btn.outline:hover { border-color: var(--border-hi); color: var(--text); }
     .price-btn.fill { background: var(--cyan); color: #05080F; }
     .price-btn.fill:hover { background: #38BDF8; box-shadow: 0 8px 22px rgba(34,211,238,.3); }
+    .price-action { position: relative; }
+    button.price-btn {
+      width: 100%; font-family: var(--body); background: none; cursor: pointer;
+    }
+    .price-btn-disabled,
+    .price-btn-disabled:hover,
+    .price-btn-disabled:focus-visible {
+      color: #5D697C; border-color: rgba(255,255,255,.08);
+      background: rgba(255,255,255,.018); cursor: not-allowed;
+    }
+    .price-unavailable-tip {
+      position: absolute; left: 50%; bottom: calc(100% + 14px);
+      width: min(246px, calc(100vw - 48px)); padding: 14px;
+      transform: translateX(-50%) translateY(6px) scale(.96);
+      border-radius: 10px; background: #fff; color: #111827;
+      box-shadow: 0 24px 64px rgba(0,0,0,.55);
+      opacity: 0; pointer-events: none; transition: opacity .25s var(--ease), transform .25s var(--ease);
+      z-index: 30;
+    }
+    .price-action:hover .price-unavailable-tip,
+    .price-action:focus-within .price-unavailable-tip {
+      opacity: 1; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto;
+    }
+    .price-unavailable-tip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 7px solid transparent; border-top-color: #fff;
+    }
+    .price-unavailable-copy { font-size: 12px; line-height: 1.65; color: #374151; }
+    .price-unavailable-tip img {
+      display: block; width: 132px; height: 132px; margin: 10px auto 0; border-radius: 8px;
+    }
     .price-trial-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--text3); }
     .price-trial-note em { color: var(--text2); font-style: normal; }
 
@@ -624,6 +655,12 @@
     }
     body.theme-light .price-card.featured::before {
       background: radial-gradient(circle at 50% -10%, rgba(34,211,238,.18) 0%, transparent 60%);
+    }
+    body.theme-light .price-btn-disabled,
+    body.theme-light .price-btn-disabled:hover,
+    body.theme-light .price-btn-disabled:focus-visible {
+      color: #94A3B8; border-color: rgba(15,23,42,.11);
+      background: rgba(15,23,42,.025);
     }
     body.theme-light .link-card:hover {
       background: rgba(34,211,238,.08);
@@ -1212,7 +1249,7 @@
       <div class="price-card featured reveal">
         <div class="price-badge"><span class="en">Recommended</span><span class="zh">推荐</span></div>
         <div class="price-tier"><span class="en">Free Trial</span><span class="zh">免费试用</span></div>
-        <div class="price-val"><span class="symbol">¥</span>0<span class="period"> / <span class="en">15 days</span><span class="zh">15天</span></span></div>
+        <div class="price-val"><span class="symbol">¥</span>0<span class="period"> / <span class="en">60 days</span><span class="zh">60天</span></span></div>
         <p class="price-desc">
           <span class="en">Full-featured trial. No credit card required. Explore the complete workflow and both agent modes.</span>
           <span class="zh">全功能试用，无需信用卡。探索完整工作流与两种智能体模式。</span>
@@ -1222,7 +1259,7 @@
           <li><span class="en">Development Mode — 5 stages</span><span class="zh">开发模式 — 5 阶段</span></li>
           <li><span class="en">OpenFOAM integration</span><span class="zh">OpenFOAM 集成</span></li>
           <li><span class="en">CadQuery + Gmsh + ParaView</span><span class="zh">CadQuery + Gmsh + ParaView</span></li>
-          <li><span class="en">15-day full access</span><span class="zh">15 天完整访问</span></li>
+          <li><span class="en">60-day full access</span><span class="zh">60 天完整访问</span></li>
         </ul>
         <a href="#download" class="price-btn fill"><span class="en">Start Free Trial</span><span class="zh">开始免费试用</span></a>
       </div>
@@ -1241,7 +1278,18 @@
           <li><span class="en">Community support</span><span class="zh">社区技术支持</span></li>
           <li><span class="en">Full AI-driven workflow</span><span class="zh">完整AI驱动工作流</span></li>
         </ul>
-        <a href="#" class="price-btn outline"><span class="en">Get Monthly</span><span class="zh">开通月度订阅</span></a>
+        <div class="price-action">
+          <div class="price-unavailable-tip" id="monthly-unavailable-tip" role="tooltip">
+            <div class="price-unavailable-copy">
+              <span class="en">Not available yet. You can use it for free now. Join the community for future updates.</span>
+              <span class="zh">暂未开放，当前可免费使用。如有需要，请加入社区获得后续消息。</span>
+            </div>
+            <img src="assets/qq.png" alt="QQ Group QR Code">
+          </div>
+          <button type="button" class="price-btn outline price-btn-disabled" aria-disabled="true" aria-describedby="monthly-unavailable-tip">
+            <span class="en">Get Monthly</span><span class="zh">开通月度订阅</span>
+          </button>
+        </div>
       </div>
       <!-- Quarterly -->
       <div class="price-card reveal d2">
@@ -1258,12 +1306,23 @@
           <li><span class="en">Extended case history</span><span class="zh">扩展算例历史记录</span></li>
           <li><span class="en">Priority feature requests</span><span class="zh">优先功能需求响应</span></li>
         </ul>
-        <a href="#" class="price-btn outline"><span class="en">Get Quarterly</span><span class="zh">开通季度订阅</span></a>
+        <div class="price-action">
+          <div class="price-unavailable-tip" id="quarterly-unavailable-tip" role="tooltip">
+            <div class="price-unavailable-copy">
+              <span class="en">Not available yet. You can use it for free now. Join the community for future updates.</span>
+              <span class="zh">暂未开放，当前可免费使用。如有需要，请加入社区获得后续消息。</span>
+            </div>
+            <img src="assets/qq.png" alt="QQ Group QR Code">
+          </div>
+          <button type="button" class="price-btn outline price-btn-disabled" aria-disabled="true" aria-describedby="quarterly-unavailable-tip">
+            <span class="en">Get Quarterly</span><span class="zh">开通季度订阅</span>
+          </button>
+        </div>
       </div>
     </div>
     <p class="price-trial-note">
-      <span class="en">All plans include a <em>15-day free trial</em>. No credit card required to start.</span>
-      <span class="zh">所有方案均包含 <em>15 天免费试用</em>，无需绑定任何支付方式。</span>
+      <span class="en">All plans include a <em>60-day free trial</em>. No credit card required to start.</span>
+      <span class="zh">所有方案均包含 <em>60 天免费试用</em>，无需绑定任何支付方式。</span>
     </p>
   </div>
 </section>
@@ -1342,7 +1401,7 @@
     <div class="dl-center">
       <div class="eyebrow" style="justify-content:center"><span class="en">Get Started</span><span class="zh">开始使用</span></div>
       <h2 class="dl-title"><span class="en">Download VibeFlow Studio</span><span class="zh">下载 VibeFlow Studio</span></h2>
-      <p class="dl-sub"><span class="en">Free 15-day trial included on all platforms.</span><span class="zh">所有平台均含 15 天免费试用。</span></p>
+      <p class="dl-sub"><span class="en">Free 60-day trial included on all platforms.</span><span class="zh">所有平台均含 60 天免费试用。</span></p>
 
       <div class="dl-tabs">
         <button class="dl-tab active" onclick="dlSwitch('linux',this)">Linux</button>
