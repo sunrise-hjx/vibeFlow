@@ -314,6 +314,7 @@
 
     /* ── PRICING ── */
     .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .pricing-grid.pricing-grid-trial { grid-template-columns: minmax(0, 440px); justify-content: center; }
     .price-card {
       border-radius: var(--r); border: 1px solid var(--border);
       padding: 36px 30px; position: relative; overflow: hidden; transition: .3s;
@@ -1244,7 +1245,7 @@
         <span class="zh">免费开始，按需升级。</span>
       </p>
     </div>
-    <div class="pricing-grid">
+    <div class="pricing-grid pricing-grid-trial">
       <!-- Free -->
       <div class="price-card featured reveal">
         <div class="price-badge"><span class="en">Recommended</span><span class="zh">推荐</span></div>
@@ -1263,7 +1264,7 @@
         </ul>
         <a href="#download" class="price-btn fill"><span class="en">Start Free Trial</span><span class="zh">开始免费试用</span></a>
       </div>
-      <!-- Monthly -->
+      <!-- Monthly plan temporarily hidden
       <div class="price-card reveal d1">
         <div class="price-tier"><span class="en">Monthly</span><span class="zh">月度订阅</span></div>
         <div class="price-val"><span class="symbol">¥</span>19.9<span class="period"> / <span class="en">month</span><span class="zh">月</span></span></div>
@@ -1291,7 +1292,8 @@
           </button>
         </div>
       </div>
-      <!-- Quarterly -->
+      -->
+      <!-- Quarterly plan temporarily hidden
       <div class="price-card reveal d2">
         <div class="price-tier"><span class="en">Quarterly</span><span class="zh">季度订阅</span></div>
         <div class="price-val"><span class="symbol">¥</span>49.9<span class="period"> / <span class="en">quarter</span><span class="zh">季度</span></span></div>
@@ -1319,10 +1321,11 @@
           </button>
         </div>
       </div>
+      -->
     </div>
     <p class="price-trial-note">
-      <span class="en">All plans include a <em>60-day free trial</em>. No credit card required to start.</span>
-      <span class="zh">所有方案均包含 <em>60 天免费试用</em>，无需绑定任何支付方式。</span>
+      <span class="en">The free trial includes <em>60-day full access</em>. No credit card required to start.</span>
+      <span class="zh">免费试用包含 <em>60 天完整访问</em>，无需绑定任何支付方式。</span>
     </p>
   </div>
 </section>
@@ -1334,8 +1337,8 @@
       <div class="eyebrow"><span class="en">Resources &amp; Links</span><span class="zh">资源与链接</span></div>
       <h2 class="sec-title"><span class="en">Explore VibeFlow</span><span class="zh">探索 VibeFlow</span></h2>
       <p class="sec-sub">
-        <span class="en">Documentation, tutorials, community, and integrations — everything you need to get started.</span>
-        <span class="zh">文档、教程、社区与集成——一切您需要的入门资源。</span>
+        <span class="en">Documentation, community, and core integrations — everything you need to get started.</span>
+        <span class="zh">文档、社区与核心集成——一切您需要的入门资源。</span>
       </p>
     </div>
     <div class="links-grid">
@@ -1344,12 +1347,6 @@
         <span class="link-name"><span class="en">Documentation</span><span class="zh">使用文档</span></span>
         <span class="link-desc"><span class="en">Full API reference, workflow guides, and caseDict schema</span><span class="zh">完整 API 参考、工作流指南与 caseDict Schema</span></span>
         <span class="link-arrow">→ docs</span>
-      </a>
-      <a href="#" class="link-card reveal d1">
-        <span class="link-icon">🎓</span>
-        <span class="link-name"><span class="en">Tutorials</span><span class="zh">教程案例</span></span>
-        <span class="link-desc"><span class="en">Step-by-step CFD workflows from lid-driven cavity to dam break</span><span class="zh">从顶盖方腔到溃坝的逐步 CFD 工作流</span></span>
-        <span class="link-arrow">→ tutorials</span>
       </a>
       <div class="link-card link-card-community reveal d2">
         <div class="qr-popup">
@@ -1361,12 +1358,6 @@
         <span class="link-desc"><span class="en">Join the VibeFlow QQ community — discuss cases, share results, and get peer support</span><span class="zh">加入 VibeFlow QQ社区，讨论算例、分享结果，获取社区支持</span></span>
         <span class="link-arrow" style="color:var(--cyan);font-family:var(--mono);font-size:11px;margin-top:auto;padding-top:8px;"><span class="en">↑ hover to scan</span><span class="zh">↑ 悬浮查看二维码</span></span>
       </div>
-      <a href="#" class="link-card reveal d3">
-        <span class="link-icon">🔬</span>
-        <span class="link-name"><span class="en">VibeFlowBench</span><span class="zh">VibeFlowBench</span></span>
-        <span class="link-desc"><span class="en">Benchmark suite: canonical CFD cases with reference data and evaluation scripts</span><span class="zh">基准测试套件，含参考数据与评估脚本</span></span>
-        <span class="link-arrow">→ benchmark</span>
-      </a>
       <a href="https://www.openfoam.com/" target="_blank" rel="noopener" class="link-card reveal">
         <span class="link-icon">🌊</span>
         <span class="link-name">OpenFOAM</span>
@@ -1378,18 +1369,6 @@
         <span class="link-name">CadQuery</span>
         <span class="link-desc"><span class="en">Parametric CAD scripting library used for VibeFlow geometry</span><span class="zh">VibeFlow 几何建模使用的参数化 CAD 脚本库</span></span>
         <span class="link-arrow">→ cadquery.io</span>
-      </a>
-      <a href="https://gmsh.info/" target="_blank" rel="noopener" class="link-card reveal d2">
-        <span class="link-icon">🔺</span>
-        <span class="link-name">Gmsh</span>
-        <span class="link-desc"><span class="en">3D finite element mesh generator with Python API integration</span><span class="zh">集成 Python API 的 3D 有限元网格生成器</span></span>
-        <span class="link-arrow">→ gmsh.info</span>
-      </a>
-      <a href="https://www.paraview.org/" target="_blank" rel="noopener" class="link-card reveal d3">
-        <span class="link-icon">🎨</span>
-        <span class="link-name">ParaView</span>
-        <span class="link-desc"><span class="en">Scientific visualization platform for VibeFlow post-processing and scene rendering</span><span class="zh">VibeFlow 后处理与场景渲染使用的科学可视化平台</span></span>
-        <span class="link-arrow">→ paraview.org</span>
       </a>
     </div>
   </div>
@@ -1430,9 +1409,22 @@
       </div>
 
       <div id="dl-windows" class="dl-pane">
-        <div class="dl-soon">
-          <div class="dl-soon-dots"><div class="dl-soon-dot"></div><div class="dl-soon-dot"></div><div class="dl-soon-dot"></div></div>
-          <span><span class="en">Windows support is under development</span><span class="zh">Windows 版本正在开发中</span></span>
+        <a href="https://github.com/sunrise-hjx/vfReleases/releases" class="dl-card">
+          <div class="dl-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v13"/><path d="M8 12l4 4 4-4"/><line x1="3" y1="21" x2="21" y2="21"/>
+            </svg>
+          </div>
+          <div class="dl-card-body">
+            <span class="dl-name">VibeFlow Studio 0.2.0</span>
+            <span class="dl-platform">Windows · x86_64</span>
+            <span class="dl-ext">Windows package</span>
+          </div>
+        </a>
+        <div class="install-block">
+          <span class="cm"># Windows install</span><br>
+          <span class="prompt">&gt;</span> <span class="kw">Download</span> the Windows package from GitHub Releases<br>
+          <span class="prompt">&gt;</span> <span class="kw">Run</span> VibeFlow Studio after installation
         </div>
       </div>
 
