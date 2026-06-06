@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="VibeFlow — An intelligent CFD workstation for traceable engineering research.">
-  <title>VibeFlow — Intelligent CFD Workstation</title>
+  <meta name="description" content="VibeFlow — An AI-native CAE workstation for traceable engineering research.">
+  <title>VibeFlow — AI-Native CAE Workstation</title>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <style>
     @font-face {
@@ -176,8 +176,11 @@
     .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: blink 2s ease-in-out infinite; }
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
     .hero-h1 { font-family: var(--display); font-size: clamp(72px, 13vw, 148px); font-weight: 800; line-height: .92; letter-spacing: -.05em; margin-bottom: 14px; }
-    .hero-tagline { font-family: var(--display); font-size: clamp(18px, 2.8vw, 28px); font-weight: 400; color: var(--text2); letter-spacing: -.01em; margin-bottom: 22px; }
-    .hero-sub { font-size: 16px; color: var(--text3); max-width: 540px; margin: 0 auto 52px; line-height: 1.75; }
+    .hero-tagline {
+      font-family: var(--body); font-size: clamp(14px, 1.35vw, 18px);
+      font-weight: 400; color: var(--text2); letter-spacing: 0;
+      line-height: 1.75; max-width: 760px; margin: 0 auto 34px;
+    }
     .hero-ctas { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; }
     .hero-kpis { display: flex; justify-content: center; gap: 60px; margin-top: 90px; flex-wrap: wrap; }
     .kpi { text-align: center; }
@@ -270,7 +273,7 @@
     .dev-panel   .wf-detail h3 { color: var(--purple); }
     .wf-detail p { font-size: 15px; color: var(--text2); line-height: 1.85; max-width: 780px; }
 
-    /* ── FLUID DEMO ── */
+    /* ── DEMO ── */
     #demo { position: relative; overflow: hidden; }
     .demo-scene-wrap {
       position: relative; width: 100%; height: 520px;
@@ -304,6 +307,36 @@
       border-radius: 6px; padding: 7px 12px; font-family: var(--mono); font-size: 10px; color: var(--text2); min-width: 130px;
     }
     .demo-stat-val { color: var(--cyan); }
+    .demo-video-shell {
+      position: relative; border-radius: var(--r); overflow: hidden;
+      border: 1px solid var(--border); background: #020811;
+      box-shadow: 0 30px 90px rgba(0,0,0,.28);
+    }
+    .demo-video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #020811; }
+    .demo-video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .demo-video-topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
+      padding: 18px 20px; border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(15,24,40,.92), rgba(5,8,15,.96));
+    }
+    .demo-video-kicker {
+      font-family: var(--mono); font-size: 10px; color: var(--cyan);
+      letter-spacing: .12em; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .demo-video-title { font-family: var(--display); font-size: 16px; font-weight: 700; letter-spacing: -.02em; }
+    .demo-video-controls { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .demo-arrow {
+      width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; border: 1px solid var(--border); color: var(--text2);
+      background: rgba(255,255,255,.025); cursor: pointer; transition: .25s;
+    }
+    .demo-arrow:hover { border-color: var(--border-hi); color: var(--cyan); background: rgba(34,211,238,.07); }
+    .demo-dots { display: flex; align-items: center; gap: 7px; }
+    .demo-dot {
+      width: 8px; height: 8px; border-radius: 999px; border: none;
+      background: var(--text3); opacity: .42; cursor: pointer; transition: .25s;
+    }
+    .demo-dot.active { width: 22px; background: var(--cyan); opacity: 1; }
 
     /* ── TECH STRIP ── */
     #tech { padding: 64px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
@@ -441,6 +474,27 @@
       border: 7px solid transparent; border-top-color: #fff;
     }
 
+    /* ── GALLERY ── */
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+    .gallery-card {
+      border-radius: var(--r); border: 1px solid var(--border); overflow: hidden;
+      background: var(--bg2); transition: border-color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease);
+    }
+    .gallery-card:hover { border-color: var(--border-hi); transform: translateY(-4px); background: var(--bg3); }
+    .gallery-img-wrap { cursor: zoom-in; overflow: hidden; border-bottom: 1px solid var(--border); background: #020811; }
+    .gallery-img-wrap img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; transition: transform .4s var(--ease); }
+    .gallery-img-wrap:hover img { transform: scale(1.025); }
+    .gallery-body { padding: 24px 24px 26px; }
+    .gallery-num { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+    .gallery-title { font-family: var(--display); font-size: clamp(18px, 2vw, 22px); font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; line-height: 1.22; }
+    .gallery-desc { font-size: 14px; color: var(--text2); line-height: 1.78; }
+
+    /* ── FOOTER QR ── */
+    .foot-qrs { display: grid; grid-template-columns: repeat(3, minmax(0, 118px)); gap: 14px; align-items: start; margin-top: 8px; }
+    .foot-qr { min-width: 0; }
+    .foot-qr img { width: 100%; aspect-ratio: 1; height: auto; display: block; border-radius: 10px; background: #fff; padding: 6px; }
+    .foot-qr span { display: block; margin-top: 8px; font-size: 12px; color: var(--text2); }
+
     /* ── FAQ ── */
     .faq-center { max-width: 800px; margin: 0 auto; }
     .faq-list { display: flex; flex-direction: column; margin-top: 56px; border-top: 1px solid var(--border); }
@@ -456,7 +510,7 @@
     .faq-item.open .faq-a { max-height: 600px; }
     .faq-a-inner { padding: 2px 6px 26px 46px; font-size: 14px; color: var(--text2); line-height: 1.85; }
     .faq-a-inner code { font-family: var(--mono); font-size: 12px; color: var(--cyan); background: rgba(34,211,238,.07); padding: 2px 6px; border-radius: 4px; }
-    .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
+    .foot-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, .85fr) minmax(340px, 1.35fr); gap: 56px; margin-bottom: 56px; }
     .foot-brand img { height: 28px; margin-bottom: 14px; }
     .foot-brand .name { font-family: var(--display); font-size: 17px; font-weight: 700; margin-bottom: 12px; }
     .foot-brand p { font-size: 13px; color: var(--text3); line-height: 1.7; max-width: 250px; }
@@ -474,7 +528,7 @@
       .wf-row::before { display: none; }
       .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
       .links-grid { grid-template-columns: repeat(2, 1fr); }
-      .foot-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 36px; }
     }
     @media (max-width: 768px) {
       .feat-grid { grid-template-columns: 1fr; }
@@ -482,9 +536,11 @@
       .wf-row.usage-row, .wf-row.dev-row { grid-template-columns: repeat(2, 1fr); }
       .hero-kpis { gap: 32px; }
       .links-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-grid { grid-template-columns: 1fr; }
       .foot-grid { grid-template-columns: 1fr; }
       .foot-bottom { flex-direction: column; gap: 10px; text-align: center; }
       .demo-scene-wrap { height: 340px; }
+      .demo-video-topbar { align-items: flex-start; flex-direction: column; }
     }
     /* ── MOBILE PORTRAIT ── */
     @media (max-width: 480px) {
@@ -511,8 +567,7 @@
       .hero-body { padding: 96px 16px 58px; }
       .hero-pill { max-width: 100%; padding: 5px 12px; font-size: 9.5px; line-height: 1.4; margin-bottom: 26px; }
       .hero-h1 { font-size: clamp(44px, 15vw, 58px); margin-bottom: 10px; }
-      .hero-tagline { font-size: clamp(15px, 4vw, 18px); line-height: 1.35; margin-bottom: 16px; }
-      .hero-sub { font-size: 13px; line-height: 1.65; margin-bottom: 30px; }
+      .hero-tagline { font-size: 13px; line-height: 1.7; margin-bottom: 24px; max-width: 330px; }
       .hero-ctas { gap: 10px; }
       .hero-ctas a, .hero-ctas button { flex: 1 1 150px; justify-content: center; padding: 10px 14px; font-size: 13px; }
       .hero-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; max-width: 320px; margin: 46px auto 0; }
@@ -557,9 +612,10 @@
       .tech-list { gap: 24px; }
       .tech-item { font-size: 12px; }
       /* gallery */
-      .gallery-item,
-      .gallery-item.reverse { grid-template-columns: 1fr; }
-      .gallery-text { padding: 24px 0 8px; }
+      .gallery-grid { gap: 18px; }
+      .gallery-body { padding: 18px 16px 20px; }
+      .gallery-title { font-size: 17px; }
+      .gallery-desc { font-size: 13px; line-height: 1.65; }
       /* pricing */
       .price-card { padding: 28px 22px; }
       /* links */
@@ -568,15 +624,13 @@
       .dl-tabs { max-width: 100%; }
       .dl-tab { font-size: 13px; padding: 11px 0; }
       .install-block { font-size: 11px; word-break: break-all; }
-      /* gallery (supplement scoped style) */
-      .gallery-item { margin-bottom: 40px; }
-      .gallery-text { padding-top: 20px; }
       /* faq */
       .faq-q { padding: 18px 4px; gap: 12px; }
       .faq-q-text { font-size: 14px; }
       .faq-a-inner { padding: 2px 4px 22px 36px; font-size: 13px; }
       /* footer */
       .foot-grid { gap: 28px; }
+      .foot-qrs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
       /* section headings */
       h2[style] { font-size: clamp(24px, 7vw, 38px) !important; }
     }
@@ -636,8 +690,13 @@
       background: radial-gradient(circle at 100% 0%, rgba(167,139,250,.08) 0%, transparent 55%);
     }
     body.theme-light .demo-scene-wrap,
+    body.theme-light .demo-video-shell,
+    body.theme-light .demo-video-frame,
     body.theme-light #demo .wrap > div[style*="background:#020811"] {
       background: #E2E8F0 !important;
+    }
+    body.theme-light .demo-video-topbar {
+      background: linear-gradient(180deg, rgba(241,245,249,.94), rgba(248,250,252,.96));
     }
     body.theme-light .demo-overlay {
       background: linear-gradient(to bottom, rgba(248,250,252,0) 60%, rgba(248,250,252,.9) 100%);
@@ -693,7 +752,7 @@
 <!-- ══════════════ NAV ══════════════ -->
 <nav id="nav">
   <div class="nav-row">
-    <a href="#" class="nav-logo">
+    <a href="#hero" class="nav-logo">
       <img src="assets/logo.svg" alt="VibeFlow">
       <span class="nav-logo-name">VibeFlow</span>
     </a>
@@ -724,17 +783,13 @@
   <div class="hero-body">
     <div class="hero-pill">
       <span class="dot"></span>
-      <span class="en">VibeFlow Studio v0.2.0 · Now Available</span>
-      <span class="zh">VibeFlow Studio v0.2.0 · 现已发布</span>
+      <span class="en">VibeFlow Studio v0.3.0 · Now Available</span>
+      <span class="zh">VibeFlow Studio v0.3.0 · 现已发布</span>
     </div>
     <h1 class="hero-h1 gradient-text">VibeFlow</h1>
     <p class="hero-tagline">
-      <span class="en">The Intelligent CFD Workstation: the best way to use AI-Assisted CFD</span>
-      <span class="zh">智能 CFD 工作台：使用 AI 辅助 CFD 的最佳方式</span>
-    </p>
-    <p class="hero-sub">
-      <span class="en">From natural language to traceable research reports. Two modes: Usage Mode for the full CFD workflow, Development Mode for custom solvers and libraries — all powered by AI.</span>
-      <span class="zh">从自然语言描述到可追溯的研究报告。两种模式：使用模式覆盖完整 CFD 工作流，开发模式用于自定义求解器与库——全程由 AI 驱动。</span>
+      <span class="en">AI-native CAE workstation: use natural language for development, modeling, meshing, simulation, post-processing, reports, and papers end to end. Free engineers from tedious CAE operations.</span>
+      <span class="zh">AI 原生 CAE 工作台：全流程使用自然语言完成开发，建模，网格，计算，后处理与报告/论文。将人从CAE繁杂操作中彻底解放。</span>
     </p>
     <div class="hero-ctas">
       <a href="#download" class="btn-primary">
@@ -756,12 +811,16 @@
         <div class="kpi-lbl"><span class="en">Usage Pipeline</span><span class="zh">使用模式</span></div>
       </div>
       <div class="kpi">
-        <div class="kpi-val"><em>100%</em></div>
-        <div class="kpi-lbl"><span class="en">Traceable Results</span><span class="zh">结果可追溯</span></div>
+        <div class="kpi-val"><em>20+</em></div>
+        <div class="kpi-lbl"><span class="en">CAE Skills</span><span class="zh">CAE Skills</span></div>
       </div>
       <div class="kpi">
-        <div class="kpi-val">LLM <em>×</em> CFD</div>
+        <div class="kpi-val">LLM <em>×</em> CAE</div>
         <div class="kpi-lbl"><span class="en">Intelligence</span><span class="zh">人工智能</span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val"><em>100%</em></div>
+        <div class="kpi-lbl"><span class="en">Traceable Results</span><span class="zh">结果可追溯</span></div>
       </div>
     </div>
   </div>
@@ -773,12 +832,12 @@
     <div class="sec-head">
       <div class="eyebrow"><span class="en">Two Agent Modes</span><span class="zh">两种智能体模式</span></div>
       <h2 class="sec-title">
-        <span class="en">Choose Your Workflow Mode</span>
-        <span class="zh">选择您的工作流模式</span>
+        <span class="en">Choose Your CAE Workflow Mode</span>
+        <span class="zh">选择您的 CAE 工作流模式</span>
       </h2>
       <p class="sec-sub">
-        <span class="en">VibeFlow operates in two distinct modes, each with dedicated stage pipelines and specialized AI skills tailored to different research objectives.</span>
-        <span class="zh">VibeFlow 以两种独立模式运行，每种模式都有专属的阶段流程和针对不同研究目标定制的 AI skills。</span>
+        <span class="en">VibeFlow operates in two distinct modes, each with stage gates, specialized CAE skills, and local evidence tracking tailored to engineering research and solver-side development.</span>
+        <span class="zh">VibeFlow 以两种独立模式运行，每种模式都有阶段门控、专业 CAE skills 与本地证据链，面向工程仿真研究和求解器侧开发。</span>
       </p>
     </div>
     <div class="modes-grid">
@@ -788,17 +847,17 @@
           <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
           <span class="en">Usage Mode</span><span class="zh">使用模式</span>
         </div>
-        <h3 class="mode-title"><span class="en">Run the Full CFD Pipeline</span><span class="zh">运行完整 CFD 流程</span></h3>
+        <h3 class="mode-title"><span class="en">Run the Full CAE Pipeline</span><span class="zh">运行完整 CAE 流程</span></h3>
         <p class="mode-desc">
-          <span class="en">Use <code style="font-family:var(--mono);font-size:12px;color:var(--cyan)">A-geo/caseDict</code> as the single source of truth and advance through requirement clarification, parametric geometry, meshing, simulation, post-processing, and report generation. Every stage gates the next; all artifacts trace back to caseDict.</span>
-          <span class="zh">以 <code style="font-family:var(--mono);font-size:12px;color:var(--cyan)">A-geo/caseDict</code> 为单一事实源，逐步推进需求澄清、参数化几何、网格划分、仿真求解、后处理与报告生成。每个阶段对下一阶段进行门控，所有产物均可追溯至 caseDict。</span>
+          <span class="en">Use <code style="font-family:var(--mono);font-size:12px;color:var(--cyan)">0-caseDict/caseDict</code> as the single source of truth and advance through requirement clarification, parametric geometry, meshing, backend input generation, solving, post-processing, and report generation. Every artifact traces back to caseDict.</span>
+          <span class="zh">以 <code style="font-family:var(--mono);font-size:12px;color:var(--cyan)">0-caseDict/caseDict</code> 为单一事实源，逐步推进需求澄清、参数化几何、网格划分、后端输入生成、仿真求解、后处理与报告生成。所有产物均可追溯至 caseDict。</span>
         </p>
         <div class="mode-stages">
           <div class="mode-stage-item"><span class="num">01</span><span class="en">Requirements Clarification → caseDict</span><span class="zh">需求澄清 → caseDict</span></div>
           <div class="mode-stage-item"><span class="num">02</span><span class="en">Parametric Geometry (CadQuery)</span><span class="zh">参数化几何建模（CadQuery）</span></div>
           <div class="mode-stage-item"><span class="num">03</span><span class="en">Mesh Generation &amp; Quality Gates</span><span class="zh">网格划分与质量门控</span></div>
-          <div class="mode-stage-item"><span class="num">04</span><span class="en">OpenFOAM Simulation &amp; Diagnostics</span><span class="zh">OpenFOAM 求解与诊断</span></div>
-          <div class="mode-stage-item"><span class="num">05</span><span class="en">Post-Processing (ParaView + Python)</span><span class="zh">后处理（ParaView + Python）</span></div>
+          <div class="mode-stage-item"><span class="num">04</span><span class="en">CAE Backend Solve &amp; Diagnostics</span><span class="zh">CAE 后端求解与诊断</span></div>
+          <div class="mode-stage-item"><span class="num">05</span><span class="en">Post-Processing (Python + ParaView)</span><span class="zh">后处理（Python + ParaView）</span></div>
           <div class="mode-stage-item"><span class="num">06</span><span class="en">Evidence-Traced Report Generation</span><span class="zh">证据追溯报告生成</span></div>
         </div>
       </div>
@@ -808,10 +867,10 @@
           <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
           <span class="en">Development Mode</span><span class="zh">开发模式</span>
         </div>
-        <h3 class="mode-title"><span class="en">Build Custom CFD Code</span><span class="zh">构建自定义 CFD 代码</span></h3>
+        <h3 class="mode-title"><span class="en">Build Custom Solver Capabilities</span><span class="zh">构建自定义求解能力</span></h3>
         <p class="mode-desc">
-          <span class="en">Develop custom OpenFOAM solvers, libraries, boundary conditions, turbulence models, functionObjects, fvOptions, and post-processing tools. All UDF code lives under <code style="font-family:var(--mono);font-size:12px;color:var(--purple)">UDF/</code> and integrates seamlessly into Usage Mode cases.</span>
-          <span class="zh">开发自定义 OpenFOAM 求解器、库、边界条件、湍流模型、functionObjects、fvOptions 及后处理工具。所有 UDF 代码位于 <code style="font-family:var(--mono);font-size:12px;color:var(--purple)">UDF/</code> 目录下，可无缝集成到使用模式算例中。</span>
+          <span class="en">Develop custom solvers, libraries, boundary conditions, material models, input generators, and post-processing tools for the chosen CAE backend. Source code lives under <code style="font-family:var(--mono);font-size:12px;color:var(--purple)">UDF/</code> and stays decoupled from case dictionaries.</span>
+          <span class="zh">面向选定 CAE 后端开发自定义求解器、库、边界条件、材料模型、输入生成器和后处理工具。源码位于 <code style="font-family:var(--mono);font-size:12px;color:var(--purple)">UDF/</code> 目录下，并与算例字典保持解耦。</span>
         </p>
         <div class="mode-stages">
           <div class="mode-stage-item"><span class="num">D1</span><span class="en">Requirement &amp; Boundary Confirmation</span><span class="zh">需求与边界确认</span></div>
@@ -830,42 +889,42 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow"><span class="en">Core Capabilities</span><span class="zh">核心能力</span></div>
-      <h2 class="sec-title"><span class="en">Built for Engineering Precision</span><span class="zh">为工程精度而生</span></h2>
+      <h2 class="sec-title"><span class="en">Built for AI-Native CAE</span><span class="zh">为 AI 原生 CAE 而生</span></h2>
       <p class="sec-sub">
-        <span class="en">Every component ensures physical accuracy, parameter traceability, and reproducible outcomes.</span>
-        <span class="zh">每个组件均确保物理精度、参数可追溯性与可复现的研究结果。</span>
+        <span class="en">Every component connects natural language with physical modeling, solver-specific knowledge, parameter traceability, and reproducible engineering outcomes.</span>
+        <span class="zh">每个组件都将自然语言、物理建模、求解器知识、参数可追溯性和可复现工程结果连接起来。</span>
       </p>
     </div>
     <div class="feat-grid">
       <div class="feat-card reveal">
         <div class="feat-icon">📋</div>
         <h3 class="feat-title"><span class="en">caseDict — Single Source of Truth</span><span class="zh">caseDict — 单一事实源</span></h3>
-        <p class="feat-desc"><span class="en">Every parameter, assumption, and boundary condition in one verified caseDict. Geometry, mesh, solver, and report all derive consistently — no hidden state, no parameter drift.</span><span class="zh">每个参数、假设和边界条件均存储在唯一经验证的 caseDict 中。几何、网格、求解器和报告均从同一事实源一致派生，无隐含状态，无参数漂移。</span></p>
+        <p class="feat-desc"><span class="en">Every parameter, assumption, region, boundary, material, and output target lives in one verified caseDict. Geometry, mesh, backend inputs, results, and reports derive consistently — no hidden state, no parameter drift.</span><span class="zh">每个参数、假设、区域、边界、材料和输出目标均存储在唯一经验证的 caseDict 中。几何、网格、后端输入、结果和报告均从同一事实源一致派生，无隐含状态，无参数漂移。</span></p>
       </div>
       <div class="feat-card reveal d1">
         <div class="feat-icon">🤝</div>
         <h3 class="feat-title"><span class="en">Stage-Gated Human-AI Collaboration</span><span class="zh">阶段门控人机协同</span></h3>
-        <p class="feat-desc"><span class="en">Six usage stages and five development stages, each with human confirmation gates. AI handles geometry, meshing, solver setup, and reporting. You own the critical physics decisions.</span><span class="zh">六个使用阶段与五个开发阶段，每个阶段配备人类确认门控。AI 处理几何、网格、求解器和报告，关键物理决策由您掌控。</span></p>
+        <p class="feat-desc"><span class="en">Six usage stages and five development stages, each with human confirmation gates. AI handles geometry, meshing, backend setup, diagnostics, post-processing, and reporting. You own the critical physics decisions.</span><span class="zh">六个使用阶段与五个开发阶段，每个阶段配备人类确认门控。AI 处理几何、网格、后端配置、诊断、后处理和报告，关键物理决策由您掌控。</span></p>
       </div>
       <div class="feat-card reveal d2">
         <div class="feat-icon">🔍</div>
-        <h3 class="feat-title"><span class="en">Source-First Knowledge Access</span><span class="zh">源码优先知识访问</span></h3>
-        <p class="feat-desc"><span class="en">Direct access to local OpenFOAM tutorials, solver source code, and official docs. Verified facts from real source files — not hallucinated summaries or stale RAG chunks.</span><span class="zh">直接访问本地 OpenFOAM 教程、求解器源码和官方文档，从真实源文件验证事实，而非幻觉摘要或过时的 RAG 片段。</span></p>
+        <h3 class="feat-title"><span class="en">Solver-Specific Knowledge Access</span><span class="zh">求解器专项知识访问</span></h3>
+        <p class="feat-desc"><span class="en">Specialized skills and local references cover OpenFOAM, Code_Aster, CalculiX, Elmer, FDS, FEniCS, FreeFEM, LAMMPS, MOOSE, SU2, DualSPHysics, PETSc, and more. Facts come from real manuals, source files, and case logs.</span><span class="zh">专业 skills 与本地知识库覆盖 OpenFOAM、Code_Aster、CalculiX、Elmer、FDS、FEniCS、FreeFEM、LAMMPS、MOOSE、SU2、DualSPHysics、PETSc 等后端，依据真实手册、源码和算例日志推理。</span></p>
       </div>
       <div class="feat-card reveal d3">
         <div class="feat-icon">⚡</div>
         <h3 class="feat-title"><span class="en">Physical Fidelity &amp; Evidence Traceability</span><span class="zh">物理保真度与证据可追溯</span></h3>
-        <p class="feat-desc"><span class="en">Every report claim links to a specific file, log, measurement, or reference. VibeFlow measures S<sub>phys</sub> and S<sub>trace</sub> — not just execution success rate.</span><span class="zh">报告中每个结论均链接到特定文件、日志或测量值。VibeFlow 评估 S<sub>phys</sub>（物理保真度）与 S<sub>trace</sub>（证据可追溯性），而非仅追求运行成功率。</span></p>
+        <p class="feat-desc"><span class="en">Every report claim links to a specific file, log, measurement, figure, or reference. VibeFlow measures physical fidelity and evidence traceability — not just whether a command happened to run.</span><span class="zh">报告中每个结论均链接到特定文件、日志、测量值、图表或参考资料。VibeFlow 关注物理保真度与证据可追溯性，而非仅仅追求命令能运行。</span></p>
       </div>
       <div class="feat-card reveal d4">
-        <div class="feat-icon">🌊</div>
-        <h3 class="feat-title"><span class="en">OpenFOAM Deep Integration</span><span class="zh">OpenFOAM 深度集成</span></h3>
-        <p class="feat-desc"><span class="en">Fully adaptive to your local OpenFOAM installation. Auto-discovers tutorials, solver families, boundary condition patterns, and custom UDF libraries for seamless version-aware case generation.</span><span class="zh">完全自适应本地 OpenFOAM 安装，自动发现教程、求解器族、边界条件模式及自定义 UDF 库，实现版本感知的算例生成。</span></p>
+        <div class="feat-icon">🧩</div>
+        <h3 class="feat-title"><span class="en">Broad Open-Source CAE Support</span><span class="zh">广泛开源 CAE 后端支持</span></h3>
+        <p class="feat-desc"><span class="en">Configure local paths once, then let the agent bring the right backend into context. Fluid dynamics, FEM, SPH, LBM, MD, fire dynamics, structural impact, thermal, and multiphysics workflows share the same VibeFlow discipline.</span><span class="zh">配置本地路径后，Agent 即可把合适后端纳入上下文。流体动力学、FEM、SPH、LBM、MD、火灾动力学、结构碰撞、热分析和多物理场流程共享同一套 VibeFlow 规范。</span></p>
       </div>
       <div class="feat-card reveal d5">
         <div class="feat-icon">📐</div>
         <h3 class="feat-title"><span class="en">Parametric Geometry &amp; Intelligent Meshing</span><span class="zh">参数化几何与智能网格</span></h3>
-        <p class="feat-desc"><span class="en">CadQuery parametric CAD, Gmsh, blockMesh, snappyHexMesh — all driven from caseDict. Reproducible geometry with boundary layer control, y+ targeting, and checkMesh quality gates.</span><span class="zh">CadQuery 参数化 CAD、Gmsh、blockMesh、snappyHexMesh，均由 caseDict 驱动。可复现几何，具备边界层控制、y+ 目标与 checkMesh 质量门控。</span></p>
+        <p class="feat-desc"><span class="en">CadQuery/OCP, Gmsh, blockMesh, snappyHexMesh, and conversion handoffs are driven from caseDict. Named regions, interfaces, boundary sets, mesh quality checks, and solver-specific export needs stay aligned.</span><span class="zh">CadQuery/OCP、Gmsh、blockMesh、snappyHexMesh 与转换交接均由 caseDict 驱动。命名区域、界面、边界集、网格质量检查与后端导出需求保持一致。</span></p>
       </div>
     </div>
   </div>
@@ -876,8 +935,8 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow"><span class="en">Interactive Pipeline</span><span class="zh">交互式工作流</span></div>
-      <h2 class="sec-title"><span class="en">Two Modes. Seven Total Stages.</span><span class="zh">两种模式，共七组阶段。</span></h2>
-      <p class="sec-sub"><span class="en">Switch between Usage Mode and Development Mode. Click any stage to expand details.</span><span class="zh">在使用模式与开发模式之间切换，点击任意阶段展开详情。</span></p>
+      <h2 class="sec-title"><span class="en">Two Modes. Complete CAE Stages.</span><span class="zh">两种模式，覆盖完整 CAE 阶段。</span></h2>
+      <p class="sec-sub"><span class="en">Switch between Usage Mode and Development Mode. Click any stage to see how VibeFlow turns intent into solver-ready artifacts.</span><span class="zh">在使用模式与开发模式之间切换，点击任意阶段查看 VibeFlow 如何把意图转化为可运行的求解器产物。</span></p>
     </div>
 
     <div class="wf-mode-toggle">
@@ -895,7 +954,7 @@
         <div class="wf-stage" onclick="openStage('usage',0)"><div class="wf-circle">01</div><div class="wf-name"><span class="en">Requirements</span><span class="zh">需求澄清</span></div><div class="wf-hint"><span class="en">Physics, params &amp; caseDict</span><span class="zh">物理、参数与 caseDict</span></div></div>
         <div class="wf-stage" onclick="openStage('usage',1)"><div class="wf-circle">02</div><div class="wf-name"><span class="en">Geometry</span><span class="zh">参数化几何</span></div><div class="wf-hint"><span class="en">CadQuery / OCP</span><span class="zh">CadQuery 建模</span></div></div>
         <div class="wf-stage" onclick="openStage('usage',2)"><div class="wf-circle">03</div><div class="wf-name"><span class="en">Meshing</span><span class="zh">网格划分</span></div><div class="wf-hint"><span class="en">Gmsh / blockMesh / SHM</span><span class="zh">多种网格工具</span></div></div>
-        <div class="wf-stage" onclick="openStage('usage',3)"><div class="wf-circle">04</div><div class="wf-name"><span class="en">Simulation</span><span class="zh">CFD 求解</span></div><div class="wf-hint"><span class="en">OpenFOAM solvers</span><span class="zh">OpenFOAM 求解器</span></div></div>
+        <div class="wf-stage" onclick="openStage('usage',3)"><div class="wf-circle">04</div><div class="wf-name"><span class="en">Backend Solve</span><span class="zh">后端求解</span></div><div class="wf-hint"><span class="en">CAE solver inputs</span><span class="zh">CAE 求解器输入</span></div></div>
         <div class="wf-stage" onclick="openStage('usage',4)"><div class="wf-circle">05</div><div class="wf-name"><span class="en">Post-Processing</span><span class="zh">后处理</span></div><div class="wf-hint"><span class="en">ParaView + Python</span><span class="zh">ParaView + Python</span></div></div>
         <div class="wf-stage" onclick="openStage('usage',5)"><div class="wf-circle">06</div><div class="wf-name"><span class="en">Report</span><span class="zh">报告生成</span></div><div class="wf-hint"><span class="en">Evidence-traced Markdown</span><span class="zh">证据追溯报告</span></div></div>
       </div>
@@ -923,22 +982,37 @@
       <div class="eyebrow"><span class="en">Operation Demo</span><span class="zh">操作演示</span></div>
       <h2 class="sec-title"><span class="en">See VibeFlow in Action</span><span class="zh">亲历 VibeFlow 完整工作流</span></h2>
       <p class="sec-sub">
-        <span class="en">Watch a hands-on walkthrough of the complete VibeFlow workflow — from requirements to report, driven entirely by natural language.</span>
-        <span class="zh">观看完整操作演示——从需求描述到报告交付，全程由自然语言驱动，无需手动配置任何文件。</span>
+        <span class="en">Watch four hands-on walkthroughs of VibeFlow Studio — from installation to model development, multiphase flow, FEM calculation, OpenRadioss crash simulation, validation, and report-oriented delivery.</span>
+        <span class="zh">观看四段 VibeFlow Studio 操作演示——覆盖安装、湍流模型开发、两相流建模、有限元计算、OpenRadioss 碰撞仿真、验证与报告化交付。</span>
       </p>
     </div>
-    <div style="position:relative;width:100%;padding-top:56.25%;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);background:#020811;">
-      <iframe
-        id="bili-demo-player"
-        title="VibeFlow Bilibili demo"
-        src="about:blank"
-        data-bili-src="https://player.bilibili.com/player.html?isOutside=true&bvid=BV1c15u6eEoy&cid=38283707715&p=1&autoplay=0"
-        scrolling="no" border="0" frameborder="no" framespacing="0"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen
-        referrerpolicy="strict-origin-when-cross-origin"
-        style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-      ></iframe>
+    <div class="demo-video-shell reveal">
+      <div class="demo-video-frame">
+        <iframe
+          id="bili-demo-player"
+          title="VibeFlow Bilibili demo"
+          src="about:blank"
+          scrolling="no" border="0" frameborder="no" framespacing="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+      <div class="demo-video-topbar">
+        <div class="demo-video-meta">
+          <div class="demo-video-kicker"><span class="en">Bilibili Demo</span><span class="zh">Bilibili 演示</span></div>
+          <div class="demo-video-title" id="demo-video-title"></div>
+        </div>
+        <div class="demo-video-controls" aria-label="Demo video carousel">
+          <button type="button" class="demo-arrow" onclick="stepDemoVideo(-1)" aria-label="Previous demo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="demo-dots" id="demo-video-dots" aria-hidden="true"></div>
+          <button type="button" class="demo-arrow" onclick="stepDemoVideo(1)" aria-label="Next demo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -946,14 +1020,18 @@
 <!-- ══════════════ TECH STRIP ══════════════ -->
 <section id="tech">
   <div class="wrap">
-    <div class="tech-label"><span class="en">Powered by industry-standard tools</span><span class="zh">基于行业标准工具</span></div>
+    <div class="tech-label"><span class="en">Powered by mainstream open-source CAE tools</span><span class="zh">基于主流开源 CAE 工具</span></div>
     <div class="tech-list">
       <span class="tech-item">OpenFOAM</span>
-      <span class="tech-item">Python</span>
+      <span class="tech-item">CalculiX</span>
+      <span class="tech-item">Code_Aster</span>
+      <span class="tech-item">Elmer</span>
+      <span class="tech-item">SU2</span>
+      <span class="tech-item">FEniCS</span>
       <span class="tech-item">CadQuery / OCP</span>
       <span class="tech-item">Gmsh</span>
       <span class="tech-item">ParaView</span>
-      <span class="tech-item">LLM Agent</span>
+      <span class="tech-item">Codex / Claude Code / opencode</span>
     </div>
   </div>
 </section>
@@ -965,121 +1043,34 @@
       <div class="eyebrow"><span class="en">Feature Showcase</span><span class="zh">功能展示</span></div>
       <h2 class="sec-title"><span class="en">Every Capability, In Detail</span><span class="zh">每一项能力，逐一呈现</span></h2>
       <p class="sec-sub">
-        <span class="en">From geometry to report — see exactly what VibeFlow delivers at every stage of your CFD research workflow.</span>
-        <span class="zh">从几何建模到报告生成，逐阶段查看 VibeFlow 在每个 CFD 研究步骤中的真实交付成果。</span>
+        <span class="en">From prompt construction to solver setup, visualization, research notes, backend switching, CAE skills, crash simulation, LaTeX writing, and report delivery — see how VibeFlow assists the complete CAE workflow.</span>
+        <span class="zh">从 prompt 构造到求解器设置、可视化、研究笔记、后端切换、CAE skills、碰撞仿真、LaTeX 写作与报告交付，逐项查看 VibeFlow 如何辅助完整 CAE 工作流。</span>
       </p>
     </div>
 
     <style>
-      .gallery-item { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; margin-bottom: 88px; }
-      .gallery-item.reverse { direction: rtl; }
-      .gallery-item.reverse > * { direction: ltr; }
-      .gallery-img-wrap { border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); cursor: zoom-in; position: relative; }
-      .gallery-img-wrap img { width: 100%; display: block; transition: transform .4s var(--ease); }
-      .gallery-img-wrap:hover img { transform: scale(1.025); }
-      .gallery-text { }
-      .gallery-num { font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; }
-      .gallery-title { font-family: var(--display); font-size: clamp(20px, 2.5vw, 26px); font-weight: 700; letter-spacing: -.02em; margin-bottom: 14px; }
-      .gallery-desc { font-size: 15px; color: var(--text2); line-height: 1.85; }
-      @media (max-width: 900px) {
-        .gallery-item, .gallery-item.reverse { grid-template-columns: 1fr; direction: ltr; }
-        .gallery-item { margin-bottom: 56px; }
+      .gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+      .gallery-item {
+        display: flex; flex-direction: column; gap: 0; align-items: stretch; margin-bottom: 0;
+        border-radius: var(--r); border: 1px solid var(--border); overflow: hidden;
+        background: var(--bg2); transition: border-color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease);
       }
-  
-    /* ── THEME TOGGLE ── */
-    .btn-theme {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 7px 14px; border: 1px solid var(--border); background: none;
-      color: var(--text2); font-family: var(--mono); font-size: 11px;
-      border-radius: 6px; cursor: pointer; transition: .25s;
-    }
-    .btn-theme:hover { border-color: var(--border-hi); color: var(--cyan); }
-
-    /* ── LIGHT THEME ── */
-    body.theme-light {
-      --bg:        #F8FAFC;
-      --bg2:       #F1F5F9;
-      --bg3:       #E2E8F0;
-      --border:    rgba(15,23,42,0.08);
-      --border-hi: rgba(34,211,238,0.50);
-      --text:      #0F172A;
-      --text2:     #475569;
-      --text3:     #94A3B8;
-      --cyan-glow: rgba(34,211,238,0.15);
-    }
-    body.theme-light .gradient-text {
-      background: linear-gradient(135deg, #0F172A 30%, var(--cyan) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    body.theme-light #hero::before {
-      background-image: linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px);
-    }
-    body.theme-light #nav.stuck {
-      background: rgba(248,250,252,.88);
-    }
-    body.theme-light .hero-pill {
-      background: rgba(34,211,238,.15);
-      border-color: rgba(34,211,238,.35);
-    }
-    body.theme-light .mode-badge.usage {
-      background: rgba(34,211,238,.15);
-      border-color: rgba(34,211,238,.35);
-    }
-    body.theme-light .mode-badge.dev {
-      background: rgba(167,139,250,.15);
-      border-color: rgba(167,139,250,.35);
-    }
-    body.theme-light .mode-card.usage::before {
-      background: radial-gradient(circle at 0% 0%, rgba(34,211,238,.08) 0%, transparent 55%);
-    }
-    body.theme-light .mode-card.dev::before {
-      background: radial-gradient(circle at 100% 0%, rgba(167,139,250,.08) 0%, transparent 55%);
-    }
-    body.theme-light .demo-scene-wrap,
-    body.theme-light #demo .wrap > div[style*="background:#020811"] {
-      background: #E2E8F0 !important;
-    }
-    body.theme-light .demo-overlay {
-      background: linear-gradient(to bottom, rgba(248,250,252,0) 60%, rgba(248,250,252,.9) 100%);
-    }
-    body.theme-light .demo-stat {
-      background: rgba(255,255,255,.78);
-    }
-    body.theme-light .demo-tab {
-      background: rgba(255,255,255,.65);
-    }
-    body.theme-light .demo-tab.active {
-      background: rgba(34,211,238,.15);
-    }
-    body.theme-light .price-card.featured {
-      border-color: rgba(34,211,238,.55);
-    }
-    body.theme-light .price-card.featured::before {
-      background: radial-gradient(circle at 50% -10%, rgba(34,211,238,.18) 0%, transparent 60%);
-    }
-    body.theme-light .link-card:hover {
-      background: rgba(34,211,238,.08);
-    }
-    body.theme-light .dl-card:hover {
-      background: rgba(34,211,238,.12);
-    }
-    body.theme-light .btn-ghost:hover {
-      background: rgba(34,211,238,.1);
-    }
-    body.theme-light .wf-mode-btn.active {
-      box-shadow: 0 1px 4px rgba(0,0,0,.12);
-    }
-    body.theme-light .faq-a-inner code {
-      background: rgba(34,211,238,.12);
-    }
-    body.theme-light .link-card-community .qr-popup {
-      box-shadow: 0 24px 64px rgba(0,0,0,.35);
-    }
-
-    @media (max-width: 480px) {
-      .btn-theme { padding: 6px 10px; }
-    }
+      .gallery-item:hover { border-color: var(--border-hi); transform: translateY(-4px); background: var(--bg3); }
+      .gallery-item.reverse { direction: ltr; }
+      .gallery-item.reverse > * { direction: ltr; }
+      .gallery-img-wrap { border-radius: 0; overflow: hidden; border: 0; border-bottom: 1px solid var(--border); cursor: zoom-in; position: relative; background: #020811; }
+      .gallery-img-wrap img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; transition: transform .4s var(--ease); }
+      .gallery-img-wrap:hover img { transform: scale(1.025); }
+      .gallery-text { padding: 24px 24px 26px; }
+      .gallery-num { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+      .gallery-title { font-family: var(--display); font-size: clamp(18px, 2vw, 22px); font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; line-height: 1.22; }
+      .gallery-desc { font-size: 14px; color: var(--text2); line-height: 1.78; }
+      @media (max-width: 900px) {
+        .gallery-grid { grid-template-columns: 1fr; }
+      }
   </style>
+
+    <div class="gallery-grid">
 
     <!-- v1 -->
     <div class="gallery-item reveal">
@@ -1090,8 +1081,8 @@
         <div class="gallery-num">01 · <span class="en">Project Overview</span><span class="zh">项目全景</span></div>
         <h3 class="gallery-title"><span class="en">Unified Project Workspace</span><span class="zh">统一项目工作空间</span></h3>
         <p class="gallery-desc">
-          <span class="en">The main interface opens with a full project file tree on the left — every case file, dictionary, log, and artifact is instantly accessible and editable. On the right, the Agent entry panel lets you choose any LLM tool you prefer, seamlessly bridging your research intent with the full CFD pipeline.</span>
-          <span class="zh">启动后左侧呈现完整项目文件树，涵盖所有算例文件、字典、日志与产物，可随时查看与修改。右侧为 Agent 入口，支持选择您习惯使用的任何 LLM 工具，将研究意图与完整 CFD 流程无缝衔接。</span>
+          <span class="en">The main interface opens with a full project file tree on the left — every case file, dictionary, log, script, mesh, result, and report artifact is instantly accessible. On the right, the Agent panel connects your engineering intent with the CAE workflow and the LLM tool you prefer.</span>
+          <span class="zh">启动后左侧呈现完整项目文件树，涵盖算例文件、字典、日志、脚本、网格、结果与报告产物，可随时查看与修改。右侧 Agent 面板将工程意图、CAE 工作流和您习惯使用的大模型工具连接起来。</span>
         </p>
       </div>
     </div>
@@ -1105,8 +1096,8 @@
         <div class="gallery-num">02 · <span class="en">Literature & Research Integration</span><span class="zh">文献与研究集成</span></div>
         <h3 class="gallery-title"><span class="en">AI-Assisted Literature Reading</span><span class="zh">Agent 辅助文献阅读</span></h3>
         <p class="gallery-desc">
-          <span class="en">VibeFlow is not just a simulation tool — it is a seamless research platform. The Agent can read, summarize, and cross-reference CFD papers, extracting boundary conditions, physical parameters, and validation data directly into your caseDict without manual transcription errors.</span>
-          <span class="zh">VibeFlow 不只是仿真工具，更是无缝集成的 CFD 研究人员工作流平台。Agent 可阅读、摘要和交叉引用 CFD 文献，直接将边界条件、物理参数与验证数据提取写入 caseDict，无需手动转录，杜绝抄录错误。</span>
+          <span class="en">VibeFlow is not only a simulation launcher; it is a research workspace. The Agent can read, summarize, and cross-reference CAE papers, manuals, and local notes, then extract geometry constraints, materials, loads, boundary conditions, and validation targets into caseDict.</span>
+          <span class="zh">VibeFlow 不只是仿真启动器，更是研究工作空间。Agent 可阅读、摘要和交叉引用 CAE 论文、手册与本地笔记，并将几何约束、材料、载荷、边界条件和验证目标提取到 caseDict。</span>
         </p>
       </div>
     </div>
@@ -1120,8 +1111,8 @@
         <div class="gallery-num">03 · <span class="en">Autonomous Testing & Error Fixing</span><span class="zh">自主测试与错误修复</span></div>
         <h3 class="gallery-title"><span class="en">Full-Pipeline Autonomous Testing</span><span class="zh">Codex 全流程自主测试</span></h3>
         <p class="gallery-desc">
-          <span class="en">Powered by Codex, VibeFlow autonomously runs the complete CFD pipeline end-to-end, detects errors at every stage, and self-repairs them without user intervention. The final result is delivered with verified accuracy — no more manual debugging loops.</span>
-          <span class="zh">借助 Codex，VibeFlow 自主执行完整 CFD 流程，在每个阶段检测错误并自主修复，无需用户干预。最终以准确的结果交付，彻底告别手动调试的反复循环。</span>
+          <span class="en">Powered by Codex and other agent CLIs, VibeFlow can execute a complete CAE pipeline end-to-end, detect errors at geometry, mesh, backend input, solver, and post-processing stages, and iterate toward a validated result with real logs and evidence.</span>
+          <span class="zh">借助 Codex 等 agent CLI，VibeFlow 可端到端执行完整 CAE 流程，在几何、网格、后端输入、求解和后处理阶段检测错误，并基于真实日志和证据持续迭代到可验证结果。</span>
         </p>
       </div>
     </div>
@@ -1135,8 +1126,8 @@
         <div class="gallery-num">04 · <span class="en">Log Parsing & Residuals</span><span class="zh">日志解析与残差监控</span></div>
         <h3 class="gallery-title"><span class="en">Real-Time Solver Monitoring</span><span class="zh">实时求解状态可视化</span></h3>
         <p class="gallery-desc">
-          <span class="en">One click plots live residual curves from solver logs, updating as the simulation runs. The Agent independently watches logs, identifies convergence issues or divergence events, and takes autonomous corrective action — keeping your simulation on track without babysitting.</span>
-          <span class="zh">一键解析日志并实时绘制与更新残差图，随仿真进行动态刷新。Agent 自主观测日志、识别收敛异常或发散事件，并自主接管全流程纠偏，让您从盯屏守候中彻底解放。</span>
+          <span class="en">Solver logs become live evidence instead of terminal noise. VibeFlow parses residuals, time-step history, warnings, convergence status, and backend diagnostics, allowing the Agent to spot instability, missing inputs, or invalid settings early.</span>
+          <span class="zh">求解日志不再只是终端噪声，而是实时证据。VibeFlow 解析残差、时间步历史、警告、收敛状态和后端诊断信息，帮助 Agent 及时发现不稳定、输入缺失或设置错误。</span>
         </p>
       </div>
     </div>
@@ -1150,8 +1141,8 @@
         <div class="gallery-num">05 · <span class="en">Physical Accuracy & Validation</span><span class="zh">物理准确与结果验证</span></div>
         <h3 class="gallery-title"><span class="en">Automated Benchmark Comparison</span><span class="zh">自动结果对比与验证</span></h3>
         <p class="gallery-desc">
-          <span class="en">VibeFlow automatically generates comparison plots against reference data, experimental measurements, or analytical solutions — ensuring physical fidelity at every run. Intelligence does not come at the cost of rigor: AI4CFD should be a credible research tool, not a toy.</span>
-          <span class="zh">VibeFlow 自动给出与参考数据、实验测量或解析解的对比图，每次运行均保证严格的物理准确性。智能化不以严谨性为代价——AI4CFD 应当是可信赖的研究工具，而非玩具。</span>
+          <span class="en">VibeFlow automatically builds comparison plots against reference data, experimental measurements, analytical solutions, or engineering acceptance criteria. AI assistance does not replace rigor; it makes validation faster, repeatable, and visible.</span>
+          <span class="zh">VibeFlow 自动生成与参考数据、实验测量、解析解或工程验收标准的对比图。AI 辅助不替代严谨性，而是让验证更快、更可复现、更可见。</span>
         </p>
       </div>
     </div>
@@ -1165,8 +1156,8 @@
         <div class="gallery-num">06 · <span class="en">Geometry & Intelligent Meshing</span><span class="zh">几何建模与智能网格</span></div>
         <h3 class="gallery-title"><span class="en">Natural Language to Complex Geometry</span><span class="zh">自然语言一句话构建复杂模型</span></h3>
         <p class="gallery-desc">
-          <span class="en">Describe your geometry in plain language and VibeFlow constructs precise parametric CAD using CadQuery. The meshing strategy — structured, unstructured, or hybrid — is decided intelligently based on the physics, ensuring simulation-ready quality without manual tuning.</span>
-          <span class="zh">用自然语言描述几何形状，VibeFlow 即可使用 CadQuery 准确构建参数化 CAD 模型。网格策略（结构化、非结构化或混合）根据物理问题智能决策，无需手动调优即可达到仿真就绪质量。</span>
+          <span class="en">Describe the geometry and design intent in plain language, and VibeFlow constructs precise parametric CAD with CadQuery/OCP. Named regions, interfaces, boundary sets, and mesh handoff requirements stay aligned with the CAE backend.</span>
+          <span class="zh">用自然语言描述几何与设计意图，VibeFlow 即可使用 CadQuery/OCP 构建精确参数化 CAD。命名区域、界面、边界集和网格交接需求与 CAE 后端保持一致。</span>
         </p>
       </div>
     </div>
@@ -1180,8 +1171,8 @@
         <div class="gallery-num">07 · <span class="en">Natural Language Post-Processing</span><span class="zh">自然语言后处理</span></div>
         <h3 class="gallery-title"><span class="en">Say It, See It Rendered</span><span class="zh">语言描述，自动加载渲染</span></h3>
         <p class="gallery-desc">
-          <span class="en">Forget complex ParaView button sequences. Simply describe what you want to visualize — a pressure slice, a velocity isosurface, a streamline field — and VibeFlow translates your words into a fully rendered ParaView scene, automatically loaded and displayed.</span>
-          <span class="zh">不再需要记忆复杂的 ParaView 操作路径。只需用语言描述想要的可视化内容——压力切片、速度等值面、流线场——VibeFlow 将自动将描述转化为完整 ParaView 场景并加载呈现。</span>
+          <span class="en">Forget complex visualization button sequences. Describe what you want to inspect — stress, displacement, pressure, temperature, velocity, slices, isosurfaces, streamlines, or probe curves — and VibeFlow turns it into reproducible Python or ParaView scripts.</span>
+          <span class="zh">不再需要记忆复杂的可视化操作路径。只需描述想看的内容——应力、位移、压力、温度、速度、切片、等值面、流线或探针曲线——VibeFlow 会转化为可复现的 Python 或 ParaView 脚本。</span>
         </p>
       </div>
     </div>
@@ -1195,8 +1186,8 @@
         <div class="gallery-num">08 · <span class="en">Traceable Research Report</span><span class="zh">可追溯研究报告</span></div>
         <h3 class="gallery-title"><span class="en">Complete, Evidence-Backed Reports</span><span class="zh">完整清晰的计算报告</span></h3>
         <p class="gallery-desc">
-          <span class="en">VibeFlow automatically assembles a structured research report from all upstream artifacts. Every key result — drag coefficients, pressure distributions, convergence history — is linked to specific files, logs, and references, producing a self-contained, publication-quality document.</span>
-          <span class="zh">VibeFlow 从所有上游产物自动组装结构化研究报告。每项关键结果——阻力系数、压力分布、收敛历史——均链接至具体文件、日志和文献，生成自洽的、具有发表质量的完整报告。</span>
+          <span class="en">VibeFlow assembles structured reports from upstream artifacts. Key results — stress peaks, displacements, force histories, pressure fields, thermal metrics, convergence curves, and validation tables — are linked to files, logs, figures, and references.</span>
+          <span class="zh">VibeFlow 从上游产物自动组装结构化报告。关键结果——应力峰值、位移、力时程、压力场、热指标、收敛曲线和验证表——均链接至具体文件、日志、图表和参考资料。</span>
         </p>
       </div>
     </div>
@@ -1225,10 +1216,162 @@
         <div class="gallery-num">10 · <span class="en">Dark Theme</span><span class="zh">暗色主题</span></div>
         <h3 class="gallery-title"><span class="en">Designed for Long Research Sessions</span><span class="zh">专为长时间研究会话而设计</span></h3>
         <p class="gallery-desc">
-          <span class="en">VibeFlow features a refined dark theme optimized for long coding and simulation sessions. High-contrast, low-fatigue aesthetics keep the focus on your results — not the interface. Because great CFD research deserves a workspace that feels as good as it performs.</span>
-          <span class="zh">VibeFlow 配备精心调校的暗色主题，专为长时间编码与仿真会话优化。高对比、低疲劳的视觉设计让您聚焦于研究结果本身，而非界面操作——因为优秀的 CFD 研究值得一个既高效又舒适的工作环境。</span>
+          <span class="en">VibeFlow features a refined dark theme optimized for long coding, modeling, simulation, and documentation sessions. High-contrast, low-fatigue aesthetics keep the focus on your CAE evidence — not the interface.</span>
+          <span class="zh">VibeFlow 配备精心调校的暗色主题，专为长时间编码、建模、仿真和文档会话优化。高对比、低疲劳的视觉设计让您聚焦于 CAE 证据本身，而非界面操作。</span>
         </p>
       </div>
+    </div>
+
+    <!-- v11 -->
+    <div class="gallery-item reveal d1">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v11.png" alt="Add to Chat 代码片段">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">11 · <span class="en">Prompt Context</span><span class="zh">Prompt 上下文</span></div>
+        <h3 class="gallery-title"><span class="en">Add Code to Chat in One Click</span><span class="zh">代码片段一键加入对话</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Select any code fragment, dictionary entry, log segment, or configuration block and send it directly to the chat prompt. The Agent receives exact local context, so instructions become precise, reproducible, and free from manual copy errors.</span>
+          <span class="zh">选中任意代码片段、字典条目、日志段或配置块，即可通过 Add to Chat 一键加入 prompt。Agent 获得精确本地上下文，指令更准确、更可复现，也避免手动复制出错。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v12 -->
+    <div class="gallery-item reveal d2">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v12.png" alt="OpenFOAM 可视化参数设置">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">12 · <span class="en">OpenFOAM Form Editor</span><span class="zh">OpenFOAM 参数面板</span></div>
+        <h3 class="gallery-title"><span class="en">Visual Dictionary Editing with Physics Help</span><span class="zh">可视化字典设置与数理解释</span></h3>
+        <p class="gallery-desc">
+          <span class="en">OpenFOAM dictionaries can be edited through a clear visual form. Each parameter includes mathematical meaning, physical role, selection advice, risks, and examples, helping beginners understand what they are changing instead of memorizing syntax.</span>
+          <span class="zh">OpenFOAM 字典可通过清晰的可视化表单编辑。每个参数都配有数理含义、物理作用、选择建议、风险提示和示例，让新手理解自己在改什么，而不是死记语法。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v13 -->
+    <div class="gallery-item reveal">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v13.png" alt="Markdown 渲染">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">13 · <span class="en">Markdown Research Notes</span><span class="zh">Markdown 研究笔记</span></div>
+        <h3 class="gallery-title"><span class="en">Elegant Markdown Editing and Rendering</span><span class="zh">优雅的 Markdown 编辑与渲染</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Professional notes and reports can be written directly in Studio. Tables, equations, images, code blocks, and full Markdown structure render cleanly, with editing and preview modes ready for research logs, validation summaries, and deliverables.</span>
+          <span class="zh">专业笔记和报告可直接在 Studio 内编写。表格、公式、图片、代码块和完整 Markdown 结构都能清晰渲染，并支持编辑与预览模式，适合研究日志、验证总结和交付文档。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v14 -->
+    <div class="gallery-item reveal d1">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v14.png" alt="标签页管理">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">14 · <span class="en">Tab Management</span><span class="zh">标签页管理</span></div>
+        <h3 class="gallery-title"><span class="en">Keep Many Case Files Under Control</span><span class="zh">海量文件也能清晰管理</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Open many files, logs, scripts, notes, and dictionaries without losing orientation. Clear tab management keeps active evidence visible, making long CAE debugging and report-writing sessions much easier to navigate.</span>
+          <span class="zh">大量打开文件、日志、脚本、笔记和字典时也不会迷失。清晰的标签页管理让当前证据始终可见，长时间 CAE 调试和报告写作更容易掌控。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v15 -->
+    <div class="gallery-item reveal d2">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v15.png" alt="CC-Switch 模型切换">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">15 · <span class="en">Model Backend Switching</span><span class="zh">模型后端切换</span></div>
+        <h3 class="gallery-title"><span class="en">Switch LLM Backends with CC-Switch</span><span class="zh">CC-Switch 一键切换大模型后端</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Whether you use Codex, Claude Code, opencode, domestic models, or overseas APIs, CC-Switch lets you change the active model backend quickly. VibeFlow keeps the CAE workflow stable while your preferred intelligence layer changes.</span>
+          <span class="zh">无论使用 Codex、Claude Code、opencode、国内模型还是海外 API，CC-Switch 都能快速切换当前大模型后端。智能层可以变化，VibeFlow 的 CAE 工作流保持稳定。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v16 -->
+    <div class="gallery-item reveal">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v16.png" alt="CAE 软件路径配置">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">16 · <span class="en">CAE Backend Context</span><span class="zh">CAE 后端上下文</span></div>
+        <h3 class="gallery-title"><span class="en">Nearly All Mainstream Open CAE Tools</span><span class="zh">几乎覆盖所有主流开源 CAE 软件</span></h3>
+        <p class="gallery-desc">
+          <span class="en">OpenFOAM, CalculiX, Code_Aster, Elmer, FDS, FEniCS, FreeFEM, LAMMPS, MOOSE, SU2, DualSPHysics, PETSc, SPHinXsys, OpenRadioss, OpenLB, and more can be added to the model context by setting paths, without heavy manual configuration.</span>
+          <span class="zh">OpenFOAM、CalculiX、Code_Aster、Elmer、FDS、FEniCS、FreeFEM、LAMMPS、MOOSE、SU2、DualSPHysics、PETSc、SPHinXsys、OpenRadioss、OpenLB 等后端都可通过路径快速加入模型上下文，无需复杂配置。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v17 -->
+    <div class="gallery-item reveal d1">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v17.png" alt="CAE skills 与知识库">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">17 · <span class="en">CAE Skills</span><span class="zh">CAE Skills</span></div>
+        <h3 class="gallery-title"><span class="en">Built-In Expert Skills for Every Backend</span><span class="zh">每个 CAE 后端都有专业 Skill</span></h3>
+        <p class="gallery-desc">
+          <span class="en">Each CAE backend includes specialized skills, playbooks, practical tips, validation gates, and workflow rules. The Agent does not merely chat about simulation; it follows backend-specific execution knowledge to achieve highly accurate task completion.</span>
+          <span class="zh">每个 CAE 后端都内置专业 skills、playbooks、实践经验、验证门槛和工作流规则。Agent 不是泛泛聊天，而是按照后端专项知识执行任务，在已有仿真测试中表现出很高的执行准确率。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v18 -->
+    <div class="gallery-item reveal d2">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v18.png" alt="保险杠梁碰撞仿真">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">18 · <span class="en">Crash Simulation</span><span class="zh">碰撞仿真</span></div>
+        <h3 class="gallery-title"><span class="en">Natural-Language Bumper Beam Impact Study</span><span class="zh">自然语言完成保险杠梁碰撞仿真</span></h3>
+        <p class="gallery-desc">
+          <span class="en">A full bumper beam crash workflow can be driven in VibeFlow with natural language: model definition, materials, boundary conditions, solver setup, run diagnostics, result extraction, plots, and report-ready conclusions.</span>
+          <span class="zh">在 VibeFlow 中可全流程用自然语言完成保险杠梁碰撞仿真：模型定义、材料、边界条件、求解设置、运行诊断、结果提取、图表与报告化结论都由指令驱动。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v19 -->
+    <div class="gallery-item reveal">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v19.png" alt="LaTeX 论文工作流">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">19 · <span class="en">LaTeX Workflow</span><span class="zh">LaTeX 工作流</span></div>
+        <h3 class="gallery-title"><span class="en">From Research Idea to Compiled PDF</span><span class="zh">从想法到完整 PDF 论文</span></h3>
+        <p class="gallery-desc">
+          <span class="en">VibeFlow supports LaTeX editing and compilation, with built-in templates for mainstream publishers. Simulation evidence, Markdown notes, figures, equations, bibliography, and manuscript structure can become a complete research paper workflow.</span>
+          <span class="zh">VibeFlow 支持 LaTeX 编辑与编译，并内置几乎所有主流出版社投稿模板。仿真证据、Markdown 笔记、图表、公式、参考文献和正文结构可衔接成完整自动化论文工作流。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- v20 -->
+    <div class="gallery-item reveal d1">
+      <div class="gallery-img-wrap" onclick="openLb(this)">
+        <img src="figure/v20.png" alt="Save and add to chat 截图工具">
+      </div>
+      <div class="gallery-text">
+        <div class="gallery-num">20 · <span class="en">Visual Prompting</span><span class="zh">视觉 Prompt</span></div>
+        <h3 class="gallery-title"><span class="en">Save Screenshots and Add Them to Chat</span><span class="zh">截图一键加入 Prompt</span></h3>
+        <p class="gallery-desc">
+          <span class="en">The screenshot tool can save the current view and add it directly to the chat context. The Agent can understand visual evidence and make precise adjustments, such as refining geometry, correcting mesh issues, or explaining unexpected result patterns.</span>
+          <span class="zh">截图工具支持 Save and add to chat，将当前视图一键加入 prompt。Agent 可理解图片信息并做出精确调整，例如微调几何、修正网格问题或解释异常结果形态。</span>
+        </p>
+      </div>
+    </div>
+
     </div>
 
   </div>
@@ -1252,14 +1395,13 @@
         <div class="price-tier"><span class="en">Free Trial</span><span class="zh">免费试用</span></div>
         <div class="price-val"><span class="symbol">¥</span>0<span class="period"> / <span class="en">60 days</span><span class="zh">60天</span></span></div>
         <p class="price-desc">
-          <span class="en">Full-featured trial. No credit card required. Explore the complete workflow and both agent modes.</span>
-          <span class="zh">全功能试用，无需信用卡。探索完整工作流与两种智能体模式。</span>
+          <span class="en">Full-featured trial. No credit card required. Explore AI-native CAE workflows, multi-backend skills, and both agent modes.</span>
+          <span class="zh">全功能试用，无需信用卡。探索 AI 原生 CAE 工作流、多后端 skills 与两种智能体模式。</span>
         </p>
         <ul class="price-feats">
           <li><span class="en">Usage Mode — 6 stages</span><span class="zh">使用模式 — 6 阶段</span></li>
           <li><span class="en">Development Mode — 5 stages</span><span class="zh">开发模式 — 5 阶段</span></li>
-          <li><span class="en">OpenFOAM integration</span><span class="zh">OpenFOAM 集成</span></li>
-          <li><span class="en">CadQuery + Gmsh + ParaView</span><span class="zh">CadQuery + Gmsh + ParaView</span></li>
+          <li><span class="en">Multi-CAE backend assistance</span><span class="zh">多 CAE 后端辅助</span></li>
           <li><span class="en">60-day full access</span><span class="zh">60 天完整访问</span></li>
         </ul>
         <a href="#download" class="price-btn fill"><span class="en">Start Free Trial</span><span class="zh">开始免费试用</span></a>
@@ -1337,8 +1479,8 @@
       <div class="eyebrow"><span class="en">Resources &amp; Links</span><span class="zh">资源与链接</span></div>
       <h2 class="sec-title"><span class="en">Explore VibeFlow</span><span class="zh">探索 VibeFlow</span></h2>
       <p class="sec-sub">
-        <span class="en">Documentation, community, and core integrations — everything you need to get started.</span>
-        <span class="zh">文档、社区与核心集成——一切您需要的入门资源。</span>
+        <span class="en">Documentation, community channels, demo videos, and downloads — everything you need to start an AI-native CAE workflow.</span>
+        <span class="zh">文档、社区渠道、演示视频和下载入口——开始 AI 原生 CAE 工作流所需的内容都在这里。</span>
       </p>
     </div>
     <div class="links-grid">
@@ -1358,17 +1500,21 @@
         <span class="link-desc"><span class="en">Join the VibeFlow wechat community — discuss cases, share results, and get peer support</span><span class="zh">加入 VibeFlow 微信社区，讨论算例、分享结果，获取社区支持</span></span>
         <span class="link-arrow" style="color:var(--cyan);font-family:var(--mono);font-size:11px;margin-top:auto;padding-top:8px;"><span class="en">↑ hover to scan</span><span class="zh">↑ 悬浮查看二维码</span></span>
       </div>
-      <a href="https://www.openfoam.com/" target="_blank" rel="noopener" class="link-card reveal">
-        <span class="link-icon">🌊</span>
-        <span class="link-name">OpenFOAM</span>
-        <span class="link-desc"><span class="en">Open-source CFD toolbox powering VibeFlow simulations</span><span class="zh">驱动 VibeFlow 仿真的开源 CFD 工具箱</span></span>
-        <span class="link-arrow">→ openfoam.com</span>
-      </a>
-      <a href="https://cadquery.readthedocs.io/" target="_blank" rel="noopener" class="link-card reveal d1">
-        <span class="link-icon">📐</span>
-        <span class="link-name">CadQuery</span>
-        <span class="link-desc"><span class="en">Parametric CAD scripting library used for VibeFlow geometry</span><span class="zh">VibeFlow 几何建模使用的参数化 CAD 脚本库</span></span>
-        <span class="link-arrow">→ cadquery.io</span>
+      <div class="link-card link-card-community reveal d1">
+        <div class="qr-popup">
+          <img src="assets/bilibili.png" alt="Bilibili QR Code">
+          <div class="qr-tip"><span class="en">Scan to watch demos</span><span class="zh">扫码观看演示</span></div>
+        </div>
+        <span class="link-icon">▶</span>
+        <span class="link-name">Bilibili</span>
+        <span class="link-desc"><span class="en">Follow operation demos, workflow updates, and CAE examples</span><span class="zh">关注操作演示、工作流更新和 CAE 示例</span></span>
+        <span class="link-arrow" style="color:var(--cyan);font-family:var(--mono);font-size:11px;margin-top:auto;padding-top:8px;"><span class="en">↑ hover to scan</span><span class="zh">↑ 悬浮查看二维码</span></span>
+      </div>
+      <a href="https://github.com/sunrise-hjx/vfReleases/releases" target="_blank" rel="noopener" class="link-card reveal">
+        <span class="link-icon">⬇</span>
+        <span class="link-name"><span class="en">Releases</span><span class="zh">版本下载</span></span>
+        <span class="link-desc"><span class="en">Download VibeFlow Studio packages and release builds</span><span class="zh">下载 VibeFlow Studio 安装包与发布版本</span></span>
+        <span class="link-arrow">→ GitHub</span>
       </a>
     </div>
   </div>
@@ -1396,14 +1542,14 @@
             </svg>
           </div>
           <div class="dl-card-body">
-            <span class="dl-name">VibeFlow Studio 0.2.0</span>
+            <span class="dl-name">VibeFlow Studio 0.3.0</span>
             <span class="dl-platform">Ubuntu / Debian · x86_64</span>
             <span class="dl-ext">.deb package</span>
           </div>
         </a>
         <div class="install-block">
           <span class="cm"># Quick install</span><br>
-          <span class="prompt">$</span> <span class="kw">sudo</span> apt install ./vibeflow-studio_0.2.0_amd64.deb<br>
+          <span class="prompt">$</span> <span class="kw">sudo</span> apt install ./vibeflow-studio_0.3.0_amd64.deb<br>
           <span class="prompt">$</span> <span class="kw">vibeflow-studio</span>
         </div>
       </div>
@@ -1416,7 +1562,7 @@
             </svg>
           </div>
           <div class="dl-card-body">
-            <span class="dl-name">VibeFlow Studio 0.2.0</span>
+            <span class="dl-name">VibeFlow Studio 0.3.0</span>
             <span class="dl-platform">Windows · x86_64</span>
             <span class="dl-ext">Windows package</span>
           </div>
@@ -1456,32 +1602,32 @@
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en">VibeFlow Studio is an AI-powered CFD workstation built on top of OpenFOAM, CadQuery, Gmsh, and ParaView. It provides two agent modes: <strong>Usage Mode</strong> — a 6-stage workflow from requirements to traceable research reports; and <strong>Development Mode</strong> — a 5-stage pipeline for creating custom solvers, boundary conditions, turbulence models, and other OpenFOAM extensions. All stages are driven by natural language through a large language model.</span>
-            <span class="zh">VibeFlow Studio 是一个基于 OpenFOAM、CadQuery、Gmsh 与 ParaView 构建的 AI 驱动 CFD 工作台。它提供两种智能体模式：<strong>使用模式</strong>（六阶段工作流，从需求到可追溯研究报告）与<strong>开发模式</strong>（五阶段流程，用于开发自定义求解器、边界条件、湍流模型等 OpenFOAM 扩展）。所有阶段均通过自然语言驱动。</span>
+            <span class="en">VibeFlow Studio is an AI-native CAE workstation. It connects natural-language instructions with geometry, meshing, solver-backend input generation, computation, post-processing, Markdown/LaTeX writing, and evidence-traced reports. It provides <strong>Usage Mode</strong> for complete simulation workflows and <strong>Development Mode</strong> for custom solver-side capabilities.</span>
+            <span class="zh">VibeFlow Studio 是一个 AI 原生 CAE 工作台。它把自然语言指令与几何、网格、求解器后端输入生成、计算、后处理、Markdown/LaTeX 写作和证据追溯报告连接起来。它提供面向完整仿真流程的<strong>使用模式</strong>，以及面向自定义求解能力的<strong>开发模式</strong>。</span>
           </div></div>
         </div>
 
         <div class="faq-item reveal d1" onclick="toggleFaq(this)">
           <div class="faq-q">
             <span class="faq-num">02</span>
-            <span class="faq-q-text"><span class="en">What are the system requirements?</span><span class="zh">系统要求是什么？</span></span>
+            <span class="faq-q-text"><span class="en">Which CAE software can VibeFlow assist?</span><span class="zh">VibeFlow 可以辅助哪些 CAE 软件？</span></span>
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en">VibeFlow Studio currently supports <strong>Linux x86_64</strong> (Ubuntu 22.04+ / Debian 11+). The required environment can be configured by yourself or installed in one click using the installation options provided by us.</span>
-            <span class="zh">VibeFlow Studio 目前支持 <strong>Linux x86_64</strong>（Ubuntu 22.04+ / Debian 11+）。所需环境您可以自己配置或者使用我们提供的安装选项一键安装。</span>
+            <span class="en">VibeFlow is designed around mainstream open-source CAE backends, including OpenFOAM, CalculiX, Code_Aster, Elmer, FDS, FEniCS, FreeFEM, LAMMPS, MOOSE, Nektar++, OpenLB, OpenRadioss, SU2, DualSPHysics, PETSc, SPHinXsys, and related tools such as CadQuery, Gmsh, ParaView, FreeCAD, and LaTeX.</span>
+            <span class="zh">VibeFlow 面向主流开源 CAE 后端设计，包括 OpenFOAM、CalculiX、Code_Aster、Elmer、FDS、FEniCS、FreeFEM、LAMMPS、MOOSE、Nektar++、OpenLB、OpenRadioss、SU2、DualSPHysics、PETSc、SPHinXsys，以及 CadQuery、Gmsh、ParaView、FreeCAD、LaTeX 等配套工具。</span>
           </div></div>
         </div>
 
         <div class="faq-item reveal d1" onclick="toggleFaq(this)">
           <div class="faq-q">
             <span class="faq-num">03</span>
-            <span class="faq-q-text"><span class="en">Do I need to be an OpenFOAM expert to use VibeFlow?</span><span class="zh">使用 VibeFlow 需要熟悉 OpenFOAM 等软件吗？</span></span>
+            <span class="faq-q-text"><span class="en">Do I need to be a CAE software expert?</span><span class="zh">使用 VibeFlow 需要精通 CAE 软件吗？</span></span>
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en">No. VibeFlow is designed so that users who understand their physics problem — but may not know OpenFOAM dictionary syntax or meshing details — can still run production-quality simulations. The AI agent selects the closest tutorial baseline, configures all dictionaries, converts the mesh, and diagnoses errors. That said, deeper knowledge of OpenFOAM helps you make better use of Development Mode and interpret edge-case results.</span>
-            <span class="zh">不需要。VibeFlow 的设计理念是：只要您明白自己的物理问题，即使不熟悉 OpenFOAM 字典语法或网格分割细节，也能完成生产级仿真。AI 智能体会自动选取最接近的教程基准、配置所有字典、转换网格并诊断错误。当然，更深入的 OpenFOAM 知识能帮助您更好地使用开发模式并解读边界情尺结果。</span>
+            <span class="en">No. VibeFlow is built for users who understand their engineering problem but may not remember every solver keyword, dictionary syntax, mesh setting, or post-processing command. Visual parameter forms, built-in skills, local references, Add to Chat, and screenshot prompts help translate intent into accurate instructions. Domain judgment is still important for choosing assumptions and interpreting results.</span>
+            <span class="zh">不需要。VibeFlow 面向“懂工程问题，但不一定记得每个求解器关键字、字典语法、网格设置或后处理命令”的用户。可视化参数表单、内置 skills、本地知识库、Add to Chat 和截图 prompt 会把意图转化为准确指令。但物理假设选择和结果解读仍需要工程判断。</span>
           </div></div>
         </div>
 
@@ -1492,8 +1638,20 @@
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en"><code>A-geo/caseDict</code> is a structured text file that defines every parameter of your simulation case — geometry dimensions, material properties, boundary conditions, mesh targets, solver settings, and post-processing objectives. All six stages of Usage Mode read from and write back to this file. This means that every artifact (geometry, mesh, simulation, figures, report) is traceable to a single versioned document, ensuring full reproducibility.</span>
-            <span class="zh"><code>A-geo/caseDict</code> 是一个结构化文本文件，定义了仿真算例的所有参数：几何尺寸、材料属性、边界条件、网格目标、求解器设置与后处理目标。使用模式的六个阶段均从该文件读取并回写。这意味着所有产物（几何、网格、仿真、图表、报告）均可追溯至同一个版本化文档，确保完全可复现性。</span>
+            <span class="en"><code>0-caseDict/caseDict</code> is the structured definition of the simulation case: intent, physical problem, geometry parameters, materials, regions, interfaces, boundaries, loads, initial values, mesh targets, numerical method, execution settings, post-processing objectives, artifacts, errors, and workflow state. Downstream geometry, mesh, solver inputs, results, and reports must trace back to it.</span>
+            <span class="zh"><code>0-caseDict/caseDict</code> 是仿真算例的结构化定义：意图、物理问题、几何参数、材料、区域、界面、边界、载荷、初值、网格目标、数值方法、运行设置、后处理目标、产物、错误和工作流状态。下游几何、网格、求解器输入、结果和报告都必须可追溯到它。</span>
+          </div></div>
+        </div>
+
+        <div class="faq-item reveal d2" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span class="faq-num">05</span>
+            <span class="faq-q-text"><span class="en">How do Add to Chat, screenshots, and visual forms help?</span><span class="zh">Add to Chat、截图和可视化表单有什么用？</span></span>
+            <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </div>
+          <div class="faq-a"><div class="faq-a-inner">
+            <span class="en">They make prompts precise. Selected code or log fragments can be inserted into the chat directly; screenshots can be saved and added to prompt context; OpenFOAM parameter pages explain mathematical meaning and recommended choices. This reduces vague instructions and helps the Agent perform exact geometry, mesh, solver, and report adjustments.</span>
+            <span class="zh">它们让 prompt 更精确。选中的代码或日志片段可以直接加入对话；截图可以保存并加入 prompt 上下文；OpenFOAM 参数页面会解释数理含义和推荐选择。这减少了模糊指令，帮助 Agent 精确调整几何、网格、求解器设置和报告内容。</span>
           </div></div>
         </div>
 
@@ -1504,8 +1662,8 @@
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en">No. All simulation data — geometry, mesh, case files, results, and reports — remain entirely on your local machine. VibeFlow Studio only sends the conversation context (natural language instructions and structured case parameters) to the LLM API endpoint. Your CFD data never leaves your workstation.</span>
-            <span class="zh">不会。所有仿真数据——几何、网格、算例文件、计算结果与报告——均完全保存在您的本地机器上。VibeFlow Studio 仅将对话上下文（自然语言指令与结构化算例参数）发送到 LLM API。您的 CFD 数据永远不会离开您的工作站。</span>
+            <span class="en">Project artifacts — geometry, mesh, case files, solver logs, results, notes, and reports — remain on your local machine. Only the prompt context you choose to send is passed to the selected LLM endpoint, such as natural-language instructions, selected snippets, structured parameters, or screenshots added to chat.</span>
+            <span class="zh">项目产物——几何、网格、算例文件、求解日志、结果、笔记和报告——都保存在本地机器上。只有您选择发送的 prompt 上下文会传递给选定的大模型端点，例如自然语言指令、选中片段、结构化参数或加入对话的截图。</span>
           </div></div>
         </div>
 
@@ -1516,8 +1674,8 @@
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en">You can reach us by email at <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> or join the wechat community (scan the QR code in the Links section).</span>
-            <span class="zh">可通过邮箱 <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> 联系我们，或扫描链接区的二维码加入微信社区。</span>
+            <span class="en">You can reach us by email at <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a>, scan the WeChat QR code to join the community, or follow the Bilibili channel for operation demos and updates.</span>
+            <span class="zh">可通过邮箱 <a href="mailto:asdvvcasc@163.com" style="color:var(--cyan);text-decoration:none;">asdvvcasc@163.com</a> 联系我们，也可以扫描微信二维码加入社区，或关注 Bilibili 获取操作演示与更新。</span>
           </div></div>
         </div>
 
@@ -1533,38 +1691,41 @@
       <div class="foot-brand">
         <img src="assets/logo.svg" alt="VibeFlow">
         <div class="name">VibeFlow</div>
-        <p><span class="en">An intelligent CFD workstation for traceable engineering research.</span><span class="zh">面向可追溯工程研究的智能 CFD 工作台</span></p>
+        <p><span class="en">An AI-native CAE workstation for traceable engineering research.</span><span class="zh">面向可追溯工程研究的 AI 原生 CAE 工作台</span></p>
       </div>
       <div class="foot-col">
         <h4><span class="en">Product</span><span class="zh">产品</span></h4>
         <a href="#modes"><span class="en">Modes</span><span class="zh">工作模式</span></a>
         <a href="#features"><span class="en">Features</span><span class="zh">功能特性</span></a>
         <a href="#workflow"><span class="en">Workflow</span><span class="zh">工作流程</span></a>
-        <a href="#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
+        <a href="#gallery"><span class="en">Showcase</span><span class="zh">功能展示</span></a>
+        <a href="#demo"><span class="en">Demos</span><span class="zh">演示视频</span></a>
         <a href="#download"><span class="en">Download</span><span class="zh">下载</span></a>
       </div>
       <div class="foot-col">
-        <h4><span class="en">Technology</span><span class="zh">技术</span></h4>
-        <a href="https://www.openfoam.com/" target="_blank" rel="noopener">OpenFOAM</a>
-        <a href="https://cadquery.readthedocs.io/" target="_blank" rel="noopener">CadQuery</a>
-        <a href="https://gmsh.info/" target="_blank" rel="noopener">Gmsh</a>
-        <a href="https://www.paraview.org/" target="_blank" rel="noopener">ParaView</a>
-      </div>
-      <div class="foot-col">
-        <h4><span class="en">Resources</span><span class="zh">资源</span></h4>
-        <a href="#"><span class="en">Documentation</span><span class="zh">文档</span></a>
-        <a href="#"><span class="en">Tutorials</span><span class="zh">教程</span></a>
-        <a href="#"><span class="en">VibeFlowBench</span><span class="zh">VibeFlowBench</span></a>
+        <h4><span class="en">Community</span><span class="zh">社区</span></h4>
+        <a href="https://www.yuque.com/bluedreams/vibeflow" target="_blank" rel="noopener"><span class="en">Documentation</span><span class="zh">使用文档</span></a>
         <a href="#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
         <a href="mailto:asdvvcasc@163.com" style="word-break:break-all;">asdvvcasc@163.com</a>
+        <div class="foot-qrs">
+          <div class="foot-qr">
+            <img src="assets/wechat.png" alt="VibeFlow WeChat QR Code">
+            <span><span class="en">WeChat</span><span class="zh">微信</span></span>
+          </div>
+          <div class="foot-qr">
+            <img src="assets/wechat_oa.png" alt="VibeFlow WeChat Official Account QR Code">
+            <span><span class="en">Official Account</span><span class="zh">公众号</span></span>
+          </div>
+          <div class="foot-qr">
+            <img src="assets/bilibili.png" alt="VibeFlow Bilibili QR Code">
+            <span>Bilibili</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="foot-bottom">
       <span>© 2026 VibeFlow</span>
-      <span style="font-family:var(--mono);font-size:11px;color:var(--text3)">
-        <span class="en"></span>
-        <span class="zh"></span>
-      </span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--text3)"><span class="en">AI-native CAE</span><span class="zh">AI 原生 CAE</span></span>
     </div>
   </div>
 </footer>
@@ -1587,9 +1748,10 @@ function toggleLang() {
   document.body.classList.toggle('lang-zh', lang === 'zh');
   document.body.classList.toggle('lang-en', lang === 'en');
   document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'English';
-  document.title = lang === 'zh' ? 'VibeFlow — 智能 CFD 工作台' : 'VibeFlow — Intelligent CFD Workstation';
+  document.title = lang === 'zh' ? 'VibeFlow — AI 原生 CAE 工作台' : 'VibeFlow — AI-Native CAE Workstation';
   if (activeUsageStage >= 0) renderStage('usage', activeUsageStage);
   if (activeDevStage   >= 0) renderStage('dev',   activeDevStage);
+  renderDemoTitle();
 }
 document.body.classList.add('lang-en');
 
@@ -1634,34 +1796,34 @@ const stageData = {
     en: [
       { t: '01 · Requirements Clarification', d: 'Convert user intent and reference materials (papers, CAD, experimental data) into a structured caseDict. Key parameters are elicited systematically: geometry dimensions, physics model, boundary conditions, mesh strategy, solver family, and post-processing objectives. All ambiguities are resolved with structured follow-up before the pipeline advances.' },
       { t: '02 · Parametric Geometry', d: 'Generate reproducible parametric CAD using CadQuery/OCP Python. Named modeling stages, STEP/STL export, and Studio preview validation ensure geometry is correct and meshing-ready. The model rebuilds deterministically from caseDict parameters — change a value, rebuild the geometry.' },
-      { t: '03 · Mesh Generation', d: 'Select meshing strategy based on physics: structured (blockMesh), unstructured (Gmsh), or hybrid (snappyHexMesh). Boundary layer control, y+ targeting, and checkMesh quality gates ensure simulation-ready meshes. All patch names are verified against caseDict before handoff.' },
-      { t: '04 · OpenFOAM Simulation', d: 'Select the closest baseline tutorial, configure all dictionaries from caseDict, convert the mesh, and run the solver. Error Locator reports diagnose failures to the specific file and caseDict field. Logs, residuals, and Courant numbers are tracked for full traceability.' },
-      { t: '05 · Post-Processing', d: 'Extract plots, field visualizations, and derived data using Python scripts and ParaView/pvpython. Results are compared against reference data or experimental measurements. Every figure and CSV is linked to the evidence chain in the report.' },
-      { t: '06 · Report Generation', d: 'Produce a structured research report from all upstream artifacts. Every key claim — pressure peaks, impulse, drag, Nusselt number — links to a specific file, log, measurement, or reference. The report distinguishes verified facts, engineering assumptions, and open limitations.' }
+      { t: '03 · Mesh Generation', d: 'Select meshing strategy based on physics and backend requirements: structured, unstructured, hybrid, finite-element, particle, or lattice-oriented workflows. Boundary naming, regions, interfaces, mesh quality gates, and conversion needs are verified against caseDict before handoff.' },
+      { t: '04 · CAE Backend Solve', d: 'Choose the appropriate open-source backend, generate solver-native inputs from caseDict, run prechecks, execute the solver, and diagnose failures down to files, parameters, and logs. OpenFOAM, CalculiX, Code_Aster, Elmer, SU2, FDS, LAMMPS, and other backends share the same traceable discipline.' },
+      { t: '05 · Post-Processing', d: 'Extract plots, field visualizations, derived data, and validation tables using Python, ParaView/pvpython, or backend-specific tools. Results are compared against reference data, analytical solutions, or engineering acceptance criteria. Every figure and CSV links to the evidence chain.' },
+      { t: '06 · Report Generation', d: 'Produce a structured research report from all upstream artifacts. Every key claim — stress peaks, displacement, pressure, temperature, impulse, drag, convergence, or safety margin — links to a specific file, log, measurement, figure, or reference. The report distinguishes verified facts, engineering assumptions, and open limitations.' }
     ],
     zh: [
       { t: '01 · 需求澄清', d: '将您的需求和参考资料（论文、CAD、实验数据）转化为结构化 caseDict。系统性提取关键参数：几何尺寸、物理模型、边界条件、网格策略、求解器族和后处理目标。在流程推进前，所有歧义均通过结构化追问解决。' },
       { t: '02 · 参数化几何', d: '使用 CadQuery/OCP Python 生成可复现的参数化 CAD 模型。命名建模阶段、STEP/STL 导出和 Studio 预览验证确保几何正确并准备好网格划分。模型从 caseDict 参数确定性重建——修改数值，重建几何。' },
-      { t: '03 · 网格划分', d: '根据物理问题选择网格策略：结构化（blockMesh）、非结构化（Gmsh）或混合（snappyHexMesh）。边界层控制、y+ 目标设定和 checkMesh 质量门控确保仿真就绪的网格质量。所有 patch 名称在交接前均对照 caseDict 验证。' },
-      { t: '04 · OpenFOAM 求解', d: '选择最接近的基准教程，从 caseDict 配置所有字典，转换网格并运行求解器。错误定位报告将失败诊断到具体文件和 caseDict 字段。日志、残差和 Courant 数均被跟踪以保证完整可追溯性。' },
-      { t: '05 · 后处理', d: '使用 Python 脚本和 ParaView/pvpython 提取图表、场可视化和派生数据。结果与参考数据或实验测量进行比较。每个图表和 CSV 文件均链接至报告中的证据链。' },
-      { t: '06 · 报告生成', d: '从所有上游产物生成结构化研究报告。每个关键结论——压力峰值、冲量、阻力、Nusselt 数——均链接至特定文件、日志、测量值或文献参考。报告区分已验证事实、工程假设和未解决限制。' }
+      { t: '03 · 网格划分', d: '根据物理问题和后端需求选择网格策略：结构化、非结构化、混合、有限元、粒子或格子类型流程。边界命名、区域、界面、网格质量门控和转换需求在交接前均对照 caseDict 验证。' },
+      { t: '04 · CAE 后端求解', d: '选择合适的开源 CAE 后端，从 caseDict 生成求解器原生输入，执行预检查、求解和诊断，将失败定位到文件、参数和日志。OpenFOAM、CalculiX、Code_Aster、Elmer、SU2、FDS、LAMMPS 等后端共享同一套可追溯规范。' },
+      { t: '05 · 后处理', d: '使用 Python、ParaView/pvpython 或后端专用工具提取图表、场可视化、派生数据和验证表。结果与参考数据、解析解或工程验收标准比较，每个图表与 CSV 均链接至证据链。' },
+      { t: '06 · 报告生成', d: '从所有上游产物生成结构化研究报告。每个关键结论——应力峰值、位移、压力、温度、冲量、阻力、收敛性或安全裕度——均链接至特定文件、日志、测量值、图表或参考资料。报告区分已验证事实、工程假设和未解决限制。' }
     ]
   },
   dev: {
     en: [
-      { t: 'D1 · Requirement & Boundary Confirmation', d: 'Identify the task type: new solver, new library, boundary condition, functionObject, fvOption, or code repair. Clarify target capability, inputs/outputs, applicable physical model, OpenFOAM version, integration method, and validation case. All scope and acceptance criteria are written to UDF/README.md before implementation begins.' },
-      { t: 'D2 · Development Design Document', d: 'Read the closest native OpenFOAM solver, library, or tutorial. Complete the design section in UDF/README.md: mathematical model, key classes/files, dictionary interface, run method, build method, and validation method. Prefer implementing new UDF code without modifying $WM_PROJECT_DIR core source.' },
-      { t: 'D3 · Implementation & Organization', d: 'Copy the minimum necessary skeleton from the closest OpenFOAM source into UDF/solver/&lt;name&gt; or UDF/src/&lt;name&gt;. Each compilable target must contain Make/files and Make/options. Custom libraries compile to $(FOAM_USER_LIBBIN); custom solvers to $(FOAM_USER_APPBIN).' },
-      { t: 'D4 · Compilation & Minimal Validation', d: 'Load the OpenFOAM environment and compile libraries before solvers. Record build logs and errors in UDF/README.md. Perform at least one lightweight test: solver -help verification, successful loading through libs (...), or reasonable iteration startup on a minimal case.' },
-      { t: 'D5 · Case Integration & Delivery', d: 'If needed, update C-run/case-* system/controlDict and relevant dictionaries to use the new solver/library. Keep UDF code and case dictionaries decoupled: source stays under UDF/, cases call it through application, libs, and dictionary keywords. Document how to compile, enable, and validate in UDF/README.md.' }
+      { t: 'D1 · Requirement & Boundary Confirmation', d: 'Identify the task type: custom solver capability, backend adapter, input generator, material model, boundary condition, post-processing tool, or code repair. Clarify target capability, inputs/outputs, physical model, backend version, integration method, and validation case before implementation begins.' },
+      { t: 'D2 · Development Design Document', d: 'Read the closest backend source, tutorial, skill, manual, or reference case. Complete UDF/README.md with the mathematical model, key classes/files, interfaces, run method, build method, validation method, and risks.' },
+      { t: 'D3 · Implementation & Organization', d: 'Create maintainable source under UDF/ while keeping generated cases and source code decoupled. Implement the smallest reliable capability that matches the design, follows backend conventions, and can be called reproducibly by VibeFlow cases.' },
+      { t: 'D4 · Compilation & Minimal Validation', d: 'Load the backend environment, compile or lint the development artifact, preserve meaningful logs, and perform at least one lightweight validation: help command, library loading, parser smoke test, minimal backend run, or result extraction check.' },
+      { t: 'D5 · Case Integration & Delivery', d: 'If requested, wire the development result into C-run/case-* or the target backend case while keeping UDF/ as the source location. Document how to compile, enable, run, validate, and troubleshoot the result.' }
     ],
     zh: [
-      { t: 'D1 · 需求与边界确认', d: '确定任务类型：新求解器、新库、边界条件、functionObject、fvOption 或代码修复。明确目标能力、输入/输出、适用物理模型、OpenFOAM 版本、集成方法和验证算例。所有范围和验收标准在实现开始前写入 UDF/README.md。' },
-      { t: 'D2 · 开发设计文档', d: '阅读最接近的原生 OpenFOAM 求解器、库或教程。在 UDF/README.md 中完善设计章节：数学模型、关键类/文件、字典接口、运行方法、构建方法和验证方法。优先在不修改 $WM_PROJECT_DIR 核心源码的情况下实现新 UDF 代码。' },
-      { t: 'D3 · 实现与组织', d: '从最接近的 OpenFOAM 源码中复制最小必要框架到 UDF/solver/&lt;name&gt; 或 UDF/src/&lt;name&gt;。每个可编译目标必须包含 Make/files 和 Make/options。自定义库编译到 $(FOAM_USER_LIBBIN)，自定义求解器编译到 $(FOAM_USER_APPBIN)。' },
-      { t: 'D4 · 编译与最小化验证', d: '加载 OpenFOAM 环境，先编译库再编译求解器。在 UDF/README.md 中记录构建日志和错误。至少进行一次轻量级测试：求解器 -help 验证、通过 libs (...) 成功加载，或在最小算例上合理启动迭代。' },
-      { t: 'D5 · 算例集成与交付', d: '如需要，更新 C-run/case-* 的 system/controlDict 和相关字典以使用新求解器/库。保持 UDF 代码与算例字典解耦：源码留在 UDF/，算例通过 application、libs 和字典关键字调用。在 UDF/README.md 中清晰记录编译、启用和验证方法。' }
+      { t: 'D1 · 需求与边界确认', d: '确定任务类型：自定义求解能力、后端适配器、输入生成器、材料模型、边界条件、后处理工具或代码修复。明确目标能力、输入/输出、物理模型、后端版本、集成方式和验证算例，再进入实现。' },
+      { t: 'D2 · 开发设计文档', d: '阅读最接近的后端源码、教程、skill、手册或参考算例。在 UDF/README.md 中补全数学模型、关键类/文件、接口、运行方法、构建方法、验证方法和风险。' },
+      { t: 'D3 · 实现与组织', d: '在 UDF/ 下创建可维护源码，并保持生成算例与源代码解耦。实现与设计文档一致、符合后端习惯、能被 VibeFlow 算例可复现调用的最小可靠能力。' },
+      { t: 'D4 · 编译与最小化验证', d: '加载后端环境，编译或检查开发产物，保存必要日志，并至少进行一次轻量级验证：help 命令、库加载、解析器 smoke test、最小后端运行或结果提取检查。' },
+      { t: 'D5 · 算例集成与交付', d: '如用户需要，将开发结果接入 C-run/case-* 或目标后端算例，同时保持 UDF/ 为源码位置。清晰记录编译、启用、运行、验证和故障排查方法。' }
     ]
   }
 };
@@ -1743,11 +1905,60 @@ function toggleFaq(item) {
   if (!isOpen) item.classList.add('open');
 }
 
-(function loadBiliDemo() {
+const demoVideos = [
+  {
+    bvid: 'BV1c15u6eEoy',
+    en: 'Fully AI-driven turbulence-model development, validation, and SUBOFF full-appended-body engineering simulation with physically accurate results',
+    zh: '全程AI驱动完成湍流模型开发，验证与SUBOFF全附体模型工程计算并满足结果的物理准确'
+  },
+  {
+    bvid: 'BV18HVY65Emk',
+    en: 'Linux installation tutorial, then build a two-phase-flow wave model with natural language and automatically complete comparison validation',
+    zh: 'linux安装教程及使用自然语言快速构建两相流波浪模型并自动完成对比验证'
+  },
+  {
+    bvid: 'BV1oyVM6HE7U',
+    en: 'Windows installation tutorial and AI-assisted automatic finite-element calculation of a T-shape beam',
+    zh: 'Windows安装教程及AI辅助自动完成T-shape梁有限元计算'
+  },
+  {
+    bvid: 'BV1yF5F6VEq4',
+    en: 'Natural-language-driven OpenRadioss bumper beam crash simulation',
+    zh: '自然语言驱动openradioss自动完成保险杠梁碰撞仿真'
+  }
+];
+let activeDemoVideo = 0;
+
+function demoSrc(bvid) {
+  return `https://player.bilibili.com/player.html?isOutside=true&bvid=${bvid}&p=1&autoplay=0`;
+}
+
+function renderDemoTitle() {
+  const title = document.getElementById('demo-video-title');
+  if (title) title.textContent = demoVideos[activeDemoVideo][lang];
+}
+
+function renderDemoDots() {
+  const dots = document.getElementById('demo-video-dots');
+  if (!dots) return;
+  dots.innerHTML = demoVideos.map(function(_, i) {
+    return `<button type="button" class="demo-dot${i === activeDemoVideo ? ' active' : ''}" onclick="setDemoVideo(${i})" aria-label="Show demo ${i + 1}"></button>`;
+  }).join('');
+}
+
+function setDemoVideo(index) {
+  activeDemoVideo = (index + demoVideos.length) % demoVideos.length;
   const player = document.getElementById('bili-demo-player');
-  if (player) player.src = player.dataset.biliSrc;
-})();
+  if (player) player.src = demoSrc(demoVideos[activeDemoVideo].bvid);
+  renderDemoTitle();
+  renderDemoDots();
+}
+
+function stepDemoVideo(delta) {
+  setDemoVideo(activeDemoVideo + delta);
+}
+
+setDemoVideo(0);
 </script>
 </body>
 </html>
-
