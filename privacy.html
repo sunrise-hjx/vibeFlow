@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VibeFlow Privacy Policy — local-first privacy practices for AI-native CAE workflows.">
+  <title>VibeFlow — Privacy Policy</title>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <style>
+    @font-face {
+      font-family: 'Syne Local';
+      src: url('assets/fonts/syne-latin.woff2') format('woff2');
+      font-weight: 400 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'DM Sans Local';
+      src: url('assets/fonts/dm-sans-latin.woff2') format('woff2');
+      font-weight: 300 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono Local';
+      src: url('assets/fonts/jetbrains-mono-latin.woff2') format('woff2');
+      font-weight: 400 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-400-subset.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-600-subset.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-700-subset.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans SC Local';
+      src: url('assets/fonts/noto-sans-sc-800-subset.woff2') format('woff2');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #05080F;
+      --bg2:       #09101C;
+      --bg3:       #0F1828;
+      --border:    rgba(255,255,255,0.07);
+      --border-hi: rgba(34,211,238,0.28);
+      --cyan:      #22D3EE;
+      --cyan-glow: rgba(34,211,238,0.18);
+      --text:      #E8EFF8;
+      --text2:     #8B98AE;
+      --text3:     #445065;
+      --display:   'Syne Local', 'Noto Sans SC Local', sans-serif;
+      --body:      'DM Sans Local', 'Noto Sans SC Local', sans-serif;
+      --mono:      'JetBrains Mono Local', 'Noto Sans SC Local', monospace;
+      --cjk:       'Noto Sans SC Local', 'Noto Sans CJK SC', 'Source Han Sans SC', sans-serif;
+      --r:         12px;
+      --r-sm:      8px;
+      --ease:      cubic-bezier(.4,0,.2,1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { min-height: 100vh; background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.75; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--text3); border-radius: 3px; }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    .en, .zh { display: inline; }
+    body.lang-zh .en { display: none; }
+    body.lang-en .zh { display: none; }
+    .zh, body.lang-zh .policy-doc { font-family: var(--cjk); }
+    a { color: inherit; }
+
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
+    .reveal.on { opacity: 1; transform: none; }
+    .reveal.d1 { transition-delay: .08s; }
+    .reveal.d2 { transition-delay: .16s; }
+
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 90; padding: 22px 0;
+      transition: padding .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    #nav.stuck { padding: 14px 0; background: rgba(5,8,15,.85); backdrop-filter: blur(20px) saturate(1.4); border-color: var(--border); }
+    .nav-row { display: flex; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 28px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; margin-right: auto; }
+    .nav-logo img { height: 30px; }
+    .nav-logo-name { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 32px; margin-right: 32px; }
+    .nav-links a { font-size: 14px; color: var(--text2); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-btns { display: flex; align-items: center; gap: 10px; }
+    .btn-lang, .btn-theme {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 7px 14px; border: 1px solid var(--border); background: none;
+      color: var(--text2); font-family: var(--mono); font-size: 11px;
+      border-radius: 6px; cursor: pointer; transition: .25s;
+    }
+    .btn-lang { padding: 7px 14px; font-family: var(--mono); font-size: 11px; }
+    .btn-lang:hover, .btn-theme:hover { border-color: var(--border-hi); color: var(--cyan); }
+    .btn-dl { padding: 8px 20px; background: var(--cyan); color: #05080F; font-weight: 600; font-size: 13px; border-radius: var(--r-sm); text-decoration: none; transition: .25s; }
+    .btn-dl:hover { background: #38BDF8; box-shadow: 0 0 24px rgba(34,211,238,.4); }
+
+    .doc-hero { position: relative; overflow: hidden; padding: 150px 0 74px; border-bottom: 1px solid var(--border); background: var(--bg); }
+    .doc-hero::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .doc-hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, var(--bg) 100%);
+    }
+    .doc-hero .wrap { position: relative; z-index: 2; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--cyan); margin-bottom: 22px;
+    }
+    .eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--cyan); }
+    h1 {
+      font-family: var(--display); font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800; letter-spacing: -.05em; line-height: .95; margin-bottom: 24px;
+      background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { max-width: 760px; color: var(--text2); font-size: 17px; line-height: 1.85; }
+    .doc-meta {
+      display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 34px;
+      font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--text3);
+    }
+    .doc-meta span { display: inline-flex; align-items: center; gap: 8px; }
+    .doc-meta span::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); opacity: .75; }
+
+    .doc-layout { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 64px; padding: 72px 0 110px; }
+    .toc { position: sticky; top: 110px; align-self: start; padding: 22px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .toc-title { font-family: var(--mono); color: var(--text3); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 16px; }
+    .toc a { display: block; color: var(--text2); text-decoration: none; font-size: 13px; line-height: 1.45; padding: 8px 0; transition: color .2s; }
+    .toc a:hover { color: var(--cyan); }
+
+    .policy-doc { max-width: none; }
+    .policy-section { padding: 0 0 42px; margin-bottom: 42px; border-bottom: 1px solid var(--border); scroll-margin-top: 110px; }
+    .policy-section:last-child { margin-bottom: 0; }
+    .policy-section h2 {
+      font-family: var(--display); font-size: clamp(24px, 3.5vw, 34px);
+      font-weight: 750; letter-spacing: -.03em; line-height: 1.18; margin-bottom: 18px;
+    }
+    .policy-section h3 {
+      font-family: var(--display); font-size: 17px; font-weight: 700;
+      letter-spacing: -.02em; margin: 26px 0 10px; color: var(--text);
+    }
+    .policy-section p, .policy-section li { color: var(--text2); font-size: 15px; line-height: 1.9; }
+    .policy-section p + p { margin-top: 14px; }
+    .policy-section ul { margin: 16px 0 0 20px; }
+    .policy-section li { margin: 8px 0; padding-left: 4px; }
+    .policy-section strong { color: var(--text); font-weight: 600; }
+    .policy-section code { font-family: var(--mono); font-size: 12px; color: var(--cyan); background: rgba(34,211,238,.07); padding: 2px 6px; border-radius: 4px; }
+    .policy-note {
+      margin: 18px 0 0; padding: 16px 18px; border-left: 2px solid var(--cyan);
+      background: rgba(34,211,238,.045); color: var(--text2); font-size: 14px; line-height: 1.85;
+    }
+    .policy-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; color: var(--text2); }
+    .policy-table th, .policy-table td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); padding: 14px 12px; line-height: 1.7; }
+    .policy-table th { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); font-weight: 500; }
+    footer { border-top: 1px solid var(--border); padding: 34px 0; color: var(--text3); font-size: 12px; }
+    .foot-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .foot-row a { color: var(--text2); text-decoration: none; }
+    .foot-row a:hover { color: var(--cyan); }
+
+    body.theme-light {
+      --bg:        #EAF1F7;
+      --bg2:       #DEE9F2;
+      --bg3:       #CAD9E6;
+      --border:    rgba(15,23,42,0.08);
+      --border-hi: rgba(34,211,238,0.50);
+      --text:      #0F172A;
+      --text2:     #475569;
+      --text3:     #94A3B8;
+      --cyan-glow: rgba(34,211,238,0.15);
+    }
+    body.theme-light h1 {
+      background: linear-gradient(135deg, #0F172A 30%, var(--cyan) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    body.theme-light .doc-hero::before {
+      background-image: linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px);
+    }
+    body.theme-light #nav.stuck { background: rgba(234,241,247,.9); }
+    body.theme-light .policy-note { background: rgba(34,211,238,.06); }
+
+    @media (max-width: 900px) {
+      .doc-layout { grid-template-columns: 1fr; gap: 34px; }
+      .toc { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 20px; }
+      .toc-title { grid-column: 1 / -1; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
+    @media (max-width: 480px) {
+      .wrap, .nav-row { padding: 0 16px; }
+      #nav { padding: 16px 0; }
+      #nav.stuck { padding: 10px 0; }
+      .nav-logo img { height: 26px; }
+      .nav-logo-name { font-size: 17px; }
+      .btn-lang { font-size: 10px; padding: 6px 10px; }
+      .btn-theme { padding: 6px 10px; }
+      .btn-dl { font-size: 12px; padding: 7px 12px; }
+      .doc-hero { padding: 104px 0 48px; }
+      .hero-sub { font-size: 14px; line-height: 1.75; }
+      .doc-meta { font-size: 10px; line-height: 1.5; }
+      .doc-layout { padding: 42px 0 70px; }
+      .toc { grid-template-columns: 1fr; padding: 18px 0; }
+      .policy-section { padding-bottom: 32px; margin-bottom: 32px; }
+      .policy-section p, .policy-section li { font-size: 13.5px; line-height: 1.8; }
+      .policy-table { display: block; overflow-x: auto; white-space: nowrap; }
+      .policy-table td { white-space: normal; min-width: 180px; }
+      .foot-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body class="lang-en">
+<nav id="nav">
+  <div class="nav-row">
+    <a href="index.html#hero" class="nav-logo">
+      <img src="assets/logo.svg" alt="VibeFlow">
+      <span class="nav-logo-name">VibeFlow</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#modes"><span class="en">Modes</span><span class="zh">模式</span></a>
+      <a href="index.html#features"><span class="en">Features</span><span class="zh">功能</span></a>
+      <a href="index.html#workflow"><span class="en">Workflow</span><span class="zh">工作流</span></a>
+      <a href="index.html#gallery"><span class="en">Gallery</span><span class="zh">预览</span></a>
+      <a href="index.html#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
+      <a href="index.html#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
+      <a href="index.html#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
+      <a href="privacy.html"><span class="en">Privacy</span><span class="zh">隐私</span></a>
+      <a href="index.html#links"><span class="en">Docs</span><span class="zh">文档</span></a>
+    </nav>
+    <div class="nav-btns">
+      <button class="btn-lang" id="langBtn" onclick="toggleLang()">中文</button>
+      <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <a href="index.html#download" class="btn-dl"><span class="en">Get Studio</span><span class="zh">下载 Studio</span></a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <header class="doc-hero">
+    <div class="wrap">
+      <div class="eyebrow reveal"><span class="en">Privacy Policy</span><span class="zh">隐私政策</span></div>
+      <h1 class="reveal d1"><span class="en">Local-First Privacy for AI-Native CAE</span><span class="zh">面向 AI 原生 CAE 的本地优先隐私政策</span></h1>
+      <p class="hero-sub reveal d2">
+        <span class="en">This policy explains how VibeFlow handles project files, prompt context, local diagnostics, third-party model services, and website links. It is written for users who run engineering workflows where source code, simulation inputs, solver logs, screenshots, results, and reports may contain valuable or confidential information.</span>
+        <span class="zh">本政策说明 VibeFlow 如何处理项目文件、Prompt 上下文、本地诊断信息、第三方模型服务和网站外链。它面向真实工程工作流用户，因为源码、仿真输入、求解日志、截图、结果和报告都可能包含有价值或保密的信息。</span>
+      </p>
+      <div class="doc-meta reveal d2">
+        <span><span class="en">Last updated: June 6, 2026</span><span class="zh">最后更新：2026 年 6 月 6 日</span></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="doc-layout">
+      <aside class="toc reveal" aria-label="Privacy policy table of contents">
+        <div class="toc-title"><span class="en">Contents</span><span class="zh">目录</span></div>
+        <a href="#scope"><span class="en">1. Scope</span><span class="zh">1. 适用范围</span></a>
+        <a href="#local-first"><span class="en">2. Local-first design</span><span class="zh">2. 本地优先设计</span></a>
+        <a href="#data"><span class="en">3. Information involved</span><span class="zh">3. 涉及的信息</span></a>
+        <a href="#ai"><span class="en">4. AI model context</span><span class="zh">4. AI 模型上下文</span></a>
+        <a href="#sharing"><span class="en">5. Sharing and third parties</span><span class="zh">5. 共享与第三方</span></a>
+        <a href="#retention"><span class="en">6. Retention and deletion</span><span class="zh">6. 保留与删除</span></a>
+        <a href="#security"><span class="en">7. Security</span><span class="zh">7. 安全措施</span></a>
+        <a href="#choices"><span class="en">8. Your choices and rights</span><span class="zh">8. 您的选择与权利</span></a>
+        <a href="#changes"><span class="en">9. Changes</span><span class="zh">9. 更新</span></a>
+      </aside>
+
+      <article class="policy-doc">
+        <section id="scope" class="policy-section reveal">
+          <h2><span class="en">1. Scope</span><span class="zh">1. 适用范围</span></h2>
+          <p>
+            <span class="en">This Privacy Policy applies to VibeFlow Studio, the VibeFlow website, documentation links, community entry points, and related AI-native CAE workflows operated or published by VibeFlow.</span>
+            <span class="zh">本隐私政策适用于 VibeFlow Studio、VibeFlow 网站、文档入口、社区入口，以及由 VibeFlow 提供或发布的 AI 原生 CAE 相关工作流。</span>
+          </p>
+          <p>
+            <span class="en">VibeFlow is designed as a local-first engineering workstation. It does not require you to upload complete CAE projects to a VibeFlow-hosted cloud service in order to create geometry, generate meshes, run solvers, post-process results, or write reports.</span>
+            <span class="zh">VibeFlow 被设计为本地优先的工程工作台。创建几何、生成网格、运行求解器、后处理结果或撰写报告时，并不要求您把完整 CAE 项目上传到 VibeFlow 托管的云服务。</span>
+          </p>
+          <p class="policy-note">
+            <span class="en">This policy describes current product behavior and general privacy practices. It is not legal advice. If your organization has contractual, export-control, industry-specific, or regulatory requirements, review the full deployment environment before using external model services.</span>
+            <span class="zh">本政策描述当前产品行为和一般隐私实践，不构成法律意见。如果您的组织存在合同、出口管制、行业规范或监管要求，请在使用外部模型服务前审查完整部署环境。</span>
+          </p>
+        </section>
+
+        <section id="local-first" class="policy-section reveal">
+          <h2><span class="en">2. Local-First Design</span><span class="zh">2. 本地优先设计</span></h2>
+          <p>
+            <span class="en">Your project workspace is the primary storage location. Geometry scripts, CAD exports, mesh files, solver dictionaries or input decks, runtime logs, post-processing scripts, screenshots, Markdown notes, LaTeX files, PDFs, and reports are stored in the directories you choose on your machine.</span>
+            <span class="zh">您的项目工作区是主要存储位置。几何脚本、CAD 导出、网格文件、求解器字典或输入文件、运行日志、后处理脚本、截图、Markdown 笔记、LaTeX 文件、PDF 和报告都会存储在您机器上选择的目录中。</span>
+          </p>
+          <p>
+            <span class="en">Local files may be read by VibeFlow components to rebuild the workflow, open previews, generate solver inputs, diagnose errors, or resume work. Local processing does not, by itself, mean that a file has been sent to a remote AI model or third-party platform.</span>
+            <span class="zh">VibeFlow 组件可能读取本地文件，用于重建工作流、打开预览、生成求解器输入、诊断错误或继续任务。本地处理本身并不意味着文件已经发送给远程 AI 模型或第三方平台。</span>
+          </p>
+        </section>
+
+        <section id="data" class="policy-section reveal">
+          <h2><span class="en">3. Information Involved in VibeFlow Workflows</span><span class="zh">3. VibeFlow 工作流涉及的信息</span></h2>
+          <p>
+            <span class="en">Depending on how you use VibeFlow, the following types of information may be present in your local workspace or selected prompt context.</span>
+            <span class="zh">根据您的使用方式，以下类型的信息可能出现在本地工作区或您选择加入的 Prompt 上下文中。</span>
+          </p>
+          <table class="policy-table">
+            <thead>
+              <tr>
+                <th><span class="en">Category</span><span class="zh">类别</span></th>
+                <th><span class="en">Examples</span><span class="zh">示例</span></th>
+                <th><span class="en">Typical purpose</span><span class="zh">典型用途</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="en">Project artifacts</span><span class="zh">项目产物</span></td>
+                <td><span class="en">CAD files, meshes, solver inputs, logs, result fields, images, reports</span><span class="zh">CAD 文件、网格、求解器输入、日志、结果场、图片、报告</span></td>
+                <td><span class="en">Build, run, verify, post-process, and document CAE cases</span><span class="zh">构建、运行、验证、后处理和记录 CAE 算例</span></td>
+              </tr>
+              <tr>
+                <td><span class="en">Prompt context</span><span class="zh">Prompt 上下文</span></td>
+                <td><span class="en">Natural-language instructions, selected code, parameter snippets, screenshots added to chat</span><span class="zh">自然语言指令、选中代码、参数片段、加入对话的截图</span></td>
+                <td><span class="en">Help the selected AI agent understand and perform the requested task</span><span class="zh">帮助所选 AI Agent 理解并执行您的任务</span></td>
+              </tr>
+              <tr>
+                <td><span class="en">Local diagnostics</span><span class="zh">本地诊断信息</span></td>
+                <td><span class="en">Tool paths, workflow state, build logs, executor logs, error messages</span><span class="zh">工具路径、工作流状态、构建日志、执行日志、错误信息</span></td>
+                <td><span class="en">Troubleshoot toolchains, recover workflows, and improve reproducibility</span><span class="zh">排查工具链问题、恢复工作流、提升可复现性</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section id="ai" class="policy-section reveal">
+          <h2><span class="en">4. AI Model Context</span><span class="zh">4. AI 模型上下文</span></h2>
+          <p>
+            <span class="en">When you use an AI agent, the model may receive the instruction and context you choose to provide. This can include selected files, highlighted code, solver logs, case parameters, screenshots, Markdown notes, LaTeX fragments, or other materials you add to chat.</span>
+            <span class="zh">当您使用 AI Agent 时，模型可能接收您选择提供的指令和上下文。这可能包括您加入对话的选中文件、代码片段、求解日志、算例参数、截图、Markdown 笔记、LaTeX 片段或其他材料。</span>
+          </p>
+          <p>
+            <span class="en">You should not add confidential, personal, export-controlled, or proprietary engineering information to a prompt unless you intend to share that context with the selected model endpoint and your organization permits doing so.</span>
+            <span class="zh">除非您明确希望将相关上下文发送给所选模型端点，并且您的组织允许这样做，否则请不要把保密、个人、出口管制或专有工程信息加入 Prompt。</span>
+          </p>
+          <h3><span class="en">No hidden full-project upload</span><span class="zh">不进行隐藏式完整项目上传</span></h3>
+          <p>
+            <span class="en">VibeFlow's intended workflow is explicit context sharing: the useful snippets, files, screenshots, or structured parameters are selected for the task. The fact that a file exists in your local workspace does not mean that the complete project is automatically sent to a model provider.</span>
+            <span class="zh">VibeFlow 的预期工作方式是显式共享上下文：根据任务选择有用的片段、文件、截图或结构化参数。某个文件存在于本地工作区，并不表示完整项目会被自动发送给模型提供商。</span>
+          </p>
+        </section>
+
+        <section id="sharing" class="policy-section reveal">
+          <h2><span class="en">5. Sharing and Third-Party Services</span><span class="zh">5. 共享与第三方服务</span></h2>
+          <p>
+            <span class="en">VibeFlow can work with tools and model endpoints such as Codex, Claude Code, opencode, CC-Switch, domestic models, overseas model APIs, and self-hosted or enterprise deployments. Data handling by those services is governed by the provider, endpoint, workspace, and account configuration you choose.</span>
+            <span class="zh">VibeFlow 可配合 Codex、Claude Code、opencode、CC-Switch、国内模型、海外模型 API，以及自托管或企业部署使用。这些服务如何处理数据，取决于您选择的提供商、端点、工作区和账号配置。</span>
+          </p>
+          <p>
+            <span class="en">The website may link to documentation, GitHub releases, Bilibili videos, email, and community QR codes. Visiting those platforms may involve their own cookies, analytics, account systems, and privacy terms. VibeFlow does not control those third-party platforms.</span>
+            <span class="zh">本网站可能链接到使用文档、GitHub 发布页、Bilibili 视频、邮箱和社区二维码。访问这些平台时，可能涉及其自身的 cookie、统计、账号系统和隐私条款。VibeFlow 不控制这些第三方平台。</span>
+          </p>
+        </section>
+
+        <section id="retention" class="policy-section reveal">
+          <h2><span class="en">6. Retention and Deletion</span><span class="zh">6. 保留与删除</span></h2>
+          <p>
+            <span class="en">Local project files and logs remain in your workspace until you delete, archive, or move them. VibeFlow may create local artifacts so that a workflow can be reproduced, audited, or resumed.</span>
+            <span class="zh">本地项目文件和日志会保留在您的工作区中，直到您删除、归档或移动它们。VibeFlow 可能创建本地产物，以便工作流能够复现、审计或继续执行。</span>
+          </p>
+          <p>
+            <span class="en">If you send prompt context to a third-party model service, retention and deletion of that remote context depend on the selected provider's policy and your account settings. For sensitive work, consider offline workflows, local models, self-hosted endpoints, enterprise accounts, or stricter prompt-context review.</span>
+            <span class="zh">如果您将 Prompt 上下文发送给第三方模型服务，远程上下文的保留和删除取决于所选提供商的政策与您的账号设置。对于敏感工作，可考虑离线工作流、本地模型、自托管端点、企业账号或更严格的 Prompt 上下文审查。</span>
+          </p>
+        </section>
+
+        <section id="security" class="policy-section reveal">
+          <h2><span class="en">7. Security</span><span class="zh">7. 安全措施</span></h2>
+          <p>
+            <span class="en">VibeFlow reduces exposure by keeping engineering artifacts local by default and by making AI context selection part of the workflow. You are responsible for securing your operating system, project directory, credentials, API keys, model-provider accounts, and network environment.</span>
+            <span class="zh">VibeFlow 通过默认将工程产物保留在本地，并把 AI 上下文选择作为工作流的一部分，来降低暴露面。您需要负责保护操作系统、项目目录、凭据、API Key、模型服务账号和网络环境。</span>
+          </p>
+          <ul>
+            <li><span class="en">Do not place API keys, passwords, or private tokens in prompts unless strictly necessary.</span><span class="zh">除非绝对必要，不要把 API Key、密码或私有 Token 放入 Prompt。</span></li>
+            <li><span class="en">Review screenshots before using Save and add to chat, especially when CAD metadata, file paths, or private results are visible.</span><span class="zh">使用 Save and add to chat 前请检查截图，尤其是其中可见 CAD 元数据、文件路径或私有结果时。</span></li>
+            <li><span class="en">Use separate workspaces or access controls for confidential client, defense, medical, energy, or regulated engineering projects.</span><span class="zh">对于客户保密、国防、医疗、能源或受监管工程项目，请使用独立工作区或访问控制。</span></li>
+          </ul>
+        </section>
+
+        <section id="choices" class="policy-section reveal">
+          <h2><span class="en">8. Your Choices and Rights</span><span class="zh">8. 您的选择与权利</span></h2>
+          <p>
+            <span class="en">You control which local files, snippets, screenshots, parameters, and logs are added to chat. You can keep sensitive work offline, use a local or enterprise model endpoint, remove local logs, or choose not to use external model APIs for a particular project.</span>
+            <span class="zh">您可以控制哪些本地文件、片段、截图、参数和日志被加入对话。您可以让敏感工作保持离线，使用本地或企业模型端点，删除本地日志，或在特定项目中不使用外部模型 API。</span>
+          </p>
+          <p>
+            <span class="en">Where applicable law grants privacy rights, you may have rights to request access, correction, deletion, restriction, objection, portability, or withdrawal of consent for personal information that VibeFlow or a service provider processes. The exact rights and process depend on your location, the service used, and the relevant provider.</span>
+            <span class="zh">在适用法律赋予隐私权利的情况下，您可能有权请求访问、更正、删除、限制处理、反对处理、数据可携带，或撤回对个人信息处理的同意。具体权利和流程取决于您的所在地、所使用的服务以及相关提供商。</span>
+          </p>
+          <p>
+            <span class="en">VibeFlow is not intended for children and is designed for engineering, research, and professional simulation work.</span>
+            <span class="zh">VibeFlow 并非面向儿童设计，而是面向工程、研究和专业仿真工作。</span>
+          </p>
+        </section>
+
+        <section id="changes" class="policy-section reveal">
+          <h2><span class="en">9. Changes</span><span class="zh">9. 更新</span></h2>
+          <p>
+            <span class="en">We may update this policy as VibeFlow evolves, especially when model integrations, deployment modes, diagnostics, website services, or community channels change. The date at the top of this page indicates the latest update.</span>
+            <span class="zh">随着 VibeFlow 演进，我们可能更新本政策，尤其是在模型集成、部署模式、诊断方式、网站服务或社区渠道发生变化时。页面顶部日期表示最近一次更新。</span>
+          </p>
+        </section>
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <span>© 2026 VibeFlow</span>
+      <a href="index.html"><span class="en">Back to VibeFlow</span><span class="zh">返回 VibeFlow 首页</span></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+let lang = 'en';
+function toggleLang() {
+  lang = lang === 'en' ? 'zh' : 'en';
+  document.body.classList.toggle('lang-zh', lang === 'zh');
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'English';
+  document.title = lang === 'zh' ? 'VibeFlow — 隐私政策' : 'VibeFlow — Privacy Policy';
+}
+document.body.classList.add('lang-en');
+
+let theme = localStorage.getItem('vf-theme') || 'dark';
+function applyTheme() {
+  document.body.classList.toggle('theme-light', theme === 'light');
+  const btn = document.getElementById('themeBtn');
+  if (btn) {
+    btn.innerHTML = theme === 'light'
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    btn.title = theme === 'light' ? 'Switch to Dark' : 'Switch to Light';
+  }
+}
+function toggleTheme() {
+  theme = theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('vf-theme', theme);
+  applyTheme();
+}
+applyTheme();
+
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll', () => { navEl.classList.toggle('stuck', scrollY > 50); }, { passive: true });
+
+const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+</script>
+</body>
+</html>

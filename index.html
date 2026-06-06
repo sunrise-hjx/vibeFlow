@@ -347,16 +347,22 @@
 
     /* ── PRICING ── */
     .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .pricing-grid.pricing-grid-trial { grid-template-columns: minmax(0, 440px); justify-content: center; }
+    .pricing-grid.pricing-grid-trial { grid-template-columns: repeat(2, minmax(0, 440px)); justify-content: center; max-width: 920px; margin: 0 auto; }
     .price-card {
       border-radius: var(--r); border: 1px solid var(--border);
       padding: 36px 30px; position: relative; overflow: hidden; transition: .3s;
     }
+    .pricing-grid-trial .price-card { display: flex; flex-direction: column; }
     .price-card:hover { border-color: var(--border-hi); transform: translateY(-4px); }
     .price-card.featured { border-color: rgba(34,211,238,.35); background: var(--bg3); }
     .price-card.featured::before {
       content: ''; position: absolute; inset: 0; pointer-events: none;
       background: radial-gradient(circle at 50% -10%, rgba(34,211,238,.12) 0%, transparent 60%);
+    }
+    .price-card.academic { background: var(--bg2); border-color: rgba(167,139,250,.22); }
+    .price-card.academic::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(circle at 50% -10%, rgba(167,139,250,.1) 0%, transparent 62%);
     }
     .price-badge {
       position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
@@ -380,7 +386,7 @@
     .price-btn.outline:hover { border-color: var(--border-hi); color: var(--text); }
     .price-btn.fill { background: var(--cyan); color: #05080F; }
     .price-btn.fill:hover { background: #38BDF8; box-shadow: 0 8px 22px rgba(34,211,238,.3); }
-    .price-action { position: relative; }
+    .price-action { position: relative; margin-top: auto; }
     button.price-btn {
       width: 100%; font-family: var(--body); background: none; cursor: pointer;
     }
@@ -411,6 +417,25 @@
     .price-unavailable-tip img {
       display: block; width: 132px; height: 132px; margin: 10px auto 0; border-radius: 8px;
     }
+    .price-community-tip {
+      position: absolute; left: 50%; bottom: calc(100% + 14px);
+      width: fit-content; min-width: 160px; max-width: calc(100vw - 48px); padding: 12px;
+      transform: translateX(-50%) translateY(6px) scale(.96);
+      border-radius: 10px; background: #fff; color: #111827;
+      box-shadow: 0 24px 64px rgba(0,0,0,.55);
+      opacity: 0; pointer-events: none; transition: opacity .25s var(--ease), transform .25s var(--ease);
+      z-index: 30;
+    }
+    .price-action:hover .price-community-tip,
+    .price-action:focus-within .price-community-tip {
+      opacity: 1; transform: translateX(-50%) translateY(0) scale(1); pointer-events: auto;
+    }
+    .price-community-tip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 7px solid transparent; border-top-color: #fff;
+    }
+    .price-community-tip img { display: block; width: 144px; height: 144px; margin: 0 auto; border-radius: 8px; }
+    .price-community-tip .qr-tip { margin-top: 10px; text-align: center; font-size: 12px; line-height: 1.55; color: #374151; white-space: nowrap; }
     .price-trial-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--text3); }
     .price-trial-note em { color: var(--text2); font-style: normal; }
 
@@ -651,9 +676,9 @@
 
     /* ── LIGHT THEME ── */
     body.theme-light {
-      --bg:        #F8FAFC;
-      --bg2:       #F1F5F9;
-      --bg3:       #E2E8F0;
+      --bg:        #EAF1F7;
+      --bg2:       #DEE9F2;
+      --bg3:       #CAD9E6;
       --border:    rgba(15,23,42,0.08);
       --border-hi: rgba(34,211,238,0.50);
       --text:      #0F172A;
@@ -669,7 +694,7 @@
       background-image: linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px);
     }
     body.theme-light #nav.stuck {
-      background: rgba(248,250,252,.88);
+      background: rgba(234,241,247,.9);
     }
     body.theme-light .hero-pill {
       background: rgba(34,211,238,.15);
@@ -693,7 +718,7 @@
     body.theme-light .demo-video-shell,
     body.theme-light .demo-video-frame,
     body.theme-light #demo .wrap > div[style*="background:#020811"] {
-      background: #E2E8F0 !important;
+      background: var(--bg3) !important;
     }
     body.theme-light .demo-video-topbar {
       background: linear-gradient(180deg, rgba(241,245,249,.94), rgba(248,250,252,.96));
@@ -715,6 +740,13 @@
     }
     body.theme-light .price-card.featured::before {
       background: radial-gradient(circle at 50% -10%, rgba(34,211,238,.18) 0%, transparent 60%);
+    }
+    body.theme-light .price-card.academic {
+      border-color: rgba(167,139,250,.38);
+      background: var(--bg);
+    }
+    body.theme-light .price-card.academic::before {
+      background: radial-gradient(circle at 50% -10%, rgba(167,139,250,.12) 0%, transparent 62%);
     }
     body.theme-light .price-btn-disabled,
     body.theme-light .price-btn-disabled:hover,
@@ -764,6 +796,7 @@
       <a href="#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
       <a href="#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
       <a href="#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
+      <a href="privacy.html"><span class="en">Privacy</span><span class="zh">隐私</span></a>
       <a href="#links"><span class="en">Docs</span><span class="zh">文档</span></a>
     </nav>
     <div class="nav-btns">
@@ -922,9 +955,9 @@
         <p class="feat-desc"><span class="en">Configure local paths once, then let the agent bring the right backend into context. Fluid dynamics, FEM, SPH, LBM, MD, fire dynamics, structural impact, thermal, and multiphysics workflows share the same VibeFlow discipline.</span><span class="zh">配置本地路径后，Agent 即可把合适后端纳入上下文。流体动力学、FEM、SPH、LBM、MD、火灾动力学、结构碰撞、热分析和多物理场流程共享同一套 VibeFlow 规范。</span></p>
       </div>
       <div class="feat-card reveal d5">
-        <div class="feat-icon">📐</div>
-        <h3 class="feat-title"><span class="en">Parametric Geometry &amp; Intelligent Meshing</span><span class="zh">参数化几何与智能网格</span></h3>
-        <p class="feat-desc"><span class="en">CadQuery/OCP, Gmsh, blockMesh, snappyHexMesh, and conversion handoffs are driven from caseDict. Named regions, interfaces, boundary sets, mesh quality checks, and solver-specific export needs stay aligned.</span><span class="zh">CadQuery/OCP、Gmsh、blockMesh、snappyHexMesh 与转换交接均由 caseDict 驱动。命名区域、界面、边界集、网格质量检查与后端导出需求保持一致。</span></p>
+        <div class="feat-icon">🧠</div>
+        <h3 class="feat-title"><span class="en">Self-Evolution &amp; Memory System</span><span class="zh">自进化与记忆系统</span></h3>
+        <p class="feat-desc"><span class="en">Harness includes a memory system that remembers reusable project experience and your working habits. It avoids repeating the same mistakes and gradually evolves into a personal intelligent agent tuned to your CAE workflow.</span><span class="zh">Harness 内置记忆系统，为每个项目记住可复用经验与您的使用习惯，不会重复犯同样的错误，并逐渐进化为您的个人专用智能体。</span></p>
       </div>
     </div>
   </div>
@@ -1404,7 +1437,32 @@
           <li><span class="en">Multi-CAE backend assistance</span><span class="zh">多 CAE 后端辅助</span></li>
           <li><span class="en">60-day full access</span><span class="zh">60 天完整访问</span></li>
         </ul>
-        <a href="#download" class="price-btn fill"><span class="en">Start Free Trial</span><span class="zh">开始免费试用</span></a>
+        <div class="price-action">
+          <a href="#download" class="price-btn fill"><span class="en">Start Free Trial</span><span class="zh">开启免费试用</span></a>
+        </div>
+      </div>
+
+      <!-- Academic -->
+      <div class="price-card academic reveal d1">
+        <div class="price-tier"><span class="en">Academic Researchers &amp; Students</span><span class="zh">高校研究者及学生</span></div>
+        <div class="price-val"><span class="en">6 months</span><span class="zh">6个月</span><span class="period"> / <span class="en">free license</span><span class="zh">免费许可</span></span></div>
+        <p class="price-desc">
+          <span class="en">For university researchers and students working on teaching, papers, open-source CAE cases, and reproducible engineering research.</span>
+          <span class="zh">面向高校研究者及学生，适用于教学、论文、开源 CAE 算例与可复现工程研究。</span>
+        </p>
+        <ul class="price-feats">
+          <li><span class="en">6-month free license</span><span class="zh">6 个月免费许可</span></li>
+          <li><span class="en">Full AI-native CAE workflow</span><span class="zh">完整 AI 原生 CAE 工作流</span></li>
+          <li><span class="en">Multi-backend skills and memory system</span><span class="zh">多后端 skills 与记忆系统</span></li>
+          <li><span class="en">Community onboarding support</span><span class="zh">社区入门支持</span></li>
+        </ul>
+        <div class="price-action">
+          <div class="price-community-tip" id="academic-community-tip" role="tooltip">
+            <img src="assets/wechat.png" alt="VibeFlow WeChat QR Code">
+            <div class="qr-tip"><span class="en">Scan to join the community</span><span class="zh">扫码加入社区获取</span></div>
+          </div>
+          <a href="#links" class="price-btn fill" aria-describedby="academic-community-tip"><span class="en">Join Community</span><span class="zh">加入社区获取</span></a>
+        </div>
       </div>
       <!-- Monthly plan temporarily hidden
       <div class="price-card reveal d1">
@@ -1466,8 +1524,8 @@
       -->
     </div>
     <p class="price-trial-note">
-      <span class="en">The free trial includes <em>60-day full access</em>. No credit card required to start.</span>
-      <span class="zh">免费试用包含 <em>60 天完整访问</em>，无需绑定任何支付方式。</span>
+      <span class="en">The free trial includes <em>60-day full access</em>. Academic users can request a <em>6-month free license</em> through the community.</span>
+      <span class="zh">免费试用包含 <em>60 天完整访问</em>；高校研究者及学生可通过社区获取 <em>6 个月免费许可</em>。</span>
     </p>
   </div>
 </section>
@@ -1706,6 +1764,7 @@
         <h4><span class="en">Community</span><span class="zh">社区</span></h4>
         <a href="https://www.yuque.com/bluedreams/vibeflow" target="_blank" rel="noopener"><span class="en">Documentation</span><span class="zh">使用文档</span></a>
         <a href="#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
+        <a href="privacy.html"><span class="en">Privacy Policy</span><span class="zh">隐私政策</span></a>
         <a href="mailto:asdvvcasc@163.com" style="word-break:break-all;">asdvvcasc@163.com</a>
         <div class="foot-qrs">
           <div class="foot-qr">
