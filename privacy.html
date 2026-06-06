@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="VibeFlow Privacy Policy — local-first privacy practices for AI-native CAE workflows.">
-  <title>VibeFlow — Privacy Policy</title>
+  <title>VibeFlow — 隐私政策</title>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <style>
     @font-face {
@@ -240,7 +240,7 @@
   </style>
 </head>
 
-<body class="lang-en">
+<body class="lang-zh">
 <nav id="nav">
   <div class="nav-row">
     <a href="index.html#hero" class="nav-logo">
@@ -252,6 +252,7 @@
       <a href="index.html#features"><span class="en">Features</span><span class="zh">功能</span></a>
       <a href="index.html#workflow"><span class="en">Workflow</span><span class="zh">工作流</span></a>
       <a href="index.html#gallery"><span class="en">Gallery</span><span class="zh">预览</span></a>
+      <a href="cases/index.html"><span class="en">Cases</span><span class="zh">案例库</span></a>
       <a href="index.html#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
       <a href="index.html#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
       <a href="index.html#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
@@ -259,7 +260,7 @@
       <a href="index.html#links"><span class="en">Docs</span><span class="zh">文档</span></a>
     </nav>
     <div class="nav-btns">
-      <button class="btn-lang" id="langBtn" onclick="toggleLang()">中文</button>
+      <button class="btn-lang" id="langBtn" onclick="toggleLang()">English</button>
       <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       </button>
@@ -453,7 +454,7 @@
 </footer>
 
 <script>
-let lang = 'en';
+let lang = 'zh';
 function toggleLang() {
   lang = lang === 'en' ? 'zh' : 'en';
   document.body.classList.toggle('lang-zh', lang === 'zh');
@@ -462,7 +463,7 @@ function toggleLang() {
   document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'English';
   document.title = lang === 'zh' ? 'VibeFlow — 隐私政策' : 'VibeFlow — Privacy Policy';
 }
-document.body.classList.add('lang-en');
+document.body.classList.add('lang-zh');
 
 let theme = localStorage.getItem('vf-theme') || 'dark';
 function applyTheme() {

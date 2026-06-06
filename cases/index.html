@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VibeFlow OpenFOAM case library with searchable tutorial cases.">
+  <title>VibeFlow — 案例库</title>
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <style>
+
+    @font-face { font-family:'Syne Local'; src:url('../assets/fonts/syne-latin.woff2') format('woff2'); font-weight:400 800; font-style:normal; font-display:swap; }
+    @font-face { font-family:'DM Sans Local'; src:url('../assets/fonts/dm-sans-latin.woff2') format('woff2'); font-weight:300 600; font-style:normal; font-display:swap; }
+    @font-face { font-family:'JetBrains Mono Local'; src:url('../assets/fonts/jetbrains-mono-latin.woff2') format('woff2'); font-weight:400 500; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Noto Sans SC Local'; src:url('../assets/fonts/noto-sans-sc-400-subset.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Noto Sans SC Local'; src:url('../assets/fonts/noto-sans-sc-600-subset.woff2') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Noto Sans SC Local'; src:url('../assets/fonts/noto-sans-sc-700-subset.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+    @font-face { font-family:'Noto Sans SC Local'; src:url('../assets/fonts/noto-sans-sc-800-subset.woff2') format('woff2'); font-weight:800; font-style:normal; font-display:swap; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#05080F;--bg2:#09101C;--bg3:#0F1828;--border:rgba(255,255,255,.07);--border-hi:rgba(34,211,238,.28);
+      --cyan:#22D3EE;--cyan-glow:rgba(34,211,238,.18);--purple:#A78BFA;--text:#E8EFF8;--text2:#8B98AE;--text3:#445065;
+      --display:'Syne Local','Noto Sans SC Local',sans-serif;--body:'DM Sans Local','Noto Sans SC Local',sans-serif;--mono:'JetBrains Mono Local','Noto Sans SC Local',monospace;--cjk:'Noto Sans SC Local','Noto Sans CJK SC','Source Han Sans SC',sans-serif;--r:12px;--r-sm:8px;--ease:cubic-bezier(.4,0,.2,1)
+    }
+    html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--body);line-height:1.65;overflow-x:hidden}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--text3);border-radius:3px}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 28px}.en,.zh{display:inline}body.lang-zh .en{display:none}body.lang-en .zh{display:none}.zh,body.lang-zh .doc{font-family:var(--cjk)}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s var(--ease),transform .65s var(--ease)}.reveal.on{opacity:1;transform:none}.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}
+    #nav{position:fixed;top:0;left:0;right:0;z-index:90;padding:22px 0;transition:padding .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease);border-bottom:1px solid transparent}
+    #nav.stuck{padding:14px 0;background:rgba(5,8,15,.85);backdrop-filter:blur(20px) saturate(1.4);border-color:var(--border)}.nav-row{display:flex;align-items:center;max-width:1200px;margin:0 auto;padding:0 28px}.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;margin-right:auto}.nav-logo img{height:30px}.nav-logo-name{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--text)}.nav-links{display:flex;align-items:center;gap:32px;margin-right:32px}.nav-links a{font-size:14px;color:var(--text2);text-decoration:none;transition:color .2s}.nav-links a:hover{color:var(--text)}.nav-btns{display:flex;align-items:center;gap:10px}.btn-lang,.btn-theme{display:inline-flex;align-items:center;justify-content:center;padding:7px 14px;border:1px solid var(--border);background:none;color:var(--text2);font-family:var(--mono);font-size:11px;border-radius:6px;cursor:pointer;transition:.25s}.btn-lang:hover,.btn-theme:hover{border-color:var(--border-hi);color:var(--cyan)}.btn-dl{padding:8px 20px;background:var(--cyan);color:#05080F;font-weight:600;font-size:13px;border-radius:var(--r-sm);text-decoration:none;transition:.25s}.btn-dl:hover{background:#38BDF8;box-shadow:0 0 24px rgba(34,211,238,.4)}
+    .doc-hero{position:relative;overflow:hidden;padding:150px 0 74px;border-bottom:1px solid var(--border);background:var(--bg)}.doc-hero::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:64px 64px}.doc-hero::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 50%,transparent 0%,var(--bg) 100%)}.doc-hero .wrap{position:relative;z-index:2}.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);margin-bottom:22px}.eyebrow::before{content:'';width:20px;height:1px;background:var(--cyan)}h1{font-family:var(--display);font-size:clamp(44px,8vw,86px);font-weight:800;letter-spacing:-.05em;line-height:.95;margin-bottom:24px;background:linear-gradient(135deg,#fff 30%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.hero-sub{max-width:790px;color:var(--text2);font-size:17px;line-height:1.85}
+    .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);border-radius:999px;padding:5px 10px;font-family:var(--mono);font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}.chip.cyan{border-color:rgba(34,211,238,.24);color:var(--cyan);background:rgba(34,211,238,.06)}
+    footer{border-top:1px solid var(--border);padding:34px 0;color:var(--text3);font-size:12px}.foot-row{display:flex;align-items:center;justify-content:space-between;gap:18px}.foot-row a{color:var(--text2);text-decoration:none}.foot-row a:hover{color:var(--cyan)}
+    body.theme-light{--bg:#EAF1F7;--bg2:#DEE9F2;--bg3:#CAD9E6;--border:rgba(15,23,42,.08);--border-hi:rgba(34,211,238,.50);--text:#0F172A;--text2:#475569;--text3:#94A3B8;--cyan-glow:rgba(34,211,238,.15)}body.theme-light h1{background:linear-gradient(135deg,#0F172A 30%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}body.theme-light .doc-hero::before{background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.06) 1px,transparent 1px)}body.theme-light #nav.stuck{background:rgba(234,241,247,.9)}
+    @media(max-width:768px){.nav-links{display:none}}@media(max-width:480px){.wrap,.nav-row{padding:0 16px}#nav{padding:16px 0}#nav.stuck{padding:10px 0}.nav-logo img{height:26px}.nav-logo-name{font-size:17px}.btn-lang,.btn-theme{font-size:10px;padding:6px 10px}.btn-dl{font-size:12px;padding:7px 12px}.doc-hero{padding:104px 0 48px}.hero-sub{font-size:14px;line-height:1.75}.foot-row{flex-direction:column;align-items:flex-start}}
+
+    .library-tools{padding:42px 0;background:var(--bg2);border-bottom:1px solid var(--border)}
+    .search-grid{display:grid;grid-template-columns:minmax(220px,1fr) 220px 220px;gap:12px;align-items:end}
+    .field label{display:block;font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+    .field input,.field select{width:100%;height:44px;border:1px solid var(--border);border-radius:var(--r-sm);background:var(--bg3);color:var(--text);font:14px var(--body);padding:0 12px;outline:none;transition:.2s}
+    .field input:focus,.field select:focus{border-color:var(--border-hi);box-shadow:0 0 0 3px rgba(34,211,238,.08)}
+    .library-body{padding:56px 0 96px}
+    .stat-row{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:24px;color:var(--text3);font:12px var(--mono);letter-spacing:.05em;text-transform:uppercase}
+    .case-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .case-card{min-height:320px;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--r);background:var(--bg2);overflow:hidden;text-decoration:none;color:inherit;transition:.28s var(--ease)}
+    .case-card:hover{border-color:var(--border-hi);background:var(--bg3);transform:translateY(-4px)}
+    .case-thumb{height:134px;position:relative;overflow:hidden;background:#020811;border-bottom:1px solid var(--border)}
+    .case-thumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92;transition:transform .35s var(--ease)}
+    .case-card:hover .case-thumb img{transform:scale(1.035)}
+    .case-thumb.empty{display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,rgba(34,211,238,.16),transparent 60%),var(--bg3)}
+    .case-thumb.empty span{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.1em;text-transform:uppercase}
+    .case-body{padding:20px 20px 22px;display:flex;flex-direction:column;flex:1}
+    .case-title{font-family:var(--display);font-size:18px;font-weight:740;letter-spacing:-.02em;line-height:1.25;margin:12px 0;color:var(--text)}
+    .case-desc{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:18px}
+    .case-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
+    .case-tags .chip{font-size:9px;padding:4px 8px}
+    .empty-state{padding:48px;border:1px solid var(--border);border-radius:var(--r);background:var(--bg2);text-align:center;color:var(--text2)}
+    @media(max-width:1024px){.case-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.search-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:620px){.case-grid,.search-grid{grid-template-columns:1fr}.library-body{padding:36px 0 70px}.case-thumb{height:160px}}
+  </style>
+</head>
+<body class="lang-zh">
+
+<nav id="nav">
+  <div class="nav-row">
+    <a href="../index.html#hero" class="nav-logo">
+      <img src="../assets/logo.svg" alt="VibeFlow">
+      <span class="nav-logo-name">VibeFlow</span>
+    </a>
+    <nav class="nav-links">
+      <a href="../index.html#modes"><span class="en">Modes</span><span class="zh">模式</span></a>
+      <a href="../index.html#features"><span class="en">Features</span><span class="zh">功能</span></a>
+      <a href="../index.html#workflow"><span class="en">Workflow</span><span class="zh">工作流</span></a>
+      <a href="../index.html#gallery"><span class="en">Gallery</span><span class="zh">预览</span></a>
+      <a href="index.html"><span class="en">Cases</span><span class="zh">案例库</span></a>
+      <a href="../index.html#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
+      <a href="../index.html#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
+      <a href="../index.html#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
+      <a href="../privacy.html"><span class="en">Privacy</span><span class="zh">隐私</span></a>
+      <a href="../index.html#links"><span class="en">Docs</span><span class="zh">文档</span></a>
+    </nav>
+    <div class="nav-btns">
+      <button class="btn-lang" id="langBtn" onclick="toggleLang()">English</button>
+      <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <a href="../index.html#download" class="btn-dl"><span class="en">Get Studio</span><span class="zh">下载 Studio</span></a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <header class="doc-hero">
+    <div class="wrap">
+      <div class="eyebrow reveal"><span class="en">Case Library</span><span class="zh">案例库</span></div>
+      <h1 class="reveal d1"><span class="en">Search CAE Cases</span><span class="zh">检索CAE案例</span></h1>
+    </div>
+  </header>
+  <section class="library-tools">
+    <div class="wrap">
+      <div class="search-grid">
+        <div class="field"><label><span class="en">Search</span><span class="zh">名称搜索</span></label><input id="q" type="search" placeholder="cavity, damBreak, interFoam..."></div>
+        <div class="field"><label><span class="en">Case Type</span><span class="zh">算例类型</span></label><select id="typeSelect"><option value="">All types</option></select></div>
+        <div class="field"><label><span class="en">Software Stack</span><span class="zh">软件栈</span></label><select id="stackSelect"><option value="">All stacks</option></select></div>
+      </div>
+    </div>
+  </section>
+  <section class="library-body">
+    <div class="wrap">
+      <div class="stat-row"><span id="caseCount"></span><span><span class="en">VibeFlow CAE Cases</span><span class="zh">VibeFlow CAE 案例库</span></span></div>
+      <div class="case-grid" id="caseGrid"></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><div class="foot-row"><span>© 2026 VibeFlow</span><a href="../index.html"><span class="en">Back to VibeFlow</span><span class="zh">返回 VibeFlow 首页</span></a></div></div></footer>
+<script src="data/openfoam-cases.js"></script>
+<script>
+
+let lang = 'zh';
+function toggleLang(){
+  lang = lang === 'en' ? 'zh' : 'en';
+  document.body.classList.toggle('lang-zh', lang === 'zh');
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'English';
+  if (typeof render === 'function') render();
+}
+document.body.classList.add('lang-zh');
+let theme = localStorage.getItem('vf-theme') || 'dark';
+function applyTheme(){
+  document.body.classList.toggle('theme-light', theme === 'light');
+  const btn = document.getElementById('themeBtn');
+  if(btn){
+    btn.innerHTML = theme === 'light'
+      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    btn.title = theme === 'light' ? 'Switch to Dark' : 'Switch to Light';
+  }
+}
+function toggleTheme(){ theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('vf-theme', theme); applyTheme(); }
+applyTheme();
+const navEl = document.getElementById('nav');
+window.addEventListener('scroll',()=>{navEl.classList.toggle('stuck',scrollY>50)},{passive:true});
+const ro = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+const q = document.getElementById('q');
+const typeSelect = document.getElementById('typeSelect');
+const stackSelect = document.getElementById('stackSelect');
+const grid = document.getElementById('caseGrid');
+const count = document.getElementById('caseCount');
+function allUnique(key){
+  return [...new Set(window.VF_OPENFOAM_CASES.flatMap(c => Array.isArray(c[key]) ? c[key] : [c[key]]).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+}
+function setupFilters(){
+  allUnique('types').forEach(type => {
+    const opt = document.createElement('option'); opt.value = type; opt.textContent = type; typeSelect.appendChild(opt);
+  });
+  allUnique('softwareStack').forEach(stack => { const opt = document.createElement('option'); opt.value = stack; opt.textContent = stack; stackSelect.appendChild(opt); });
+}
+function localizedCategory(c){ return lang === 'zh' ? c.categoryZh : c.category; }
+function localizedTitle(c){ return lang === 'zh' ? (c.titleZh || c.title) : c.title; }
+function render(){
+  const term = q.value.trim().toLowerCase();
+  const type = typeSelect.value;
+  const stack = stackSelect.value;
+  const filtered = window.VF_OPENFOAM_CASES.filter(c => {
+    const hay = [c.title,c.titleZh,c.localPath,c.solver,c.category,c.categoryZh,...c.types,...c.softwareStack].join(' ').toLowerCase();
+    return (!term || hay.includes(term)) && (!type || c.types.includes(type)) && (!stack || c.softwareStack.includes(stack));
+  });
+  count.textContent = lang === 'zh' ? `显示 ${filtered.length} / ${window.VF_OPENFOAM_CASES.length} 个案例` : `Showing ${filtered.length} / ${window.VF_OPENFOAM_CASES.length} cases`;
+  grid.innerHTML = filtered.length ? filtered.map(c => `
+    <a class="case-card reveal on" href="openfoam-case.html?id=${encodeURIComponent(c.id)}">
+      ${c.images && c.images[0] ? `<div class="case-thumb"><img src="${c.images[0].url}" alt="${c.images[0].alt}"></div>` : `<div class="case-thumb empty"><span>OpenFOAM</span></div>`}
+      <div class="case-body">
+        <div class="chip cyan">${localizedCategory(c)}</div>
+        <h2 class="case-title">${localizedTitle(c)}</h2>
+        <p class="case-desc">${lang === 'zh' ? `求解器：${c.solver}；本地目录：${c.localPath}。` : `Solver: ${c.solver}; local case: ${c.localPath}.`}</p>
+        <div class="case-tags">${c.types.slice(0,4).map(t=>`<span class="chip">${t}</span>`).join('')}${c.softwareStack.slice(0,3).map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      </div>
+    </a>`).join('') : `<div class="empty-state"><span class="en">No matching cases.</span><span class="zh">没有匹配的案例。</span></div>`;
+}
+q.addEventListener('input', render); typeSelect.addEventListener('change', render); stackSelect.addEventListener('change', render);
+setupFilters(); render();
+</script>
+</body>
+</html>
