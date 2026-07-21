@@ -188,7 +188,6 @@ VibeFlow希望建立一种新的数值仿真工作方式。将自然语言作为
 [VibeFlow](https://www.yuque.com/bluedreams/vibeflow)
 
 ### 加入 VibeFlow 社区
-![](https://cdn.nlark.com/yuque/0/2026/jpeg/1541241/1783958718947-2a584468-287c-4c3a-8328-8396053700ae.jpeg)
 
 ![](assets/wechat.png)
 

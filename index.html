@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="VibeFlow — An AI-native CAE workstation for traceable engineering research.">
-  <title>VibeFlow — AI 原生 CAE 工作台</title>
+  <title>VibeFlow — AI-Native CAE Workstation</title>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <style>
     @font-face {
@@ -779,7 +779,7 @@
   </style>
 </head>
 
-<body class="lang-zh">
+<body class="lang-en">
 
 <!-- ══════════════ NAV ══════════════ -->
 <nav id="nav">
@@ -801,7 +801,7 @@
       <a href="#links"><span class="en">Docs</span><span class="zh">文档</span></a>
     </nav>
     <div class="nav-btns">
-      <button class="btn-lang" id="langBtn" onclick="toggleLang()">English</button>
+      <button class="btn-lang" id="langBtn" onclick="toggleLang()">中文</button>
       <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       </button>
@@ -1803,7 +1803,7 @@ function openLb(wrap) {
 }
 
 /* ── Language toggle ─────────────── */
-let lang = 'zh';
+let lang = 'en';
 function toggleLang() {
   lang = lang === 'en' ? 'zh' : 'en';
   document.body.classList.toggle('lang-zh', lang === 'zh');
@@ -1815,7 +1815,7 @@ function toggleLang() {
   if (activeDevStage   >= 0) renderStage('dev',   activeDevStage);
   renderDemoTitle();
 }
-document.body.classList.add('lang-zh');
+document.body.classList.add('lang-en');
 
 /* ── Theme toggle ───────────────── */
 let theme = localStorage.getItem('vf-theme') || 'dark';

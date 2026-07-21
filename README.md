@@ -194,10 +194,20 @@ In this workflow, users can step away from large amounts of repetitive work and 
 ### Join the VibeFlow Community
 whatsapp: [https://chat.whatsapp.com/ELGAUIu3VLVGHcvD0zkvBT](https://chat.whatsapp.com/ELGAUIu3VLVGHcvD0zkvBT)
 
-![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1784276361854-2d140d50-1643-4e70-8990-a02a34897267.png)
-
-![](assets/wechat.png)
+<table>
+  <thead>
+    <tr>
+      <th align="center">WhatsApp</th>
+      <th align="center">WeChat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://chat.whatsapp.com/ELGAUIu3VLVGHcvD0zkvBT"><img src="assets/whatsapp.png" alt="WhatsApp QR code" width="240" height="240"></a></td>
+      <td align="center"><img src="assets/wechat.png" alt="WeChat QR code" width="240" height="240"></td>
+    </tr>
+  </tbody>
+</table>
 
 ---
-
 
