@@ -1,5 +1,7 @@
 # Start Your VibeFlow！
 
+[中文文档](README_zh.md)
+
 The invention of the spinning jenny transformed textile production by reducing its reliance on repetitive manual labor.
 
 The emergence of computers further improved the efficiency of information processing, while also rapidly increasing the amount of information that people must handle.
@@ -15,7 +17,7 @@ Numerical simulation is a rigorous engineering activity. Deviations in geometric
 VibeFlow therefore keeps engineering judgment in human hands. Users are responsible for defining the problem, confirming the results, and deciding whether those results are credible. VibeFlow is responsible for organizing files, invoking tools, diagnosing errors, recording evidence, and generating reports. Together, they form an effective human–Agent collaboration model.
 
 ## VibeFlow Architecture
-![](architecture-vibeflow.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917733944-8588493a-0f35-447a-b687-4eb4a20cd5a6.png)
+![](figure/architecture-vibeflow.png)
 
 At a high level, the VibeFlow architecture can be summarized by three elements: one source of truth, two operating modes, and one evidence chain.
 
@@ -41,94 +43,98 @@ VibeFlow emphasizes a complete evidence chain. Every user confirmation, every mo
 This architecture makes complex work inspectable. When a result appears abnormal, the user can return to the geometry, meshing, simulation, or post-processing stage to identify the source of the problem. When a report needs to be revised, the user can trace a statement back to the relevant data and scripts instead of searching through old chat records and terminal output.
 
 ## Main Features
+
 ### 1. Unified Project Workspace
+
 VibeFlow provides a complete project workspace. The project tree on the left organizes geometry, mesh, simulation, post-processing, reports, references, and UDF code into clearly defined locations. The center area is used for visualization and editing, while the Agent and terminal are located on the right. Users no longer need to search across multiple software windows and directories, and the current state of the project can be understood at a glance.
 
-![](v1.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917742833-8b516c7e-2985-4bf9-877c-0e29591a9c01.png)
+![](figure/v1.png)
 
 ### 2. Agent-Assisted Literature Review
 Simulation studies often begin with papers, manuals, experimental data, and existing cases. These materials can be placed directly in a VibeFlow project, where the Agent can read them and extract key information such as geometric constraints, material properties, boundary conditions, validation metrics, and reference results. The extracted information can then feed directly into the subsequent modeling and validation workflow.
 
-![](v2.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917747532-114f7a35-3620-4f27-9ec1-97ccee628ac9.png)
+![](figure/v2.png)
 
 ### 3. End-to-End Automated Testing and Error Repair
 VibeFlow can execute complete CAE workflows through an Agent CLI. It can generate files, run commands, inspect logs, identify errors, modify settings, and perform validation again. Geometry failures, meshing failures, solver input errors, and post-processing script errors can all be handled within the same iterative process.
 
-![](v3.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917752524-be80e0f2-21d7-4b7b-8954-b14927d06de9.png)
+![](figure/v3.png)
 
 ### 4. Solver Log and Residual Monitoring
 VibeFlow converts residuals, time-step information, warnings, convergence status, and solver diagnostics into readable evidence. Users can detect instability, missing files, boundary mismatches, or unreasonable parameter settings earlier in the workflow. Residual histories and simulation progress can also be monitored in real time, including an estimate of the remaining computation time.
 
-![](v4.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917757558-d01a90fb-bd14-4382-8c31-3a2155e98171.png)
+![](figure/v4.png)
 
 ### 5. Result Comparison and Physical Validation
 Simulation results must be validated. VibeFlow can generate comparison plots against reference data, experimental measurements, analytical solutions, or engineering acceptance criteria, helping users determine whether the results are credible. This makes validation faster, clearer, and more reproducible.
 
-![](v5.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917762811-fcd72297-c5ff-4689-9cfc-55054eee1596.png)
+![](figure/v5.png)
 
 ### 6. Natural-Language-Driven Geometry and Meshing
 Users can describe geometry and design intent in natural language, and VibeFlow can then use tools such as CadQuery and OCP to generate parametric models. Regions, interfaces, and boundary sets retain their semantic names so that they can be used consistently in subsequent meshing and solver configuration. The models can be rebuilt, modified, and exported for continued use in downstream engineering workflows.
 
-![](v6.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917769099-d928f89f-cafd-4c0e-9c91-866a7affc879.png)
+![](figure/v6.png)
 
-![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917868731-1033c7f1-8c1e-4dfd-933d-57ec1e5018f9.png)
+![](figure/v6-2.png)
 
 ### 7. Natural-Language Post-Processing
 Post-processing often requires users to remember many interface operations and scripting APIs. VibeFlow turns this process into a natural-language workflow. Users only need to specify whether they want to examine stress, displacement, pressure, temperature, velocity, slices, isosurfaces, streamlines, or probe curves. The Agent can then generate reproducible Python or ParaView scripts and automatically load the results into the platform, enabling automated post-processing entirely through natural-language instructions.
 
-![](v7.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917874278-26d1d443-d80a-44d0-8c5b-f4492244c716.png)
+![](figure/v7.png)
 
 ### 8. Research Reports and Papers
 The report consolidates evidence from all preceding stages. VibeFlow can organize key parameters, geometry and meshing methods, solver settings, result figures and tables, validation procedures, and study limitations into a structured report. Each conclusion in the report should be traceable to the corresponding files, logs, plots, and data. VibeFlow also provides LaTeX support and built-in submission templates to make academic writing and paper preparation easier.
 
-![](v8.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917878776-c5686a4a-46b2-4b0b-b299-51ccaf589dd2.png)
+![](figure/v8.png)
 
 ### 9. Screenshot Annotation Assistance
 In many cases, users want to express instructions such as “change this area,” “this boundary is incorrect,” or “refine the mesh in this region.” Text alone may not be sufficiently direct. VibeFlow supports screenshot annotation, allowing users to circle regions, draw arrows, and add notes directly to the current view. The Agent then translates this visual information into executable modification instructions.
 
-![](v9.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917884301-7355213e-e14b-49d7-8e30-6475fd7050f4.png)
+![](figure/v9.png)
 
 ### 10. Dark Theme for Long Research Sessions
 Numerical simulation often involves long periods of modeling, parameter tuning, computation, debugging, and report writing. VibeFlow provides a dark interface theme designed for extended use, helping users focus on models, data, and evidence while reducing distractions caused by the interface.
 
-![](v10.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917892069-441cd0eb-72a6-4ca1-8169-bed0d097a407.png)
+![](figure/v10.png)
 
 ### 11. Add to Chat
 A common limitation of conventional conversational AI is inaccurate or incomplete context. Users often need to manually copy code, logs, or configuration fragments, which can easily omit critical information. VibeFlow allows selected code, dictionaries, logs, and configuration blocks to be added to the conversation with one click, providing the Agent with precise local context.
 
-![](v11.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917896793-1ce0394e-5618-4c6b-b379-d7088a1995e1.png)
+![](figure/v11.png)
 
 ### 12. Visual OpenFOAM Parameter Panel
 Editing OpenFOAM dictionary files has a relatively high learning curve and can be tedious. VibeFlow converts selected dictionary entries into visual forms and provides parameter explanations, selection guidance, and risk warnings. Users can understand what they are modifying without memorizing every keyword and can conveniently select appropriate options from drop-down menus.
 
-![](v12.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917902517-28788857-87a7-4b87-ba24-399865101eb9.png)
+![](figure/v12.png)
 
 ### 13. Markdown Research Notes and Report Editing
 A research project produces extensive explanations, records, and stage summaries. VibeFlow includes Markdown editing and preview capabilities for tables, equations, images, code blocks, and report structures. This keeps simulation notes together with project files and allows later report preparation to continue directly from earlier work.
 
-![](v13.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917909337-493a8a93-d2a5-40ce-a238-afdc78ef6ba6.png)
+![](figure/v13.png)
 
 ### 14. Multi-File Tab Management
 A real simulation case may require many files to be open at the same time, including geometry scripts, meshing scripts, control dictionaries, solver logs, post-processing scripts, and report drafts. VibeFlow manages these files through vertical tabs. It supports more than text and code editing: CAE results can also be loaded automatically by double-clicking them.
 
-![](v14.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917917406-325ec0b1-50b8-4a69-8ae7-f0378c3d7a20.png)
+![](figure/v14.png)
 
 ### 15. Model Backend Switching
 Different tasks may be better suited to different Agent tools or model backends. VibeFlow Agent supports a wide range of international, Chinese, and locally deployed models, allowing users to choose the model that best fits their work.
 
-![](v15.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917921582-21641eb6-83a5-465f-afae-2bc4ad0d6c78.png)
+![](figure/v15.png)
 
 ### 16. Path Configuration for Multiple CAE Backends
 VibeFlow supports multiple classes of solvers and engineering tools. OpenFOAM, CalculiX, Code_Aster, Elmer, FDS, FEniCS, FreeFEM, LAMMPS, MOOSE, SU2, DualSPHysics, PETSc, SPHinXsys, OpenRadioss, OpenLB, Simcenter STAR-CCM+, COMSOL Multiphysics, Ansys Fluent, OpenVSP, and other tools can be introduced into the Agent context through local path configuration. Multiple tools can then be combined in a unified environment to build powerful CAE workflows.
 
-![](v16.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917927404-be53d28b-754b-4755-9921-d6e92bfa1dd0.png)
+![](figure/v16.png)
 
 ### 17. CAE Skills and Knowledge Base
 Different backends have different syntax, file structures, and execution conventions. VibeFlow manages this knowledge through dedicated CAE Skills, enabling the Agent to follow the appropriate operating rules when performing tasks in OpenFOAM, structural finite-element analysis, particle methods, lattice Boltzmann methods, fire dynamics, or post-processing.
 
 Users can actively select a Skill in VibeFlow Agent or create customized Skills for their own workflows, allowing accumulated experience to be reused in future projects.
 
-![](v17.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917936298-be384f1c-5273-42d7-baba-1c8d0c5b0a27.png)![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1783917944992-dc4b2446-d202-4b05-89cf-03b2d7d1af35.png)
+![](figure/v17.png)
+
+![](figure/v17-2.png)
 
 ## Example
 ### Natural-Language-Driven Turbulence Model Development, Testing, Validation, and Engineering Simulation
@@ -190,7 +196,8 @@ whatsapp: [https://chat.whatsapp.com/ELGAUIu3VLVGHcvD0zkvBT](https://chat.whatsa
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/1541241/1784276361854-2d140d50-1643-4e70-8990-a02a34897267.png)
 
----
+![](assets/wechat.png)
 
+---
 
 
