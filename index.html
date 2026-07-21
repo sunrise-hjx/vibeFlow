@@ -69,6 +69,8 @@
       --cyan-glow: rgba(34,211,238,0.18);
       --red:       #EF4444;
       --amber:     #F59E0B;
+      --coral:     #FF5A36;
+      --orange:    #FF8A4C;
       --purple:    #A78BFA;
       --text:      #E8EFF8;
       --text2:     #8B98AE;
@@ -83,6 +85,46 @@
     }
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.65; overflow-x: hidden; }
+    .vf-cursor {
+      position: fixed; z-index: 10000; left: 0; top: 0; width: 24px; height: 24px;
+      display: grid; place-items: center; pointer-events: none; opacity: 0;
+      transform: translate3d(-40px,-40px,0); transition: opacity .18s ease;
+      will-change: transform;
+    }
+    .vf-cursor.is-visible { opacity: 1; }
+    .vf-cursor img {
+      width: 19px; height: 19px; object-fit: contain; transform: rotate(-45deg);
+      filter: drop-shadow(0 0 7px rgba(255,48,48,.62));
+      transition: transform .2s var(--ease), filter .2s var(--ease);
+    }
+    .vf-cursor::before,
+    .vf-cursor::after {
+      content: ''; position: absolute; left: 50%; top: 50%; background: rgba(255,255,255,.84);
+      transform: translate(-50%,-50%) scale(0); opacity: 0; border-radius: 999px;
+    }
+    .vf-cursor::before { width: 1px; height: 28px; }
+    .vf-cursor::after { width: 28px; height: 1px; }
+    .vf-cursor.is-link img { transform: rotate(-45deg) scale(1.28); filter: drop-shadow(0 0 10px rgba(34,211,238,.78)); }
+    .vf-cursor.is-link::before,
+    .vf-cursor.is-link::after { animation: vfCursorGlint .8s ease-in-out infinite; }
+    .vf-cursor.is-down img { transform: rotate(-45deg) scale(.82); }
+    @keyframes vfCursorGlint { 0%,100% { transform: translate(-50%,-50%) scale(0); opacity: 0; } 45% { transform: translate(-50%,-50%) scale(1); opacity: .8; } 70% { opacity: 0; } }
+    .vf-spark-layer { position: fixed; z-index: 9999; inset: 0; overflow: hidden; pointer-events: none; }
+    .vf-pointer-spark {
+      --spark-x: 0px; --spark-y: 0px; --spark-color: #fff;
+      position: absolute; width: 3px; height: 3px; border-radius: 1px;
+      background: var(--spark-color); box-shadow: 0 0 8px var(--spark-color);
+      animation: vfPointerSpark .72s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    @keyframes vfPointerSpark {
+      0% { opacity: 0; transform: translate(-50%,-50%) rotate(45deg) scale(.25); }
+      22% { opacity: 1; transform: translate(-50%,-50%) rotate(45deg) scale(1.7); }
+      100% { opacity: 0; transform: translate(calc(-50% + var(--spark-x)),calc(-50% + var(--spark-y))) rotate(135deg) scale(0); }
+    }
+    @media (pointer: fine) {
+      html.vf-custom-cursor,
+      html.vf-custom-cursor * { cursor: none !important; }
+    }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--text3); border-radius: 3px; }
@@ -95,7 +137,7 @@
     }
     .eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--cyan); }
     .gradient-text {
-      background: linear-gradient(135deg, #fff 30%, var(--cyan) 100%);
+      background: linear-gradient(118deg, #fff 24%, var(--cyan) 67%, #FF7655 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .section { padding: 120px 0; }
@@ -148,9 +190,51 @@
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; margin-right: auto; }
     .nav-logo img { height: 30px; }
     .nav-logo-name { font-family: var(--display); font-weight: 700; font-size: 19px; letter-spacing: -.02em; color: var(--text); }
-    .nav-links { display: flex; align-items: center; gap: 32px; margin-right: 32px; }
-    .nav-links a { font-size: 14px; color: var(--text2); text-decoration: none; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
+    .nav-links { display: flex; align-items: center; gap: 20px; margin-right: 28px; }
+    .nav-links > a,
+    .nav-menu-trigger {
+      display: inline-flex; align-items: center; gap: 6px;
+      border: 0; background: none; padding: 8px 0; cursor: pointer;
+      font-family: var(--body); font-size: 14px; color: var(--text2);
+      text-decoration: none; white-space: nowrap; transition: color .2s;
+    }
+    .nav-links > a:hover,
+    .nav-menu-trigger:hover,
+    .nav-menu:focus-within .nav-menu-trigger,
+    .nav-menu.open .nav-menu-trigger { color: var(--text); }
+    .nav-menu { position: relative; }
+    .nav-caret { width: 12px; height: 12px; transition: transform .22s var(--ease); }
+    .nav-menu:hover .nav-caret,
+    .nav-menu:focus-within .nav-caret,
+    .nav-menu.open .nav-caret { transform: rotate(180deg); }
+    .nav-dropdown {
+      position: absolute; top: calc(100% + 13px); left: 50%; z-index: 120;
+      width: 320px; padding: 10px; border: 1px solid var(--border-hi);
+      border-radius: 14px; background: rgba(9,16,28,.96);
+      box-shadow: 0 28px 70px rgba(0,0,0,.46), 0 0 0 1px rgba(255,255,255,.025) inset;
+      backdrop-filter: blur(24px) saturate(1.25);
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transform: translate(-50%, -8px) scale(.985); transform-origin: 50% 0;
+      transition: opacity .2s var(--ease), transform .2s var(--ease), visibility .2s;
+    }
+    .nav-dropdown::before { content: ''; position: absolute; left: 0; right: 0; top: -14px; height: 14px; }
+    .nav-menu-product .nav-dropdown { width: 360px; }
+    .nav-menu:hover .nav-dropdown,
+    .nav-menu:focus-within .nav-dropdown,
+    .nav-menu.open .nav-dropdown {
+      opacity: 1; visibility: visible; pointer-events: auto;
+      transform: translate(-50%, 0) scale(1);
+    }
+    .nav-dropdown a {
+      display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; align-items: center;
+      padding: 12px; border-radius: 9px; color: var(--text2); text-decoration: none;
+      transition: color .2s, background .2s, transform .2s;
+    }
+    .nav-dropdown a:hover,
+    .nav-dropdown a:focus-visible { color: var(--text); background: rgba(34,211,238,.075); transform: translateX(2px); outline: none; }
+    .nav-drop-copy { min-width: 0; }
+    .nav-drop-copy strong { display: block; font-family: var(--display); font-size: 13px; font-weight: 600; line-height: 1.25; }
+    .nav-drop-copy small { display: block; margin-top: 3px; color: var(--text3); font-size: 11px; line-height: 1.35; }
     .nav-btns { display: flex; align-items: center; gap: 10px; }
     .btn-lang { padding: 7px 14px; border: 1px solid var(--border); background: none; color: var(--text2); font-family: var(--mono); font-size: 11px; border-radius: 6px; cursor: pointer; transition: .25s; }
     .btn-lang:hover { border-color: var(--border-hi); color: var(--cyan); }
@@ -158,14 +242,26 @@
     .btn-dl:hover { background: #38BDF8; box-shadow: 0 0 24px rgba(34,211,238,.4); }
 
     /* ── HERO ── */
-    #hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
+    #hero { position: relative; isolation: isolate; min-height: 100svh; display: flex; align-items: center; overflow: hidden; }
     #hero::before {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
-      background-size: 64px 64px;
+      content: ''; position: absolute; z-index: 0; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 62% 33% at 10% 43%, rgba(255,139,112,.54), rgba(255,96,77,.22) 40%, transparent 74%),
+        radial-gradient(ellipse 68% 34% at 52% 42%, rgba(54,88,255,.58), rgba(44,112,255,.22) 48%, transparent 77%),
+        radial-gradient(ellipse 48% 31% at 88% 41%, rgba(23,178,245,.30), transparent 73%),
+        linear-gradient(rgba(255,255,255,.016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.016) 1px, transparent 1px);
+      background-size: auto, auto, auto, 64px 64px, 64px 64px;
     }
-    #hero::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, var(--bg) 100%); }
-    #flow-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .55; }
+    #hero::after {
+      content: ''; position: absolute; z-index: 1; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 72% 62% at 50% 48%, transparent 28%, rgba(5,8,15,.20) 72%, var(--bg) 100%);
+    }
+    #flow-canvas {
+      position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%;
+      opacity: .82; pointer-events: none; mix-blend-mode: screen;
+      filter: saturate(1.08) contrast(1.04);
+    }
     .hero-body { position: relative; z-index: 2; text-align: center; width: 100%; padding: 140px 28px 100px; }
     .hero-pill {
       display: inline-flex; align-items: center; gap: 8px;
@@ -182,11 +278,43 @@
       line-height: 1.75; max-width: 760px; margin: 0 auto 34px;
     }
     .hero-ctas { display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .hero-product-stage {
+      position: relative; width: min(1180px, 100%); margin: 64px auto 0;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 46px 120px rgba(0,0,0,.40), 0 20px 55px rgba(255,90,54,.10);
+    }
+    .hero-product-window {
+      position: relative; overflow: hidden; border-radius: inherit; background: #05080f;
+    }
+    .hero-product-video-wrap { position: relative; aspect-ratio: 3578 / 2160; background: #05080f; }
+    .hero-product-video { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .hero-product-video-wrap::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(115deg, rgba(255,255,255,.045), transparent 18%, transparent 78%, rgba(255,90,54,.025));
+    }
     .hero-kpis { display: flex; justify-content: center; gap: 60px; margin-top: 90px; flex-wrap: wrap; }
     .kpi { text-align: center; }
     .kpi-val { font-family: var(--display); font-size: 30px; font-weight: 800; letter-spacing: -.03em; }
     .kpi-val em { color: var(--cyan); font-style: normal; }
     .kpi-lbl { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-top: 5px; }
+
+    /* ── SPECTRAL GRADIENT ACCENTS ── */
+    #workflow, #download { position: relative; isolation: isolate; overflow: hidden; }
+    #workflow::before, #download::before {
+      content: ''; position: absolute; z-index: 0; pointer-events: none; border-radius: 50%;
+    }
+    #workflow::before {
+      width: min(1000px, 82vw); height: 520px; top: -330px; right: -180px; filter: blur(22px);
+      background: radial-gradient(ellipse, rgba(51,86,240,.19), rgba(255,120,96,.06) 48%, transparent 73%);
+    }
+    #download::before {
+      width: 130%; height: 110%; left: -15%; bottom: -54%; filter: blur(26px);
+      background:
+        radial-gradient(ellipse 48% 70% at 10% 52%, rgba(255,139,112,.57), rgba(255,96,77,.17) 46%, transparent 75%),
+        radial-gradient(ellipse 58% 72% at 53% 48%, rgba(50,82,247,.67), rgba(42,104,255,.22) 52%, transparent 78%),
+        radial-gradient(ellipse 42% 66% at 88% 50%, rgba(21,176,244,.31), transparent 74%);
+    }
+    #workflow > .wrap, #download > .wrap { position: relative; z-index: 1; }
 
     /* ── MODES SECTION ── */
     .modes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -231,6 +359,89 @@
     .feat-icon { width: 46px; height: 46px; border-radius: 10px; background: var(--bg3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 22px; }
     .feat-title { font-family: var(--display); font-size: 16px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 10px; }
     .feat-desc { font-size: 14px; color: var(--text2); line-height: 1.75; }
+
+    /* ── COMPARISON ── */
+    .compare-section {
+      position: relative; overflow: hidden; border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 82% 18%, rgba(34,211,238,.09), transparent 28%),
+        radial-gradient(circle at 12% 86%, rgba(167,139,250,.07), transparent 24%),
+        var(--bg);
+    }
+    .compare-section::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .55;
+      background-image: linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 54px 54px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+      mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+    }
+    .compare-section .wrap { position: relative; z-index: 1; }
+    .compare-head-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: end; }
+    .compare-head-grid .sec-head { margin-bottom: 0; }
+    .compare-head-grid .sec-sub { max-width: 660px; }
+    .compare-manifesto {
+      display: grid; grid-template-columns: repeat(3, auto); gap: 22px;
+      padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px;
+      background: rgba(9,16,28,.74); backdrop-filter: blur(14px);
+    }
+    .compare-manifesto-item { min-width: 88px; }
+    .compare-manifesto-item b {
+      display: block; font-family: var(--display); font-size: 20px; line-height: 1; color: var(--cyan);
+    }
+    .compare-manifesto-item span { display: block; margin-top: 6px; font-family: var(--mono); font-size: 9px; line-height: 1.4; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
+    .compare-shell {
+      position: relative; margin-top: 54px; border: 1px solid var(--border-hi); border-radius: 18px;
+      background: rgba(9,16,28,.88); box-shadow: 0 32px 90px rgba(0,0,0,.34); overflow: hidden;
+    }
+    .compare-shell::before {
+      content: ''; position: absolute; left: 25%; top: 0; bottom: 0; width: 25%; pointer-events: none;
+      background: linear-gradient(180deg, rgba(34,211,238,.12), rgba(34,211,238,.035));
+      box-shadow: 0 0 48px rgba(34,211,238,.08) inset;
+    }
+    .compare-scroll { position: relative; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--text3) transparent; }
+    .compare-table { width: 100%; min-width: 980px; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+    .compare-table th, .compare-table td { position: relative; width: 25%; }
+    .compare-table thead th {
+      height: 154px; padding: 28px 24px; text-align: left; vertical-align: bottom;
+      border-bottom: 1px solid var(--border); background: rgba(5,8,15,.48);
+    }
+    .compare-table thead th.compare-vf { border-top: 2px solid var(--cyan); background: rgba(34,211,238,.075); }
+    .compare-axis-label { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); }
+    .compare-col-head { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+    .compare-col-icon {
+      width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--border);
+      border-radius: 9px; background: var(--bg3); font-family: var(--mono); font-size: 10px; color: var(--text2);
+    }
+    .compare-col-icon img { width: 21px; height: 21px; object-fit: contain; }
+    .compare-col-name { font-family: var(--display); font-size: 17px; font-weight: 700; line-height: 1.2; color: var(--text); }
+    .compare-vf .compare-col-name { color: var(--cyan); }
+    .compare-col-desc { font-size: 11px; line-height: 1.45; color: var(--text3); font-weight: 400; }
+    .compare-table tbody th,
+    .compare-table tbody td {
+      min-height: 76px; padding: 22px 24px; text-align: left; vertical-align: middle;
+      border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.55; color: var(--text2);
+    }
+    .compare-table tbody tr:last-child th,
+    .compare-table tbody tr:last-child td { border-bottom: 0; }
+    .compare-table tbody th { font-weight: 500; color: var(--text); background: rgba(5,8,15,.18); }
+    .compare-row-label { display: flex; align-items: center; gap: 12px; }
+    .compare-row-num { font-family: var(--mono); font-size: 9px; color: var(--text3); }
+    .compare-table td.compare-vf { color: var(--text); background: rgba(34,211,238,.045); }
+    .compare-value-strong { color: var(--cyan); font-weight: 600; }
+    .compare-value-lead { display: block; margin-bottom: 9px; }
+    .compare-chip-list { display: flex; flex-wrap: wrap; gap: 5px; }
+    .compare-chip {
+      display: inline-flex; align-items: center; min-height: 22px; padding: 3px 8px;
+      border: 1px solid rgba(34,211,238,.23); border-radius: 999px;
+      background: rgba(34,211,238,.075); color: var(--cyan);
+      font-family: var(--mono); font-size: 8px; font-weight: 600; letter-spacing: .035em;
+    }
+    .compare-note {
+      position: relative; display: flex; align-items: flex-start; gap: 10px;
+      padding: 18px 24px; border-top: 1px solid var(--border); color: var(--text3); font-size: 11px; line-height: 1.65;
+    }
+    .compare-note svg { flex: 0 0 auto; margin-top: 2px; color: var(--cyan); }
 
     /* ── WORKFLOW ── */
     .wf-mode-toggle { display: flex; gap: 4px; padding: 4px; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; width: fit-content; margin-bottom: 56px; }
@@ -338,12 +549,109 @@
     }
     .demo-dot.active { width: 22px; background: var(--cyan); opacity: 1; }
 
-    /* ── TECH STRIP ── */
-    #tech { padding: 64px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .tech-label { text-align: center; font-family: var(--mono); font-size: 11px; color: var(--text3); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 36px; }
-    .tech-list { display: flex; justify-content: center; align-items: center; gap: 48px; flex-wrap: wrap; }
-    .tech-item { font-family: var(--mono); font-size: 13px; color: var(--text3); transition: color .25s; letter-spacing: .04em; font-weight: 500; }
-    .tech-item:hover { color: var(--text2); }
+    /* ── INTEGRATION ECOSYSTEM ── */
+    #tech {
+      position: relative; overflow: hidden; padding: 120px 0;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 50% 48%, rgba(34,211,238,.085), transparent 28%),
+        radial-gradient(circle at 18% 20%, rgba(167,139,250,.055), transparent 24%),
+        var(--bg);
+    }
+    #tech::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .48;
+      background-image: radial-gradient(circle, rgba(255,255,255,.12) 1px, transparent 1.2px);
+      background-size: 34px 34px;
+      -webkit-mask-image: radial-gradient(ellipse 78% 70% at 50% 50%, #000, transparent 78%);
+      mask-image: radial-gradient(ellipse 78% 70% at 50% 50%, #000, transparent 78%);
+    }
+    #tech .wrap { position: relative; z-index: 1; }
+    .ecosystem-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 430px); gap: 64px; align-items: end; margin-bottom: 58px; }
+    .ecosystem-head .sec-head { margin-bottom: 0; }
+    .ecosystem-head .sec-sub { max-width: 650px; }
+    .ecosystem-summary {
+      display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; background: rgba(9,16,28,.72); backdrop-filter: blur(14px);
+    }
+    .ecosystem-summary-item { padding: 18px 16px; border-right: 1px solid var(--border); }
+    .ecosystem-summary-item:last-child { border-right: 0; }
+    .ecosystem-summary-item b { display: block; color: var(--cyan); font-family: var(--display); font-size: 22px; line-height: 1; }
+    .ecosystem-summary-item span { display: block; margin-top: 7px; color: var(--text3); font-family: var(--mono); font-size: 8px; line-height: 1.4; letter-spacing: .08em; text-transform: uppercase; }
+    .ecosystem-map { position: relative; height: 760px; overflow: visible; background: transparent; }
+    .ecosystem-map::before {
+      content: ''; position: absolute; left: 50%; top: 50%; width: 34%; aspect-ratio: 1;
+      transform: translate(-50%,-50%); border-radius: 50%; pointer-events: none;
+      background: radial-gradient(circle, rgba(34,211,238,.075), rgba(34,211,238,.018) 46%, transparent 72%);
+      filter: blur(7px); animation: ecosystemAura 5.6s ease-in-out infinite;
+    }
+    @keyframes ecosystemAura { 0%,100% { opacity: .62; transform: translate(-50%,-50%) scale(.94); } 50% { opacity: 1; transform: translate(-50%,-50%) scale(1.06); } }
+    .ecosystem-orbit-canvas { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .ecosystem-core {
+      position: absolute; z-index: 4; left: 50%; top: 50%; width: 122px; min-height: 122px;
+      transform: translate(-50%,-50%); display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0; text-align: center; border: 0; background: none; box-shadow: none;
+    }
+    .ecosystem-core::before {
+      content: ''; position: absolute; inset: -34px; border: 1px solid rgba(34,211,238,.15); border-radius: 50%;
+      box-shadow: 0 0 42px rgba(34,211,238,.12), inset 0 0 32px rgba(34,211,238,.07);
+      animation: corePulse 3.8s ease-in-out infinite;
+    }
+    @keyframes corePulse { 0%,100% { opacity: .35; transform: scale(.985); } 50% { opacity: 1; transform: scale(1.018); } }
+    .ecosystem-core-logo {
+      width: 96px; height: 96px; display: grid; place-items: center;
+      border: 0; border-radius: 0; background: transparent;
+    }
+    .ecosystem-core-logo img { width: 78px; height: 78px; object-fit: contain; filter: drop-shadow(0 0 16px rgba(255,0,0,.28)); }
+    .ecosystem-nodes { position: absolute; inset: 0; z-index: 3; }
+    .ecosystem-node {
+      --node-accent: var(--cyan); position: absolute; left: var(--orbit-x, var(--x)); top: var(--orbit-y, var(--y)); width: 60px; height: 60px;
+      transform: translate(-50%,-50%); display: grid; place-items: center; padding: 0;
+      border: 1px solid color-mix(in srgb, var(--node-accent) 24%, var(--border)); border-radius: 50%; background: rgba(9,16,28,.91);
+      color: var(--text2); text-decoration: none; box-shadow: 0 12px 28px rgba(0,0,0,.22);
+      transition: border-color .25s, background .25s, color .25s, transform .25s var(--ease), box-shadow .25s;
+    }
+    .ecosystem-node[data-kind="numerical"] { --node-accent: var(--purple); }
+    .ecosystem-node[data-kind="tool"] { --node-accent: var(--amber); }
+    .ecosystem-node:hover,
+    .ecosystem-node:focus-visible {
+      z-index: 8; color: var(--text); border-color: color-mix(in srgb, var(--node-accent) 58%, transparent);
+      background: var(--bg3); transform: translate(-50%,-50%) translateY(-4px) scale(1.08);
+      box-shadow: 0 18px 42px rgba(0,0,0,.35), 0 0 24px color-mix(in srgb, var(--node-accent) 14%, transparent); outline: none;
+    }
+    .ecosystem-node-mark {
+      width: 44px; height: 44px; display: grid; place-items: center;
+      border: 0; border-radius: 50%; background: color-mix(in srgb, var(--node-accent) 7%, transparent); overflow: hidden;
+    }
+    .ecosystem-node-mark img { width: 31px; height: 31px; object-fit: contain; }
+    .ecosystem-node-mark img.is-wide { width: 35px; height: 27px; }
+    .ecosystem-node-mark.is-text { color: var(--node-accent); font-family: var(--mono); font-size: 10px; font-weight: 700; }
+    .ecosystem-custom-node .ecosystem-node-mark { font-size: 26px; font-weight: 300; line-height: 1; }
+    .ecosystem-node-name {
+      position: absolute; z-index: 12; left: 50%; top: calc(100% + 12px); width: 194px;
+      transform: translate(-50%,-5px); padding: 11px 12px; border: 1px solid var(--border-hi); border-radius: 10px;
+      background: rgba(5,8,15,.96); color: var(--text); box-shadow: 0 18px 46px rgba(0,0,0,.42); backdrop-filter: blur(16px);
+      font-family: var(--mono); font-size: 10px; font-weight: 600; line-height: 1.3; letter-spacing: .01em; text-align: left;
+      opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .18s, transform .18s, visibility .18s;
+    }
+    .ecosystem-node-name small { display: block; margin-top: 5px; color: var(--text3); font-family: var(--body); font-size: 10px; font-weight: 400; line-height: 1.45; letter-spacing: 0; }
+    .ecosystem-node:hover .ecosystem-node-name,
+    .ecosystem-node:focus-visible .ecosystem-node-name { opacity: 1; visibility: visible; transform: translate(-50%,0); }
+    .ecosystem-footer {
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, 430px); gap: 28px;
+      align-items: center; margin-top: 12px; padding-top: 22px; border-top: 1px solid var(--border);
+    }
+    .ecosystem-legend,
+    .ecosystem-custom {
+      min-height: 0; border: 0; border-radius: 0; background: transparent;
+    }
+    .ecosystem-legend { display: flex; align-items: center; gap: 20px; padding: 0; flex-wrap: wrap; }
+    .ecosystem-legend-item { display: inline-flex; align-items: center; gap: 8px; color: var(--text3); font-family: var(--mono); font-size: 9px; line-height: 1.4; }
+    .ecosystem-legend-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px rgba(34,211,238,.38); }
+    .ecosystem-legend-item:nth-child(2) .ecosystem-legend-dot { background: var(--purple); box-shadow: 0 0 12px rgba(167,139,250,.34); }
+    .ecosystem-legend-item:nth-child(3) .ecosystem-legend-dot { background: var(--amber); box-shadow: 0 0 12px rgba(245,158,11,.34); }
+    .ecosystem-custom { display: flex; align-items: center; gap: 14px; padding: 0; }
+    .ecosystem-custom strong { display: block; font-family: var(--display); font-size: 14px; color: var(--text); }
+    .ecosystem-custom p { margin-top: 3px; color: var(--text3); font-size: 11px; line-height: 1.5; }
 
     /* ── PRICING ── */
     .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -447,7 +755,8 @@
       transition: .25s; display: flex; flex-direction: column; gap: 8px;
     }
     .link-card:hover { border-color: var(--border-hi); background: rgba(34,211,238,.04); transform: translateY(-2px); }
-    .link-icon { font-size: 22px; margin-bottom: 2px; }
+    .link-icon { width: 34px; height: 34px; display: grid; place-items: center; margin-bottom: 2px; color: var(--cyan); font-size: 22px; }
+    .link-icon svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
     .link-name { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--text); }
     .link-desc { font-size: 12px; color: var(--text3); line-height: 1.55; }
     .link-arrow { font-size: 11px; color: var(--cyan); font-family: var(--mono); margin-top: auto; padding-top: 8px; }
@@ -548,6 +857,8 @@
     @media (max-width: 1024px) {
       .feat-grid { grid-template-columns: repeat(2, 1fr); }
       .modes-grid { grid-template-columns: 1fr; }
+      .compare-head-grid { grid-template-columns: 1fr; gap: 28px; }
+      .compare-manifesto { width: fit-content; }
       .wf-row.usage-row { grid-template-columns: repeat(3, 1fr); gap: 24px; }
       .wf-row.dev-row   { grid-template-columns: repeat(3, 1fr); gap: 24px; }
       .wf-row::before { display: none; }
@@ -558,6 +869,7 @@
     @media (max-width: 768px) {
       .feat-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
+      .compare-shell { border-radius: 14px; }
       .wf-row.usage-row, .wf-row.dev-row { grid-template-columns: repeat(2, 1fr); }
       .hero-kpis { gap: 32px; }
       .links-grid { grid-template-columns: 1fr 1fr; }
@@ -595,6 +907,7 @@
       .hero-tagline { font-size: 13px; line-height: 1.7; margin-bottom: 24px; max-width: 330px; }
       .hero-ctas { gap: 10px; }
       .hero-ctas a, .hero-ctas button { flex: 1 1 150px; justify-content: center; padding: 10px 14px; font-size: 13px; }
+      .hero-product-stage { margin-top: 46px; border-radius: 10px; }
       .hero-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; max-width: 320px; margin: 46px auto 0; }
       .kpi-val { font-size: 21px; }
       .kpi-lbl { font-size: 9px; line-height: 1.35; }
@@ -610,6 +923,16 @@
       .feat-icon { width: 38px; height: 38px; font-size: 18px; margin-bottom: 16px; }
       .feat-title { font-size: 15px; line-height: 1.35; }
       .feat-desc { font-size: 13px; line-height: 1.65; }
+      /* comparison */
+      .compare-manifesto { width: 100%; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 14px; }
+      .compare-manifesto-item { min-width: 0; }
+      .compare-manifesto-item b { font-size: 17px; }
+      .compare-manifesto-item span { font-size: 8px; letter-spacing: .04em; }
+      .compare-shell { margin-top: 32px; }
+      .compare-table { min-width: 860px; }
+      .compare-table thead th { height: 132px; padding: 20px 18px; }
+      .compare-table tbody th, .compare-table tbody td { padding: 18px; font-size: 12px; }
+      .compare-note { padding: 16px 18px; }
       /* workflow */
       .wf-mode-toggle { width: 100%; margin-bottom: 32px; }
       .wf-mode-btn { flex: 1; padding: 8px 10px; font-size: 12px; }
@@ -631,11 +954,19 @@
       .demo-tab { flex: 1; padding: 7px 8px; font-size: 10px; }
       .demo-stat-bar { top: 12px; right: 12px; }
       .demo-stat { min-width: 112px; padding: 6px 9px; font-size: 9px; }
-      /* tech strip */
-      #tech { padding: 42px 0; }
-      .tech-label { font-size: 9.5px; margin-bottom: 24px; }
-      .tech-list { gap: 24px; }
-      .tech-item { font-size: 12px; }
+      /* integration ecosystem */
+      #tech { padding: 64px 0; }
+      .ecosystem-head { grid-template-columns: 1fr; gap: 26px; margin-bottom: 34px; }
+      .ecosystem-summary { max-width: 430px; }
+      .ecosystem-map { height: auto; padding: 16px 0; }
+      .ecosystem-map::before, .ecosystem-orbit-canvas { display: none; }
+      .ecosystem-core { position: relative; left: auto; top: auto; width: 120px; min-height: 120px; margin: 0 auto; transform: none; }
+      .ecosystem-nodes { position: relative; inset: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin-top: 30px; }
+      .ecosystem-node { position: relative; left: auto; top: auto; width: auto; height: auto; min-height: 82px; transform: none; display: flex; flex-direction: column; gap: 7px; border: 0; background: transparent; box-shadow: none; }
+      .ecosystem-node:hover, .ecosystem-node:focus-visible { transform: translateY(-3px); }
+      .ecosystem-node-name { position: static; width: auto; padding: 0; border: 0; background: transparent; box-shadow: none; transform: none; opacity: 1; visibility: visible; font-size: 8px; text-align: center; }
+      .ecosystem-node-name small { display: none; }
+      .ecosystem-footer { grid-template-columns: 1fr; gap: 20px; }
       /* gallery */
       .gallery-grid { gap: 18px; }
       .gallery-body { padding: 18px 16px 20px; }
@@ -687,15 +1018,72 @@
       --cyan-glow: rgba(34,211,238,0.15);
     }
     body.theme-light .gradient-text {
-      background: linear-gradient(135deg, #0F172A 30%, var(--cyan) 100%);
+      background: linear-gradient(118deg, #0F172A 24%, #1597AC 68%, #EF4D2F 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     body.theme-light #hero::before {
-      background-image: linear-gradient(rgba(0,0,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,.06) 1px, transparent 1px);
+      background:
+        radial-gradient(ellipse 62% 33% at 10% 43%, rgba(255,139,112,.42), rgba(255,96,77,.13) 42%, transparent 74%),
+        radial-gradient(ellipse 68% 34% at 52% 42%, rgba(54,88,255,.34), rgba(44,112,255,.13) 50%, transparent 77%),
+        radial-gradient(ellipse 48% 31% at 88% 41%, rgba(23,178,245,.20), transparent 73%),
+        linear-gradient(rgba(15,23,42,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15,23,42,.055) 1px, transparent 1px);
+      background-size: auto, auto, auto, 64px 64px, 64px 64px;
     }
+    body.theme-light #hero::after { background: radial-gradient(ellipse 72% 62% at 50% 48%, transparent 30%, rgba(234,241,247,.16) 72%, var(--bg) 100%); }
+    body.theme-light #flow-canvas { opacity: .46; mix-blend-mode: multiply; filter: saturate(1.02) contrast(1.01); }
+    body.theme-light #workflow::before,
+    body.theme-light #download::before { opacity: .72; }
+    body.theme-light .compare-section {
+      background:
+        radial-gradient(circle at 82% 18%, rgba(34,211,238,.13), transparent 30%),
+        radial-gradient(circle at 12% 86%, rgba(99,102,241,.09), transparent 26%),
+        var(--bg);
+    }
+    body.theme-light .compare-section::before {
+      background-image: linear-gradient(rgba(15,23,42,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.045) 1px, transparent 1px);
+    }
+    body.theme-light .compare-manifesto {
+      border-color: rgba(15,23,42,.10); background: rgba(255,255,255,.68);
+      box-shadow: 0 18px 46px rgba(15,23,42,.08);
+    }
+    body.theme-light .compare-shell {
+      border-color: rgba(8,145,178,.28); background: rgba(241,247,251,.94);
+      box-shadow: 0 32px 80px rgba(15,23,42,.14);
+    }
+    body.theme-light .compare-shell::before {
+      background: linear-gradient(180deg, rgba(6,182,212,.16), rgba(6,182,212,.055));
+      box-shadow: 0 0 42px rgba(8,145,178,.07) inset;
+    }
+    body.theme-light .compare-table thead th { background: rgba(218,230,240,.82); }
+    body.theme-light .compare-table thead th.compare-vf { background: rgba(8,145,178,.13); }
+    body.theme-light .compare-table tbody th { color: var(--text); background: rgba(221,231,239,.58); }
+    body.theme-light .compare-table tbody td { color: var(--text2); background: rgba(248,251,253,.58); }
+    body.theme-light .compare-table td.compare-vf { color: var(--text); background: rgba(8,145,178,.085); }
+    body.theme-light .compare-col-icon { border-color: rgba(15,23,42,.10); background: rgba(255,255,255,.72); color: #334155; }
+    body.theme-light .compare-col-name,
+    body.theme-light .compare-axis-label { color: var(--text); }
+    body.theme-light .compare-col-desc,
+    body.theme-light .compare-row-num,
+    body.theme-light .compare-note { color: var(--text2); }
+    body.theme-light .compare-value-strong { color: #0787A0; }
+    body.theme-light .compare-chip { border-color: rgba(8,145,178,.28); background: rgba(8,145,178,.10); color: #06748B; }
+    body.theme-light .compare-note { background: rgba(233,241,247,.72); }
     body.theme-light #nav.stuck {
       background: rgba(234,241,247,.9);
     }
+    body.theme-light .nav-dropdown {
+      background: rgba(234,241,247,.97);
+      box-shadow: 0 28px 70px rgba(15,23,42,.16), 0 0 0 1px rgba(255,255,255,.55) inset;
+    }
+    body.theme-light .ecosystem-summary,
+    body.theme-light .ecosystem-node { background: rgba(234,241,247,.9); }
+    body.theme-light .ecosystem-map,
+    body.theme-light .ecosystem-core,
+    body.theme-light .ecosystem-legend,
+    body.theme-light .ecosystem-custom { background: transparent; }
+    body.theme-light .ecosystem-node-name { background: rgba(247,250,253,.97); box-shadow: 0 18px 46px rgba(29,48,68,.16); }
+    @media (max-width: 900px) { body.theme-light .ecosystem-node-name { background: transparent; box-shadow: none; } }
     body.theme-light .hero-pill {
       background: rgba(34,211,238,.15);
       border-color: rgba(34,211,238,.35);
@@ -775,6 +1163,20 @@
 
     @media (max-width: 480px) {
       .btn-theme { padding: 6px 10px; }
+      #tech { padding: 56px 0; }
+      .ecosystem-summary-item { padding: 14px 10px; }
+      .ecosystem-summary-item b { font-size: 18px; }
+      .ecosystem-summary-item span { font-size: 7.5px; }
+      .ecosystem-map { padding: 8px 0; }
+      .ecosystem-core { width: 112px; min-height: 112px; padding: 0; }
+      .ecosystem-core-logo { width: 82px; height: 82px; border-radius: 0; }
+      .ecosystem-core-logo img { width: 66px; height: 66px; }
+      .ecosystem-nodes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 22px; }
+      .ecosystem-node { padding: 8px; }
+      .ecosystem-node-mark { width: 28px; height: 28px; flex-basis: 28px; }
+      .ecosystem-node-mark img { width: 21px; height: 21px; }
+      .ecosystem-legend { align-items: flex-start; flex-direction: column; gap: 10px; padding: 0; }
+      .ecosystem-custom { padding: 0; }
     }
   </style>
 </head>
@@ -788,17 +1190,43 @@
       <img src="assets/logo.svg" alt="VibeFlow">
       <span class="nav-logo-name">VibeFlow</span>
     </a>
-    <nav class="nav-links">
-      <a href="#modes"><span class="en">Modes</span><span class="zh">模式</span></a>
-      <a href="#features"><span class="en">Features</span><span class="zh">功能</span></a>
-      <a href="#workflow"><span class="en">Workflow</span><span class="zh">工作流</span></a>
-      <a href="#gallery"><span class="en">Gallery</span><span class="zh">预览</span></a>
-      <a href="cases/index.html"><span class="en">Cases</span><span class="zh">案例库</span></a>
-      <a href="#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <div class="nav-menu nav-menu-product">
+        <button class="nav-menu-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="en">Product</span><span class="zh">产品</span>
+          <svg class="nav-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <div class="nav-dropdown">
+          <a href="#modes"><span class="nav-drop-copy"><strong><span class="en">Modes</span><span class="zh">模式</span></strong><small><span class="en">Usage and development paths</span><span class="zh">使用与开发两种路径</span></small></span></a>
+          <a href="#features"><span class="nav-drop-copy"><strong><span class="en">Features</span><span class="zh">功能</span></strong><small><span class="en">Capabilities built for CAE</span><span class="zh">面向 CAE 的核心能力</span></small></span></a>
+          <a href="#workflow"><span class="nav-drop-copy"><strong><span class="en">Workflow</span><span class="zh">工作流</span></strong><small><span class="en">Stage-gated engineering pipeline</span><span class="zh">阶段门控工程流程</span></small></span></a>
+          <a href="#comparison"><span class="nav-drop-copy"><strong><span class="en">Comparison</span><span class="zh">对比</span></strong><small><span class="en">See the workflow difference</span><span class="zh">了解工作方式的差异</span></small></span></a>
+          <a href="#tech"><span class="nav-drop-copy"><strong><span class="en">Integrations</span><span class="zh">集成生态</span></strong><small><span class="en">Connect the complete CAE toolchain</span><span class="zh">连接完整 CAE 工具链</span></small></span></a>
+        </div>
+      </div>
+      <div class="nav-menu">
+        <button class="nav-menu-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="en">Experience</span><span class="zh">体验</span>
+          <svg class="nav-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <div class="nav-dropdown">
+          <a href="#gallery"><span class="nav-drop-copy"><strong><span class="en">Gallery</span><span class="zh">预览</span></strong><small><span class="en">Explore the product interface</span><span class="zh">浏览产品界面与能力</span></small></span></a>
+          <a href="#demo"><span class="nav-drop-copy"><strong><span class="en">Demos</span><span class="zh">演示</span></strong><small><span class="en">Watch complete CAE workflows</span><span class="zh">观看完整 CAE 工作流</span></small></span></a>
+        </div>
+      </div>
+      <div class="nav-menu">
+        <button class="nav-menu-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="en">Resources</span><span class="zh">资源</span>
+          <svg class="nav-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <div class="nav-dropdown">
+          <a href="cases/index.html"><span class="nav-drop-copy"><strong><span class="en">Case Library</span><span class="zh">案例库</span></strong><small><span class="en">Browse engineering examples</span><span class="zh">浏览工程仿真案例</span></small></span></a>
+          <a href="#links"><span class="nav-drop-copy"><strong><span class="en">Documentation</span><span class="zh">文档</span></strong><small><span class="en">Guides, references and downloads</span><span class="zh">指南、参考资料与下载</span></small></span></a>
+        </div>
+      </div>
       <a href="#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
       <a href="#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
       <a href="privacy.html"><span class="en">Privacy</span><span class="zh">隐私</span></a>
-      <a href="#links"><span class="en">Docs</span><span class="zh">文档</span></a>
     </nav>
     <div class="nav-btns">
       <button class="btn-lang" id="langBtn" onclick="toggleLang()">中文</button>
@@ -834,6 +1262,15 @@
         <span class="en">Watch Demo</span><span class="zh">查看演示</span>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       </a>
+    </div>
+    <div class="hero-product-stage" aria-label="VibeFlow Studio product preview">
+      <div class="hero-product-window">
+        <div class="hero-product-video-wrap">
+          <video class="hero-product-video" autoplay muted loop playsinline preload="metadata" disablepictureinpicture draggable="false" aria-label="VibeFlow Studio product interface">
+            <source src="assets/gifhalan.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
     </div>
     <div class="hero-kpis">
       <div class="kpi">
@@ -1009,6 +1446,132 @@
   </div>
 </section>
 
+<!-- ══════════════ COMPARISON ══════════════ -->
+<section id="comparison" class="section compare-section">
+  <div class="wrap">
+    <div class="compare-head-grid">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="en">Horizontal Comparison</span><span class="zh">横向对比</span></div>
+        <h2 class="sec-title">
+          <span class="en">More than a coding agent.<br>A complete engineering workflow.</span>
+          <span class="zh">不只是写代码，<br>而是把工程闭环跑通。</span>
+        </h2>
+        <p class="sec-sub">
+          <span class="en">VibeFlow connects intent, simulation artifacts, solver execution, validation, and reporting in one inspectable process—while engineers retain control of every critical physical decision.</span>
+          <span class="zh">VibeFlow 将需求、仿真产物、求解执行、结果验证与报告组织进同一套可检查流程，同时把关键物理决策始终留在工程师手中。</span>
+        </p>
+      </div>
+      <div class="compare-manifesto reveal" aria-label="VibeFlow architecture summary">
+        <div class="compare-manifesto-item"><b>01</b><span><span class="en">Source of truth</span><span class="zh">唯一事实源</span></span></div>
+        <div class="compare-manifesto-item"><b>02</b><span><span class="en">Working modes</span><span class="zh">两种工作模式</span></span></div>
+        <div class="compare-manifesto-item"><b>01</b><span><span class="en">Evidence chain</span><span class="zh">一条证据链</span></span></div>
+      </div>
+    </div>
+
+    <div class="compare-shell reveal">
+      <div class="compare-scroll" tabindex="0" aria-label="VibeFlow workflow comparison table">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="compare-axis-label"><span class="en">Comparison axis</span><span class="zh">对比维度</span></span></th>
+              <th scope="col" class="compare-vf">
+                <div class="compare-col-head">
+                  <span class="compare-col-icon"><img src="assets/logo.svg" alt=""></span>
+                  <span class="compare-col-name">VibeFlow</span>
+                  <span class="compare-col-desc"><span class="en">Purpose-built CAE workspace</span><span class="zh">面向 CAE 的智能工作空间</span></span>
+                </div>
+              </th>
+              <th scope="col">
+                <div class="compare-col-head">
+                  <span class="compare-col-icon">&lt;/&gt;</span>
+                  <span class="compare-col-name"><span class="en">General Coding Agent</span><span class="zh">通用 Coding Agent</span></span>
+                  <span class="compare-col-desc"><span class="en">General-purpose digital assistant</span><span class="zh">面向通用数字任务</span></span>
+                </div>
+              </th>
+              <th scope="col">
+                <div class="compare-col-head">
+                  <span class="compare-col-icon">CAE</span>
+                  <span class="compare-col-name"><span class="en">Traditional CAE Workflow</span><span class="zh">传统 CAE 工作流</span></span>
+                  <span class="compare-col-desc"><span class="en">Expert-operated engineering toolchain</span><span class="zh">由专家操作的工程工具链</span></span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">01</span><span><span class="en">Primary workflow</span><span class="zh">核心工作流</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong"><span class="en">Requirements → geometry → mesh → solve → post → report</span><span class="zh">需求 → 几何 → 网格 → 求解 → 后处理 → 报告</span></span></td>
+              <td><span class="en">Code and general digital tasks</span><span class="zh">代码与通用数字任务</span></td>
+              <td><span class="en">Engineering tasks executed tool by tool</span><span class="zh">逐个专业工具完成工程任务</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">02</span><span><span class="en">Project source of truth</span><span class="zh">项目事实源</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong">caseDict</span><span class="en"> keeps intent and parameters aligned</span><span class="zh"> 统一约束需求与参数</span></td>
+              <td><span class="en">Repository and conversation context</span><span class="zh">代码仓库与对话上下文</span></td>
+              <td><span class="en">Settings distributed across files and software</span><span class="zh">设置分散在文件与软件之中</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">03</span><span><span class="en">CAE process model</span><span class="zh">CAE 流程模型</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong"><span class="en">6 usage stages + 5 development stages</span><span class="zh">6 个使用阶段 + 5 个开发阶段</span></span></td>
+              <td><span class="en">No built-in CAE stage gates</span><span class="zh">默认不包含 CAE 阶段门控</span></td>
+              <td><span class="en">Defined by each tool and engineering team</span><span class="zh">由各工具与工程团队自行定义</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">04</span><span><span class="en">Engineering control</span><span class="zh">工程控制权</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong"><span class="en">Explicit confirmation before critical handoffs</span><span class="zh">关键交接前进行显式确认</span></span></td>
+              <td><span class="en">Review generated actions and code</span><span class="zh">审查生成的操作与代码</span></td>
+              <td><span class="en">Direct expert operation</span><span class="zh">由专家直接操作</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">05</span><span><span class="en">Evidence traceability</span><span class="zh">证据可追溯</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong"><span class="en">Files, logs, plots, and conclusions stay linked</span><span class="zh">文件、日志、图表与结论保持关联</span></span></td>
+              <td><span class="en">Code diffs and chat history</span><span class="zh">代码差异与对话历史</span></td>
+              <td><span class="en">Records assembled manually across tools</span><span class="zh">跨工具手动整理记录</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">06</span><span><span class="en">Backend orchestration</span><span class="zh">后端协同</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong"><span class="en">CAE Skills + configured local tools</span><span class="zh">CAE Skills + 本地工具路径</span></span></td>
+              <td><span class="en">Integrations built per project</span><span class="zh">按项目单独构建集成</span></td>
+              <td><span class="en">Deep capability inside each backend</span><span class="zh">单一后端内具备深度能力</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">07</span><span><span class="en">Solver-side extension</span><span class="zh">求解侧扩展</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong">UDF/</span><span class="en">: design → build → validate → integrate</span><span class="zh">：设计 → 构建 → 验证 → 集成</span></td>
+              <td><span class="en">Can assist coding without a CAE lifecycle</span><span class="zh">可辅助编码，但无内置 CAE 生命周期</span></td>
+              <td><span class="en">Backend-specific customization</span><span class="zh">面向特定后端进行定制</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">08</span><span><span class="en">Delivery</span><span class="zh">交付方式</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong"><span class="en">Reproducible local artifacts + traceable report</span><span class="zh">可复现本地产物 + 可追溯报告</span></span></td>
+              <td><span class="en">Code or task output</span><span class="zh">代码或任务输出</span></td>
+              <td><span class="en">Native project results; reports compiled separately</span><span class="zh">原生工程结果；报告另行整理</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">09</span><span><span class="en">Model &amp; agent choice</span><span class="zh">大模型与 Agent 选择</span></span></span></th>
+              <td class="compare-vf">
+                <span class="compare-value-strong compare-value-lead"><span class="en">Open orchestration across cloud and local models</span><span class="zh">开放编排云端与本地大模型</span></span>
+                <span class="compare-chip-list" aria-label="Supported model and agent access"><span class="compare-chip">Cloud</span><span class="compare-chip">Local</span><span class="compare-chip">Codex</span><span class="compare-chip">Claude Code</span><span class="compare-chip">opencode</span></span>
+              </td>
+              <td><span class="en">Usually bound to one product, toolchain, or supported model catalog</span><span class="zh">通常受限于单一产品、工具链或其支持的模型目录</span></td>
+              <td><span class="en">No unified LLM or agent orchestration; AI tools are configured separately</span><span class="zh">没有统一的大模型或 Agent 编排入口，AI 工具需另行配置</span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="compare-row-label"><span class="compare-row-num">10</span><span><span class="en">Simulation workspace</span><span class="zh">仿真工作台与结果交互</span></span></span></th>
+              <td class="compare-vf"><span class="compare-value-strong"><span class="en">Purpose-built numerical simulation workbench—double-click artifacts to inspect and modify results directly</span><span class="zh">专用于数值仿真的智能工作台，双击产物即可直接查看并修改结果</span></span></td>
+              <td><span class="en">Primarily a chat or code window; CAE artifacts open in separate applications</span><span class="zh">主要是对话或代码窗口，CAE 产物需要在其他应用中打开</span></td>
+              <td><span class="en">Results are viewed and edited backend by backend, without one intelligent workspace</span><span class="zh">结果按不同后端分别查看和修改，缺少统一的智能工作台</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="compare-note">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        <span><span class="en">This compares workflow design, not individual model or solver performance. VibeFlow orchestrates existing CAE tools and preserves human engineering judgment—it does not replace validated solvers or domain expertise.</span><span class="zh">本表比较的是工作流设计，而非单个模型或求解器性能。VibeFlow 负责协同现有 CAE 工具并保留人的工程判断，不替代经过验证的求解器与领域专业能力。</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ══════════════ OPERATION DEMO ══════════════ -->
 <section id="demo" class="section section-alt">
   <div class="wrap">
@@ -1051,21 +1614,83 @@
   </div>
 </section>
 
-<!-- ══════════════ TECH STRIP ══════════════ -->
+<!-- ══════════════ INTEGRATION ECOSYSTEM ══════════════ -->
 <section id="tech">
   <div class="wrap">
-    <div class="tech-label"><span class="en">Powered by mainstream open-source CAE tools</span><span class="zh">基于主流开源 CAE 工具</span></div>
-    <div class="tech-list">
-      <span class="tech-item">OpenFOAM</span>
-      <span class="tech-item">CalculiX</span>
-      <span class="tech-item">Code_Aster</span>
-      <span class="tech-item">Elmer</span>
-      <span class="tech-item">SU2</span>
-      <span class="tech-item">FEniCS</span>
-      <span class="tech-item">CadQuery / OCP</span>
-      <span class="tech-item">Gmsh</span>
-      <span class="tech-item">ParaView</span>
-      <span class="tech-item">Codex / Claude Code / opencode</span>
+    <div class="ecosystem-head">
+      <div class="sec-head">
+        <div class="eyebrow"><span class="en">Integrated CAE Ecosystem</span><span class="zh">智能集成仿真生态</span></div>
+        <h2 class="sec-title">
+          <span class="en">One intelligent environment.<br>Every engineering tool.</span>
+          <span class="zh">一个智能环境，<br>连接完整仿真工具链。</span>
+        </h2>
+        <p class="sec-sub">
+          <span class="en">VibeFlow does not replace proven engineering software. It gives solvers, geometry tools, meshers, visualizers, and research workflows a shared source of truth and one agent-driven operating layer.</span>
+          <span class="zh">VibeFlow 让求解器、几何工具、网格工具、可视化软件与科研流程共享同一事实源和统一的 Agent 操作层。</span>
+        </p>
+      </div>
+      <div class="ecosystem-summary reveal" aria-label="VibeFlow integration summary">
+        <div class="ecosystem-summary-item"><b>30</b><span><span class="en">Connected tools</span><span class="zh">已连接工具</span></span></div>
+        <div class="ecosystem-summary-item"><b>35</b><span><span class="en">Built-in skills</span><span class="zh">内置 Skills</span></span></div>
+        <div class="ecosystem-summary-item"><b>∞</b><span><span class="en">Custom extensions</span><span class="zh">自定义扩展</span></span></div>
+      </div>
+    </div>
+
+    <div class="ecosystem-map reveal">
+      <canvas class="ecosystem-orbit-canvas" aria-hidden="true"></canvas>
+
+      <div class="ecosystem-core">
+        <div class="ecosystem-core-logo"><img src="assets/logo.svg" alt="VibeFlow"></div>
+      </div>
+
+      <div class="ecosystem-nodes">
+        <a class="ecosystem-node" data-kind="solver" style="--x:8%;--y:9%" href="https://openfoam.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/openfoam.png" alt=""></span><span class="ecosystem-node-name">OpenFOAM</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:20%;--y:9%" href="http://www.calculix.de/" target="_blank" rel="noopener"><span class="ecosystem-node-mark is-text">CCX</span><span class="ecosystem-node-name">CalculiX</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:32%;--y:9%" href="https://code-aster.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img class="is-wide" src="assets/integrations/code-aster.png" alt=""></span><span class="ecosystem-node-name">code_aster</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:44%;--y:9%" href="https://github.com/ElmerCSC/elmerfem" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/elmer.png" alt=""></span><span class="ecosystem-node-name">Elmer</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:56%;--y:9%" href="https://fenicsproject.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/fenics.png" alt=""></span><span class="ecosystem-node-name">FEniCS</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:68%;--y:9%" href="https://freefem.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/freefem.png" alt=""></span><span class="ecosystem-node-name">FreeFEM</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:80%;--y:9%" href="https://www.3ds.com/products/simulia/abaqus" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/abaqus.png" alt=""></span><span class="ecosystem-node-name">Abaqus</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:92%;--y:9%" href="https://www.comsol.com/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/comsol.png" alt=""></span><span class="ecosystem-node-name">COMSOL</span></a>
+
+        <a class="ecosystem-node" data-kind="solver" style="--x:5%;--y:25%" href="https://www.ansys.com/products/fluids/ansys-fluent" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/fluent.png" alt=""></span><span class="ecosystem-node-name">Ansys Fluent</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:18%;--y:25%" href="https://plm.sw.siemens.com/en-US/simcenter/fluids-thermal-simulation/star-ccm/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/starccm.png" alt=""></span><span class="ecosystem-node-name">STAR-CCM+</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:31%;--y:25%" href="https://openradioss.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/openradioss.png" alt=""></span><span class="ecosystem-node-name">OpenRadioss</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:69%;--y:25%" href="https://mooseframework.inl.gov/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/moose.png" alt=""></span><span class="ecosystem-node-name">MOOSE</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:82%;--y:25%" href="https://su2code.github.io/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/su2.png" alt=""></span><span class="ecosystem-node-name">SU2</span></a>
+        <a class="ecosystem-node" data-kind="solver" style="--x:95%;--y:25%" href="https://www.pyfr.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/pyfr.png" alt=""></span><span class="ecosystem-node-name">PyFR</span></a>
+
+        <a class="ecosystem-node" data-kind="numerical" style="--x:5%;--y:50%" href="https://www.nektar.info/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/nektar.png" alt=""></span><span class="ecosystem-node-name">Nektar++</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:18%;--y:50%" href="https://www.openlb.net/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/openlb.png" alt=""></span><span class="ecosystem-node-name">OpenLB</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:82%;--y:50%" href="https://pages.nist.gov/fds-smv/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/fds.png" alt=""></span><span class="ecosystem-node-name">FDS / Smokeview</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:95%;--y:50%" href="https://dual.sphysics.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/dualsphysics.png" alt=""></span><span class="ecosystem-node-name">DualSPHysics</span></a>
+
+        <a class="ecosystem-node" data-kind="numerical" style="--x:5%;--y:75%" href="https://www.sphinxsys.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/sphinxsys.png" alt=""></span><span class="ecosystem-node-name">SPHinXsys</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:18%;--y:75%" href="https://www.lammps.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/lammps.png" alt=""></span><span class="ecosystem-node-name">LAMMPS</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:31%;--y:75%" href="https://petsc.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/petsc.png" alt=""></span><span class="ecosystem-node-name">PETSc</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:69%;--y:75%" href="https://www.scilab.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img class="is-wide" src="assets/integrations/scilab.png" alt=""></span><span class="ecosystem-node-name">Scilab</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:82%;--y:75%" href="https://github.com/deepmodeling/jax-fem" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/jax-fem.png" alt=""></span><span class="ecosystem-node-name">JAX-FEM</span></a>
+        <a class="ecosystem-node" data-kind="numerical" style="--x:95%;--y:75%" href="https://jax-am.readthedocs.io/en/latest/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/jax-am.png" alt=""></span><span class="ecosystem-node-name">JAX-AM</span></a>
+
+        <a class="ecosystem-node" data-kind="tool" style="--x:8%;--y:91%" href="https://www.freecad.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/freecad.png" alt=""></span><span class="ecosystem-node-name">FreeCAD</span></a>
+        <a class="ecosystem-node" data-kind="tool" style="--x:24%;--y:91%" href="https://openvsp.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img class="is-wide" src="assets/integrations/openvsp.png" alt=""></span><span class="ecosystem-node-name">OpenVSP</span></a>
+        <a class="ecosystem-node" data-kind="tool" style="--x:40%;--y:91%" href="https://gmsh.info/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/gmsh.png" alt=""></span><span class="ecosystem-node-name">Gmsh</span></a>
+        <a class="ecosystem-node" data-kind="tool" style="--x:60%;--y:91%" href="https://www.paraview.org/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/paraview.png" alt=""></span><span class="ecosystem-node-name">ParaView</span></a>
+        <a class="ecosystem-node" data-kind="tool" style="--x:76%;--y:91%" href="https://cadquery.readthedocs.io/" target="_blank" rel="noopener"><span class="ecosystem-node-mark"><img src="assets/integrations/cadquery.png" alt=""></span><span class="ecosystem-node-name">CadQuery / OCP</span></a>
+        <a class="ecosystem-node" data-kind="tool" style="--x:92%;--y:91%" href="https://laserbeamfoam.com/" target="_blank" rel="noopener"><span class="ecosystem-node-mark is-text">LBF</span><span class="ecosystem-node-name">laserbeamFoam</span></a>
+        <div class="ecosystem-node ecosystem-custom-node" data-kind="tool" data-tool="Custom backend" style="--x:50%;--y:91%" tabindex="0" role="img"><span class="ecosystem-node-mark is-text">+</span><span class="ecosystem-node-name"><span class="en">Custom backend</span><span class="zh">专用后端</span></span></div>
+      </div>
+    </div>
+
+    <div class="ecosystem-footer">
+      <div class="ecosystem-legend">
+        <span class="ecosystem-legend-item"><span class="ecosystem-legend-dot"></span><span><span class="en">Solvers &amp; multiphysics</span><span class="zh">求解器与多物理场</span></span></span>
+        <span class="ecosystem-legend-item"><span class="ecosystem-legend-dot"></span><span><span class="en">Numerical &amp; particle methods</span><span class="zh">数值与粒子方法</span></span></span>
+        <span class="ecosystem-legend-item"><span class="ecosystem-legend-dot"></span><span><span class="en">Geometry, mesh &amp; visualization</span><span class="zh">几何、网格与可视化</span></span></span>
+      </div>
+      <div class="ecosystem-custom">
+        <div><strong><span class="en">Bring your own backend</span><span class="zh">接入你的专用后端</span></strong><p><span class="en">Create or install a Skill, configure the local tool path, and reuse the same VibeFlow workflow discipline.</span><span class="zh">创建或安装 Skill，配置本地工具路径，即可复用同一套 VibeFlow 工作规范。</span></p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1083,28 +1708,66 @@
     </div>
 
     <style>
-      .gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
-      .gallery-item {
-        display: flex; flex-direction: column; gap: 0; align-items: stretch; margin-bottom: 0;
-        border-radius: var(--r); border: 1px solid var(--border); overflow: hidden;
-        background: var(--bg2); transition: border-color .3s var(--ease), transform .3s var(--ease), background .3s var(--ease);
+      .gallery-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: -18px 0 22px; }
+      .gallery-position { display: flex; align-items: center; gap: 14px; min-width: 240px; color: var(--text3); font-family: var(--mono); font-size: 10px; letter-spacing: .12em; }
+      .gallery-position strong { color: var(--cyan); font-size: 14px; font-weight: 500; }
+      .gallery-progress { position: relative; width: 150px; height: 1px; overflow: hidden; background: var(--border); }
+      .gallery-progress span { position: absolute; inset: 0; background: linear-gradient(90deg, var(--cyan), var(--purple)); transform: scaleX(.05); transform-origin: left; transition: transform .35s var(--ease); }
+      .gallery-actions { display: flex; gap: 8px; }
+      .gallery-arrow { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 50%; background: var(--bg2); color: var(--text2); cursor: pointer; transition: color .2s, border-color .2s, transform .2s, background .2s; }
+      .gallery-arrow:hover:not(.is-disabled), .gallery-arrow:focus-visible { color: var(--cyan); border-color: var(--border-hi); background: var(--bg3); transform: translateY(-2px); outline: none; }
+      .gallery-arrow.is-disabled { opacity: .28; cursor: default; }
+      .gallery-arrow svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+      .gallery-viewport { position: relative; margin: 0 -2px; }
+      .gallery-grid {
+        display: flex; gap: 22px; overflow-x: auto; padding: 3px 2px 22px;
+        scroll-snap-type: x mandatory; scroll-behavior: smooth; overscroll-behavior-inline: contain;
+        scrollbar-width: none; -ms-overflow-style: none;
       }
-      .gallery-item:hover { border-color: var(--border-hi); transform: translateY(-4px); background: var(--bg3); }
+      .gallery-grid::-webkit-scrollbar { display: none; }
+      .gallery-item {
+        flex: 0 0 min(1040px, 92%); display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(290px, .72fr); align-items: stretch; margin-bottom: 0;
+        border-radius: var(--r); border: 1px solid var(--border); overflow: hidden;
+        background: var(--bg2); scroll-snap-align: start; scroll-snap-stop: always;
+        opacity: .54; transform: scale(.982); transition: border-color .35s var(--ease), transform .4s var(--ease), background .35s var(--ease), opacity .35s var(--ease);
+      }
+      .gallery-item.reveal { opacity: .54; transform: scale(.982); }
+      .gallery-item.is-active, .gallery-item.reveal.is-active { opacity: 1; transform: none; border-color: var(--border-hi); background: var(--bg3); }
       .gallery-item.reverse { direction: ltr; }
       .gallery-item.reverse > * { direction: ltr; }
-      .gallery-img-wrap { border-radius: 0; overflow: hidden; border: 0; border-bottom: 1px solid var(--border); cursor: zoom-in; position: relative; background: #020811; }
-      .gallery-img-wrap img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; transition: transform .4s var(--ease); }
+      .gallery-img-wrap { min-height: 430px; border-radius: 0; overflow: hidden; border: 0; border-right: 1px solid var(--border); cursor: zoom-in; position: relative; background: #020811; }
+      .gallery-img-wrap::after { content: '\2197'; position: absolute; right: 16px; bottom: 16px; width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; background: rgba(5,8,15,.7); color: #fff; font-size: 17px; backdrop-filter: blur(10px); opacity: 0; transform: translateY(5px); transition: opacity .25s, transform .25s; }
+      .gallery-img-wrap:hover::after, .gallery-img-wrap:focus-visible::after { opacity: 1; transform: none; }
+      .gallery-img-wrap:focus-visible { outline: 2px solid var(--cyan); outline-offset: -2px; }
+      .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease); }
       .gallery-img-wrap:hover img { transform: scale(1.025); }
-      .gallery-text { padding: 24px 24px 26px; }
+      .gallery-text { display: flex; flex-direction: column; justify-content: center; padding: 38px 34px; }
       .gallery-num { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
       .gallery-title { font-family: var(--display); font-size: clamp(18px, 2vw, 22px); font-weight: 700; letter-spacing: -.02em; margin-bottom: 12px; line-height: 1.22; }
       .gallery-desc { font-size: 14px; color: var(--text2); line-height: 1.78; }
       @media (max-width: 900px) {
-        .gallery-grid { grid-template-columns: 1fr; }
+        .gallery-toolbar { margin-top: -8px; }
+        .gallery-item { flex-basis: 88%; grid-template-columns: 1fr; }
+        .gallery-img-wrap { min-height: 0; aspect-ratio: 16 / 9; border-right: 0; border-bottom: 1px solid var(--border); }
+        .gallery-text { padding: 24px 22px 27px; }
+      }
+      @media (max-width: 560px) {
+        .gallery-position { min-width: 0; gap: 9px; }
+        .gallery-progress { width: 82px; }
+        .gallery-item { flex-basis: 94%; }
+        .gallery-arrow { width: 38px; height: 38px; }
       }
   </style>
 
-    <div class="gallery-grid">
+    <div class="gallery-toolbar" aria-label="Feature gallery controls">
+      <div class="gallery-position"><strong id="gallery-current">01</strong><span>/ 20</span><div class="gallery-progress" aria-hidden="true"><span id="gallery-progress"></span></div></div>
+      <div class="gallery-actions">
+        <button class="gallery-arrow" id="gallery-prev" type="button" aria-label="Previous feature"><svg viewBox="0 0 20 20"><path d="m12.5 4-6 6 6 6"/></svg></button>
+        <button class="gallery-arrow" id="gallery-next" type="button" aria-label="Next feature"><svg viewBox="0 0 20 20"><path d="m7.5 4 6 6-6 6"/></svg></button>
+      </div>
+    </div>
+    <div class="gallery-viewport">
+    <div class="gallery-grid" id="feature-gallery" tabindex="0" aria-label="VibeFlow feature gallery">
 
     <!-- v1 -->
     <div class="gallery-item reveal">
@@ -1406,9 +2069,10 @@
       </div>
     </div>
 
-    </div>
+    </div><!-- /gallery-grid -->
+    </div><!-- /gallery-viewport -->
 
-  </div>
+  </div><!-- /wrap -->
 </section>
 
 <!-- ══════════════ PRICING ══════════════ -->
@@ -1564,13 +2228,13 @@
           <img src="assets/bilibili.png" alt="Bilibili QR Code">
           <div class="qr-tip"><span class="en">Scan to watch demos</span><span class="zh">扫码观看演示</span></div>
         </div>
-        <span class="link-icon">▶</span>
+        <span class="link-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="m10 7-3-3m15 3 3-3"/><rect x="4" y="8" width="24" height="18" rx="5"/><path d="M11 14v6m10-6v6M8 25l-2 3m18-3 2 3"/></svg></span>
         <span class="link-name">Bilibili</span>
         <span class="link-desc"><span class="en">Follow operation demos, workflow updates, and CAE examples</span><span class="zh">关注操作演示、工作流更新和 CAE 示例</span></span>
         <span class="link-arrow" style="color:var(--cyan);font-family:var(--mono);font-size:11px;margin-top:auto;padding-top:8px;"><span class="en">↑ hover to scan</span><span class="zh">↑ 悬浮查看二维码</span></span>
       </div>
       <a href="https://www.yuque.com/bluedreams/vibeflow/wtbqdb4rxqz1xgbk?singleDoc#" target="_blank" rel="noopener" class="link-card reveal">
-        <span class="link-icon">⬇</span>
+        <span class="link-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4v15m-6-6 6 6 6-6"/><path d="M6 22v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4"/></svg></span>
         <span class="link-name"><span class="en">Releases</span><span class="zh">版本下载</span></span>
         <span class="link-desc"><span class="en">Download VibeFlow Studio packages and release builds</span><span class="zh">下载 VibeFlow Studio 安装包与发布版本</span></span>
         <span class="link-arrow">→ GitHub</span>
@@ -1802,6 +2466,115 @@ function openLb(wrap) {
   document.body.appendChild(lb);
 }
 
+/* ── Navigation dropdowns ───────── */
+/* Feature gallery carousel */
+(() => {
+  const track = document.getElementById('feature-gallery');
+  const current = document.getElementById('gallery-current');
+  const progress = document.getElementById('gallery-progress');
+  const prev = document.getElementById('gallery-prev');
+  const next = document.getElementById('gallery-next');
+  if (!track || !current || !progress || !prev || !next) return;
+
+  const cards = Array.from(track.querySelectorAll('.gallery-item'));
+  let activeIndex = 0;
+  let scrollRaf = 0;
+  prev.disabled = false;
+  next.disabled = false;
+
+  function setActive(index) {
+    activeIndex = Math.max(0, Math.min(cards.length - 1, index));
+    cards.forEach((card, cardIndex) => {
+      card.classList.toggle('is-active', cardIndex === activeIndex);
+      if (cardIndex === activeIndex) card.setAttribute('aria-current', 'true');
+      else card.removeAttribute('aria-current');
+    });
+    current.textContent = String(activeIndex + 1).padStart(2, '0');
+    progress.style.transform = `scaleX(${(activeIndex + 1) / cards.length})`;
+    const atStart = activeIndex === 0;
+    const atEnd = activeIndex === cards.length - 1;
+    prev.classList.toggle('is-disabled', atStart);
+    next.classList.toggle('is-disabled', atEnd);
+    prev.setAttribute('aria-disabled', String(atStart));
+    next.setAttribute('aria-disabled', String(atEnd));
+  }
+
+  function nearestCard() {
+    const left = track.scrollLeft;
+    let nearest = 0;
+    let distance = Infinity;
+    cards.forEach((card, index) => {
+      const candidate = Math.abs((card.offsetLeft - track.offsetLeft) - left);
+      if (candidate < distance) {
+        distance = candidate;
+        nearest = index;
+      }
+    });
+    setActive(nearest);
+  }
+
+  function goTo(index) {
+    const target = Math.max(0, Math.min(cards.length - 1, index));
+    track.scrollTo({ left: cards[target].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+    setActive(target);
+  }
+
+  prev.addEventListener('click', () => { if (activeIndex > 0) goTo(activeIndex - 1); });
+  next.addEventListener('click', () => { if (activeIndex < cards.length - 1) goTo(activeIndex + 1); });
+  track.addEventListener('scroll', () => {
+    if (scrollRaf) return;
+    scrollRaf = requestAnimationFrame(() => {
+      scrollRaf = 0;
+      nearestCard();
+    });
+  }, { passive: true });
+  track.addEventListener('keydown', event => {
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+    event.preventDefault();
+    goTo(activeIndex + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+  cards.forEach(card => {
+    const imageWrap = card.querySelector('.gallery-img-wrap');
+    const image = imageWrap?.querySelector('img');
+    if (!imageWrap) return;
+    imageWrap.tabIndex = 0;
+    imageWrap.setAttribute('role', 'button');
+    imageWrap.setAttribute('aria-label', image?.alt ? `Open image: ${image.alt}` : 'Open feature image');
+    imageWrap.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      openLb(imageWrap);
+    });
+  });
+  window.addEventListener('resize', nearestCard, { passive: true });
+  setActive(0);
+})();
+
+const navMenus = Array.from(document.querySelectorAll('.nav-menu'));
+function closeNavMenus() {
+  navMenus.forEach(menu => {
+    menu.classList.remove('open');
+    menu.querySelector('.nav-menu-trigger')?.setAttribute('aria-expanded', 'false');
+  });
+}
+navMenus.forEach(menu => {
+  const trigger = menu.querySelector('.nav-menu-trigger');
+  trigger?.addEventListener('click', event => {
+    event.stopPropagation();
+    const shouldOpen = !menu.classList.contains('open');
+    closeNavMenus();
+    menu.classList.toggle('open', shouldOpen);
+    trigger.setAttribute('aria-expanded', String(shouldOpen));
+  });
+  menu.querySelectorAll('.nav-dropdown a').forEach(link => link.addEventListener('click', closeNavMenus));
+});
+document.addEventListener('click', event => {
+  if (!event.target.closest('.nav-menu')) closeNavMenus();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeNavMenus();
+});
+
 /* ── Language toggle ─────────────── */
 let lang = 'en';
 function toggleLang() {
@@ -1914,45 +2687,415 @@ function openStage(mode, idx) {
   detail.classList.add('open');
 }
 
-/* ── Hero canvas ─────────────────── */
+/* ── Interactive star field ─────── */
 (function () {
   const canvas = document.getElementById('flow-canvas');
+  const hero = document.getElementById('hero');
+  if (!canvas || !hero) return;
   const ctx = canvas.getContext('2d');
-  function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
-  resize();
-  window.addEventListener('resize', resize, { passive: true });
-  const N = 240;
-  class P {
-    constructor(rand) { this.reset(rand); }
-    reset(rand) {
-      this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-      this.life = rand ? Math.random() * 220 : 0; this.max = 160 + Math.random() * 160;
-      this.spd = 0.7 + Math.random() * 1.6; this.sz = 0.4 + Math.random() * 1.4;
-      this.hue = 182 + Math.random() * 28;
-    }
-    step(t) {
-      const nx = this.x / canvas.width, ny = this.y / canvas.height;
-      const a = Math.sin(nx * 4.2 + t * 0.16) * Math.PI * 2 + Math.cos(ny * 3.1 + t * 0.11) * Math.PI + Math.sin((nx + ny) * 2.8 + t * 0.07) * Math.PI * 0.6;
-      this.x += Math.cos(a) * this.spd; this.y += Math.sin(a) * this.spd; this.life++;
-      if (this.life > this.max || this.x < -4 || this.x > canvas.width + 4 || this.y < -4 || this.y > canvas.height + 4) this.reset(false);
-    }
-    draw(isLight) {
-      const a = Math.sin((this.life / this.max) * Math.PI) * 0.65;
-      const l = isLight ? '50%' : '65%';
-      ctx.beginPath(); ctx.arc(this.x, this.y, this.sz, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${this.hue},78%,${l},${a})`; ctx.fill();
+  if (!ctx) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pointer = { x: 0, y: 0, px: 0, py: 0, energy: 0, active: false };
+  const darkPalette = ['255,255,255', '160,222,255', '99,142,255', '255,157,132'];
+  const lightPalette = ['15,23,42', '8,145,178', '37,99,235', '218,77,51'];
+
+  let width = 1;
+  let height = 1;
+  let dpr = 1;
+  let stars = [];
+  let rafId = 0;
+
+  function fieldStrength(nx, ny) {
+    const wave =
+      Math.sin(nx * 11.4 + ny * 5.8) * .22 +
+      Math.cos(ny * 13.2 - nx * 3.6) * .18 +
+      Math.sin((nx + ny) * 18.5) * .10;
+    const centerBand = Math.exp(-Math.pow((ny - .48) / .24, 2)) * .38;
+    const leftCluster = Math.exp(-(Math.pow((nx - .33) / .19, 2) + Math.pow((ny - .56) / .24, 2))) * .42;
+    return Math.max(.12, Math.min(1, .28 + wave + centerBand + leftCluster));
+  }
+
+  function buildStars() {
+    stars = [];
+    const spacing = width < 600 ? 15 : 18;
+    for (let y = spacing * .5; y < height; y += spacing) {
+      for (let x = spacing * .5; x < width; x += spacing) {
+        const nx = x / width;
+        const ny = y / height;
+        const strength = fieldStrength(nx, ny);
+        if (Math.random() > .18 + strength * .50) continue;
+        const rare = Math.random();
+        stars.push({
+          x: x + (Math.random() - .5) * 3,
+          y: y + (Math.random() - .5) * 3,
+          size: rare > .975 ? 2.7 : rare > .88 ? 1.75 : .65 + Math.random() * .75,
+          base: .12 + strength * .47 + Math.random() * .14,
+          phase: Math.random() * Math.PI * 2,
+          speed: .45 + Math.random() * 1.55,
+          tone: Math.floor(Math.random() * darkPalette.length)
+        });
+      }
     }
   }
-  const pts = Array.from({ length: N }, () => new P(true));
-  let t = 0;
-  function frame() {
+
+  function resizeStars() {
+    width = Math.max(1, Math.round(hero.getBoundingClientRect().width));
+    height = Math.max(1, Math.round(hero.offsetHeight));
+    dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildStars();
+  }
+
+  function updatePointer(event) {
+    const rect = hero.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const velocity = Math.hypot(x - pointer.px, y - pointer.py);
+    pointer.px = pointer.x = x;
+    pointer.py = pointer.y = y;
+    pointer.energy = Math.min(1.8, .68 + velocity / 16);
+    pointer.active = true;
+  }
+
+  hero.addEventListener('pointermove', updatePointer, { passive: true });
+  hero.addEventListener('pointerdown', updatePointer, { passive: true });
+  hero.addEventListener('pointerleave', () => { pointer.active = false; }, { passive: true });
+
+  function drawStar(star, time, isLight) {
+    const pulse = (Math.sin(star.phase + time * star.speed) + 1) * .5;
+    const twinkle = Math.pow(pulse, 7);
+    let proximity = 0;
+    if (pointer.active || pointer.energy > .02) {
+      const distance = Math.hypot(star.x - pointer.x, star.y - pointer.y);
+      const radius = 185;
+      if (distance < radius) proximity = Math.pow(1 - distance / radius, 2) * pointer.energy;
+    }
+
+    const palette = isLight ? lightPalette : darkPalette;
+    const alphaScale = isLight ? .58 : 1;
+    const alpha = Math.min(1, (star.base * (.20 + twinkle * 1.22) + proximity * .88) * alphaScale);
+    if (alpha < .025) return;
+
+    const size = star.size * (1 + proximity * 1.55 + (twinkle > .93 ? .42 : 0));
+    const sx = Math.round(star.x - size * .5);
+    const sy = Math.round(star.y - size * .5);
+    ctx.fillStyle = `rgba(${palette[star.tone]},${alpha})`;
+    ctx.fillRect(sx, sy, Math.max(1, size), Math.max(1, size));
+
+    if (alpha > .68 && size > 1.4) {
+      const flare = 3 + size * 2.2;
+      ctx.strokeStyle = `rgba(${palette[star.tone]},${alpha * .34})`;
+      ctx.lineWidth = .5;
+      ctx.beginPath();
+      ctx.moveTo(star.x - flare, star.y);
+      ctx.lineTo(star.x + flare, star.y);
+      ctx.moveTo(star.x, star.y - flare);
+      ctx.lineTo(star.x, star.y + flare);
+      ctx.stroke();
+    }
+  }
+
+  function frame(now) {
+    rafId = 0;
+    const time = now * .001;
+    pointer.energy *= .955;
+    ctx.clearRect(0, 0, width, height);
+
     const isLight = document.body.classList.contains('theme-light');
-    ctx.fillStyle = isLight ? 'rgba(226,232,240,.55)' : 'rgba(5,8,15,.09)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    t += 0.003; pts.forEach(p => { p.step(t); p.draw(isLight); }); requestAnimationFrame(frame);
+    ctx.globalCompositeOperation = isLight ? 'source-over' : 'screen';
+    stars.forEach(star => drawStar(star, time, isLight));
+
+    if (pointer.energy > .03) {
+      const glow = ctx.createRadialGradient(pointer.x, pointer.y, 0, pointer.x, pointer.y, 130);
+      glow.addColorStop(0, isLight ? `rgba(8,145,178,${pointer.energy * .055})` : `rgba(255,255,255,${pointer.energy * .075})`);
+      glow.addColorStop(.34, isLight ? `rgba(37,99,235,${pointer.energy * .025})` : `rgba(99,142,255,${pointer.energy * .042})`);
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(pointer.x - 130, pointer.y - 130, 260, 260);
+    }
+
+    if (!reduceMotion && !document.hidden) rafId = requestAnimationFrame(frame);
   }
-  frame();
+
+  function startStars() {
+    if (!rafId && !reduceMotion && !document.hidden) rafId = requestAnimationFrame(frame);
+  }
+
+  resizeStars();
+  if (reduceMotion) frame(performance.now());
+  else startStars();
+
+  if ('ResizeObserver' in window) {
+    const resizeObserver = new ResizeObserver(resizeStars);
+    resizeObserver.observe(hero);
+  }
+  window.addEventListener('resize', resizeStars, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    } else {
+      startStars();
+    }
+  });
 })();
+
+/* ── VibeFlow logo cursor ───────── */
+(function () {
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cursor = document.createElement('div');
+  const sparkLayer = document.createElement('div');
+  cursor.className = 'vf-cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  cursor.innerHTML = '<img src="assets/logo.svg" alt="">';
+  sparkLayer.className = 'vf-spark-layer';
+  sparkLayer.setAttribute('aria-hidden', 'true');
+  document.body.append(cursor, sparkLayer);
+  document.documentElement.classList.add('vf-custom-cursor');
+
+  let targetX = -40;
+  let targetY = -40;
+  let currentX = -40;
+  let currentY = -40;
+  let lastX = -40;
+  let lastY = -40;
+  let lastSpark = 0;
+  let cursorRaf = 0;
+  const sparkColors = ['#ffffff', '#8ee9ff', '#6b8cff', '#ff967d'];
+
+  function createSpark(x, y, velocity) {
+    const amount = velocity > 22 ? 2 : 1;
+    for (let i = 0; i < amount; i++) {
+      const spark = document.createElement('i');
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 8 + Math.random() * 19 + Math.min(velocity, 30) * .28;
+      spark.className = 'vf-pointer-spark';
+      spark.style.left = `${x + (Math.random() - .5) * 8}px`;
+      spark.style.top = `${y + (Math.random() - .5) * 8}px`;
+      spark.style.setProperty('--spark-x', `${Math.cos(angle) * distance}px`);
+      spark.style.setProperty('--spark-y', `${Math.sin(angle) * distance}px`);
+      spark.style.setProperty('--spark-color', sparkColors[Math.floor(Math.random() * sparkColors.length)]);
+      sparkLayer.appendChild(spark);
+      spark.addEventListener('animationend', () => spark.remove(), { once: true });
+    }
+  }
+
+  function moveCursor(event) {
+    targetX = event.clientX;
+    targetY = event.clientY;
+    cursor.classList.add('is-visible');
+    const velocity = Math.hypot(targetX - lastX, targetY - lastY);
+    const now = performance.now();
+    if (!reduceMotion && now - lastSpark > 28 && velocity > 2) {
+      createSpark(targetX, targetY, velocity);
+      lastSpark = now;
+    }
+    lastX = targetX;
+    lastY = targetY;
+    const interactive = event.target instanceof Element && event.target.closest('a,button,[role="button"],input,textarea,select,.gallery-img-wrap,.faq-item');
+    cursor.classList.toggle('is-link', Boolean(interactive));
+  }
+
+  function animateCursor() {
+    currentX += (targetX - currentX) * .42;
+    currentY += (targetY - currentY) * .42;
+    cursor.style.transform = `translate3d(${currentX - 12}px,${currentY - 12}px,0)`;
+    cursorRaf = requestAnimationFrame(animateCursor);
+  }
+
+  window.addEventListener('pointermove', moveCursor, { passive: true });
+  window.addEventListener('pointerdown', () => cursor.classList.add('is-down'), { passive: true });
+  window.addEventListener('pointerup', () => cursor.classList.remove('is-down'), { passive: true });
+  window.addEventListener('mouseout', event => {
+    if (!event.relatedTarget) cursor.classList.remove('is-visible');
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && cursorRaf) {
+      cancelAnimationFrame(cursorRaf);
+      cursorRaf = 0;
+    } else if (!cursorRaf) {
+      cursorRaf = requestAnimationFrame(animateCursor);
+    }
+  });
+
+  cursorRaf = requestAnimationFrame(animateCursor);
+})();
+
+/* ── Rotating CAE ecosystem ─────── */
+(function () {
+  const map = document.querySelector('.ecosystem-map');
+  const canvas = map?.querySelector('.ecosystem-orbit-canvas');
+  if (!map || !canvas) return;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  const toolDescriptions = {
+    'OpenFOAM': ['Open-source CFD platform', '开源 CFD 平台'],
+    'CalculiX': ['Finite-element structural solver', '有限元结构求解器'],
+    'code_aster': ['Structural mechanics and multiphysics', '结构力学与多物理场'],
+    'Elmer': ['Finite-element multiphysics solver', '有限元多物理场求解器'],
+    'FEniCS': ['Programmable finite-element framework', '可编程有限元框架'],
+    'FreeFEM': ['PDE finite-element scripting', 'PDE 有限元脚本平台'],
+    'Abaqus': ['Commercial nonlinear finite elements', '商业非线性有限元平台'],
+    'COMSOL': ['Commercial multiphysics simulation', '商业多物理场仿真平台'],
+    'Ansys Fluent': ['Commercial CFD solver', '商业 CFD 求解器'],
+    'STAR-CCM+': ['Integrated CFD and multiphysics', '集成 CFD 与多物理场'],
+    'OpenRadioss': ['Explicit dynamics and impact', '显式动力学与碰撞'],
+    'MOOSE': ['Multiphysics application framework', '多物理场应用框架'],
+    'SU2': ['CFD and design optimization', 'CFD 与设计优化'],
+    'PyFR': ['High-order flux reconstruction CFD', '高阶通量重构 CFD'],
+    'Nektar++': ['Spectral/hp element methods', '谱元与高阶有限元'],
+    'OpenLB': ['Lattice Boltzmann simulation', '格子玻尔兹曼仿真'],
+    'FDS / Smokeview': ['Fire and smoke simulation', '火灾与烟气仿真'],
+    'DualSPHysics': ['Smoothed-particle hydrodynamics', '光滑粒子流体动力学'],
+    'SPHinXsys': ['Multiphysics SPH framework', '多物理场 SPH 框架'],
+    'LAMMPS': ['Molecular and particle dynamics', '分子与粒子动力学'],
+    'PETSc': ['Scalable numerical solver toolkit', '可扩展数值求解工具集'],
+    'Scilab': ['Numerical computing environment', '数值计算环境'],
+    'JAX-FEM': ['Differentiable finite elements', '可微有限元'],
+    'JAX-AM': ['Differentiable additive manufacturing', '可微增材制造'],
+    'FreeCAD': ['Parametric CAD modeling', '参数化 CAD 建模'],
+    'OpenVSP': ['Aircraft geometry modeling', '飞行器几何建模'],
+    'Gmsh': ['Geometry and mesh generation', '几何与网格生成'],
+    'ParaView': ['Scientific visualization', '科学可视化'],
+    'CadQuery / OCP': ['Scripted parametric CAD', '脚本化参数 CAD'],
+    'laserbeamFoam': ['Laser manufacturing CFD', '激光制造 CFD'],
+    'Custom backend': ['Configured local or custom solver', '自定义本地求解后端']
+  };
+
+  map.querySelectorAll('.ecosystem-node').forEach(node => {
+    const label = node.querySelector('.ecosystem-node-name');
+    if (!label) return;
+    const name = node.dataset.tool || label.textContent.trim();
+    const description = toolDescriptions[name] || ['CAE workflow integration', 'CAE 工作流集成'];
+    if (node.classList.contains('ecosystem-custom-node')) {
+      label.innerHTML = `<strong><span class="en">Custom backend</span><span class="zh">专用后端</span></strong><small><span class="en">${description[0]}</span><span class="zh">${description[1]}</span></small>`;
+      node.setAttribute('aria-label', `Custom backend — ${description[0]}`);
+    } else {
+      label.innerHTML = `<strong>${name}</strong><small><span class="en">${description[0]}</span><span class="zh">${description[1]}</span></small>`;
+      node.setAttribute('aria-label', `${name} — ${description[0]}`);
+    }
+  });
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const groups = [
+    { nodes: Array.from(map.querySelectorAll('.ecosystem-node[data-kind="solver"]')), rx: .43, ry: .42, speed: .000035, offset: -.48, color: '34,211,238' },
+    { nodes: Array.from(map.querySelectorAll('.ecosystem-node[data-kind="numerical"]')), rx: .33, ry: .31, speed: -.000043, offset: .34, color: '167,139,250' },
+    { nodes: Array.from(map.querySelectorAll('.ecosystem-node[data-kind="tool"]')), rx: .23, ry: .21, speed: .000054, offset: -.18, color: '245,158,11' }
+  ];
+
+  let width = 1;
+  let height = 1;
+  let dpr = 1;
+  let orbitTime = 0;
+  let lastTime = performance.now();
+  let paused = false;
+  let rafId = 0;
+
+  function resizeOrbit() {
+    width = Math.max(1, Math.round(map.clientWidth));
+    height = Math.max(1, Math.round(map.clientHeight));
+    dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (reduceMotion) drawOrbit(performance.now());
+  }
+
+  function drawRing(cx, cy, rx, ry, color, alpha) {
+    ctx.save();
+    ctx.setLineDash([2, 9]);
+    ctx.strokeStyle = `rgba(${color},${alpha})`;
+    ctx.lineWidth = .75;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawConnection(cx, cy, x, y, color, alpha) {
+    ctx.save();
+    ctx.setLineDash([2, 10]);
+    ctx.strokeStyle = `rgba(${color},${alpha})`;
+    ctx.lineWidth = .65;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    const bend = .035;
+    ctx.quadraticCurveTo((cx + x) * .5 + (y - cy) * bend, (cy + y) * .5 - (x - cx) * bend, x, y);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawOrbit(now) {
+    rafId = 0;
+    const dt = Math.min(36, Math.max(0, now - lastTime));
+    lastTime = now;
+    if (!paused && !reduceMotion) orbitTime += dt;
+
+    ctx.clearRect(0, 0, width, height);
+    if (width <= 900) {
+      if (!reduceMotion && !document.hidden) rafId = requestAnimationFrame(drawOrbit);
+      return;
+    }
+
+    const isLight = document.body.classList.contains('theme-light');
+    const cx = width * .5;
+    const cy = height * .5;
+
+    groups.forEach(group => {
+      const rx = width * group.rx;
+      const ry = height * group.ry;
+      drawRing(cx, cy, rx, ry, group.color, isLight ? .14 : .13);
+      group.nodes.forEach((node, index) => {
+        const angle = group.offset + orbitTime * group.speed + Math.PI * 2 * index / group.nodes.length;
+        const x = cx + Math.cos(angle) * rx;
+        const y = cy + Math.sin(angle) * ry;
+        node.style.setProperty('--orbit-x', `${x}px`);
+        node.style.setProperty('--orbit-y', `${y}px`);
+        drawConnection(cx, cy, x, y, group.color, isLight ? .12 : .14);
+      });
+    });
+
+    ctx.fillStyle = isLight ? 'rgba(8,145,178,.72)' : 'rgba(34,211,238,.84)';
+    ctx.fillRect(cx - 2, cy - 2, 4, 4);
+
+    if (!reduceMotion && !document.hidden) rafId = requestAnimationFrame(drawOrbit);
+  }
+
+  map.addEventListener('pointerover', event => {
+    if (event.target instanceof Element && event.target.closest('.ecosystem-node')) paused = true;
+  });
+  map.addEventListener('pointerout', event => {
+    if (event.target instanceof Element && event.target.closest('.ecosystem-node')) paused = false;
+  });
+  map.addEventListener('focusin', () => { paused = true; });
+  map.addEventListener('focusout', () => { paused = false; });
+
+  resizeOrbit();
+  if (reduceMotion) drawOrbit(performance.now());
+  else rafId = requestAnimationFrame(drawOrbit);
+
+  if ('ResizeObserver' in window) {
+    const resizeObserver = new ResizeObserver(resizeOrbit);
+    resizeObserver.observe(map);
+  }
+  window.addEventListener('resize', resizeOrbit, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    } else if (!rafId && !reduceMotion) {
+      lastTime = performance.now();
+      rafId = requestAnimationFrame(drawOrbit);
+    }
+  });
+})();
+
 
 function dlSwitch(id, btn) {
   document.querySelectorAll('.dl-tab').forEach(function(b){ b.classList.remove('active'); });
