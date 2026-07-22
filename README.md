@@ -1,3 +1,5 @@
+![](assets/vibeflow-black.png)
+
 # Start Your VibeFlow！
 
 [中文文档](README_zh.md)

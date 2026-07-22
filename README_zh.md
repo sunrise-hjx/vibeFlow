@@ -1,3 +1,5 @@
+![](assets/vibeflow-black.png)
+
 # Start Your VibeFlow！
 
 珍妮纺纱机的出现，改变了依靠人力重复纺织的生产方式。
