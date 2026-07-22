@@ -106,9 +106,6 @@
     </nav>
     <div class="nav-btns">
       <button class="btn-lang" id="langBtn" onclick="toggleLang()">English</button>
-      <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      </button>
       <a href="../index.html#download" class="btn-dl"><span class="en">Get Studio</span><span class="zh">下载 Studio</span></a>
     </div>
   </div>
@@ -152,19 +149,6 @@ function toggleLang(){
   if (typeof render === 'function') render();
 }
 document.body.classList.add('lang-zh');
-let theme = localStorage.getItem('vf-theme') || 'dark';
-function applyTheme(){
-  document.body.classList.toggle('theme-light', theme === 'light');
-  const btn = document.getElementById('themeBtn');
-  if(btn){
-    btn.innerHTML = theme === 'light'
-      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
-    btn.title = theme === 'light' ? 'Switch to Dark' : 'Switch to Light';
-  }
-}
-function toggleTheme(){ theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('vf-theme', theme); applyTheme(); }
-applyTheme();
 const navEl = document.getElementById('nav');
 window.addEventListener('scroll',()=>{navEl.classList.toggle('stuck',scrollY>50)},{passive:true});
 const ro = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.1});
