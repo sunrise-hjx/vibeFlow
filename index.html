@@ -876,6 +876,10 @@
       .feat-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
       .compare-shell { border-radius: 14px; }
+      .hero-h1 {
+        display: inline-block; max-width: calc(100vw - 40px); white-space: nowrap;
+        font-size: clamp(50px, 11.5vw, 72px); letter-spacing: -.055em;
+      }
       #tech .wrap { width: 100%; max-width: 100%; }
       .ecosystem-head { grid-template-columns: minmax(0, 1fr); gap: 26px; margin-bottom: 34px; }
       .ecosystem-head .sec-head,
@@ -916,7 +920,7 @@
       #hero { min-height: 92svh; align-items: flex-start; }
       .hero-body { padding: 96px 16px 58px; }
       .hero-pill { max-width: 100%; padding: 5px 12px; font-size: 9.5px; line-height: 1.4; margin-bottom: 26px; }
-      .hero-h1 { font-size: clamp(44px, 15vw, 58px); margin-bottom: 10px; }
+      .hero-h1 { max-width: calc(100vw - 32px); font-size: clamp(42px, 14vw, 54px); margin-bottom: 10px; }
       .hero-tagline { font-size: 13px; line-height: 1.7; margin-bottom: 24px; max-width: 330px; }
       .hero-ctas { gap: 10px; }
       .hero-ctas a, .hero-ctas button { flex: 1 1 150px; justify-content: center; padding: 10px 14px; font-size: 13px; }
@@ -1022,9 +1026,33 @@
     }
 
     /* lightbox */
-    .lb { position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: zoom-out; backdrop-filter: blur(6px); animation: lbIn .2s; }
+    body.lb-open { overflow: hidden; }
+    .lb { position: fixed; inset: 0; padding: 24px 86px; background: rgba(0,0,0,.9); z-index: 999; display: flex; align-items: center; justify-content: center; cursor: zoom-out; backdrop-filter: blur(10px); animation: lbIn .2s; }
     @keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
-    .lb img { max-width: 92vw; max-height: 90vh; border-radius: 10px; box-shadow: 0 48px 96px rgba(0,0,0,.8); }
+    .lb-stage { position: relative; display: grid; place-items: center; max-width: 100%; max-height: 100%; cursor: default; }
+    .lb img { display: block; max-width: 100%; max-height: calc(100vh - 48px); border-radius: 10px; box-shadow: 0 48px 96px rgba(0,0,0,.8); }
+    .lb-nav, .lb-close {
+      position: fixed; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.18);
+      border-radius: 50%; background: rgba(8,16,30,.78); color: #fff; cursor: pointer;
+      backdrop-filter: blur(12px); transition: color .2s, border-color .2s, background .2s, transform .2s;
+    }
+    .lb-nav { top: 50%; width: 54px; height: 54px; transform: translateY(-50%); }
+    .lb-prev { left: clamp(14px, 3vw, 48px); }
+    .lb-next { right: clamp(14px, 3vw, 48px); }
+    .lb-close { top: 20px; right: 20px; width: 42px; height: 42px; }
+    .lb-nav:hover, .lb-nav:focus-visible, .lb-close:hover, .lb-close:focus-visible { color: var(--cyan); border-color: rgba(34,211,238,.62); background: rgba(8,24,40,.94); outline: none; }
+    .lb-nav:hover, .lb-nav:focus-visible { transform: translateY(-50%) scale(1.06); }
+    .lb-nav svg, .lb-close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    .lb-count { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); padding: 7px 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; background: rgba(8,16,30,.72); color: rgba(255,255,255,.72); font-family: var(--mono); font-size: 10px; letter-spacing: .14em; cursor: default; backdrop-filter: blur(10px); }
+    @media (max-width: 600px) {
+      .lb { padding: 64px 12px; }
+      .lb img { max-height: calc(100vh - 128px); border-radius: 7px; }
+      .lb-nav { width: 44px; height: 44px; background: rgba(8,16,30,.88); }
+      .lb-prev { left: 10px; }
+      .lb-next { right: 10px; }
+      .lb-close { top: 14px; right: 14px; }
+      .lb-count { bottom: 14px; }
+    }
 
     /* ── THEME TOGGLE ── */
     .btn-theme {
@@ -1475,7 +1503,7 @@
   <div class="wrap">
     <div class="compare-head-grid">
       <div class="sec-head">
-        <div class="eyebrow"><span class="en">Horizontal Comparison</span><span class="zh">横向对比</span></div>
+        <div class="eyebrow"><span class="en">Horizontal Comparison</span><span class="zh">面向 CAE 的智能工作空间</span></div>
         <h2 class="sec-title">
           <span class="en">More than a coding agent.<br>A complete engineering workflow.</span>
           <span class="zh">不只是写代码，<br>而是把工程闭环跑通。</span>
@@ -2478,12 +2506,59 @@
 <script>
 /* ── Gallery Lightbox ───────────── */
 function openLb(wrap) {
-  const src = wrap.querySelector('img').src;
+  const galleryImages = Array.from(document.querySelectorAll('#feature-gallery .gallery-img-wrap'));
+  const images = galleryImages.includes(wrap) ? galleryImages : [wrap];
+  let activeIndex = Math.max(0, images.indexOf(wrap));
+  document.querySelector('.lb')?.remove();
+
   const lb = document.createElement('div');
   lb.className = 'lb';
-  lb.innerHTML = `<img src="${src}" alt="">`;
-  lb.addEventListener('click', () => lb.remove());
+  lb.setAttribute('role', 'dialog');
+  lb.setAttribute('aria-modal', 'true');
+  lb.setAttribute('aria-label', 'Feature image viewer');
+  lb.tabIndex = -1;
+  lb.innerHTML = `
+    <div class="lb-stage"><img class="lb-image" src="" alt=""></div>
+    <button class="lb-nav lb-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+    <button class="lb-nav lb-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
+    <button class="lb-close" type="button" aria-label="Close image viewer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="lb-count" aria-live="polite"></div>`;
+
+  const image = lb.querySelector('.lb-image');
+  const count = lb.querySelector('.lb-count');
+  const previous = lb.querySelector('.lb-prev');
+  const next = lb.querySelector('.lb-next');
+  const closeButton = lb.querySelector('.lb-close');
+
+  function showImage(index) {
+    activeIndex = (index + images.length) % images.length;
+    const sourceImage = images[activeIndex].querySelector('img');
+    image.src = sourceImage.currentSrc || sourceImage.src;
+    image.alt = sourceImage.alt || '';
+    count.textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`;
+  }
+
+  function closeLb() {
+    lb.remove();
+    document.body.classList.remove('lb-open');
+    wrap.focus({ preventScroll: true });
+  }
+
+  previous.addEventListener('click', event => { event.stopPropagation(); showImage(activeIndex - 1); });
+  next.addEventListener('click', event => { event.stopPropagation(); showImage(activeIndex + 1); });
+  closeButton.addEventListener('click', event => { event.stopPropagation(); closeLb(); });
+  lb.querySelector('.lb-stage').addEventListener('click', event => event.stopPropagation());
+  lb.addEventListener('click', closeLb);
+  lb.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeLb();
+    if (event.key === 'ArrowLeft') { event.preventDefault(); showImage(activeIndex - 1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); showImage(activeIndex + 1); }
+  });
+
+  showImage(activeIndex);
+  document.body.classList.add('lb-open');
   document.body.appendChild(lb);
+  closeButton.focus();
 }
 
 /* ── Navigation dropdowns ───────── */
