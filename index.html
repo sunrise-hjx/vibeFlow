@@ -1032,14 +1032,14 @@
     .lb-stage { position: relative; display: grid; place-items: center; max-width: 100%; max-height: 100%; cursor: default; }
     .lb img { display: block; max-width: 100%; max-height: calc(100vh - 48px); border-radius: 10px; box-shadow: 0 48px 96px rgba(0,0,0,.8); }
     .lb-nav, .lb-close {
-      position: fixed; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.18);
+      display: grid; place-items: center; border: 1px solid rgba(255,255,255,.18);
       border-radius: 50%; background: rgba(8,16,30,.78); color: #fff; cursor: pointer;
       backdrop-filter: blur(12px); transition: color .2s, border-color .2s, background .2s, transform .2s;
     }
-    .lb-nav { top: 50%; width: 54px; height: 54px; transform: translateY(-50%); }
-    .lb-prev { left: clamp(14px, 3vw, 48px); }
-    .lb-next { right: clamp(14px, 3vw, 48px); }
-    .lb-close { top: 20px; right: 20px; width: 42px; height: 42px; }
+    .lb-nav { position: absolute; z-index: 2; top: 50%; width: 54px; height: 54px; transform: translateY(-50%); box-shadow: 0 12px 32px rgba(0,0,0,.38); }
+    .lb-prev { left: clamp(12px, 1.8vw, 24px); }
+    .lb-next { right: clamp(12px, 1.8vw, 24px); }
+    .lb-close { position: fixed; top: 20px; right: 20px; width: 42px; height: 42px; }
     .lb-nav:hover, .lb-nav:focus-visible, .lb-close:hover, .lb-close:focus-visible { color: var(--cyan); border-color: rgba(34,211,238,.62); background: rgba(8,24,40,.94); outline: none; }
     .lb-nav:hover, .lb-nav:focus-visible { transform: translateY(-50%) scale(1.06); }
     .lb-nav svg, .lb-close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
@@ -1048,8 +1048,8 @@
       .lb { padding: 64px 12px; }
       .lb img { max-height: calc(100vh - 128px); border-radius: 7px; }
       .lb-nav { width: 44px; height: 44px; background: rgba(8,16,30,.88); }
-      .lb-prev { left: 10px; }
-      .lb-next { right: 10px; }
+      .lb-prev { left: 8px; }
+      .lb-next { right: 8px; }
       .lb-close { top: 14px; right: 14px; }
       .lb-count { bottom: 14px; }
     }
@@ -1503,10 +1503,10 @@
   <div class="wrap">
     <div class="compare-head-grid">
       <div class="sec-head">
-        <div class="eyebrow"><span class="en">Horizontal Comparison</span><span class="zh">面向 CAE 的智能工作空间</span></div>
+        <div class="eyebrow"><span class="en">Horizontal Comparison</span><span class="zh">横向对比</span></div>
         <h2 class="sec-title">
           <span class="en">More than a coding agent.<br>A complete engineering workflow.</span>
-          <span class="zh">不只是写代码，<br>而是把工程闭环跑通。</span>
+          <span class="zh">面向 CAE 的智能工作空间</span>
         </h2>
         <p class="sec-sub">
           <span class="en">VibeFlow connects intent, simulation artifacts, solver execution, validation, and reporting in one inspectable process—while engineers retain control of every critical physical decision.</span>
@@ -2518,9 +2518,11 @@ function openLb(wrap) {
   lb.setAttribute('aria-label', 'Feature image viewer');
   lb.tabIndex = -1;
   lb.innerHTML = `
-    <div class="lb-stage"><img class="lb-image" src="" alt=""></div>
-    <button class="lb-nav lb-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
-    <button class="lb-nav lb-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
+    <div class="lb-stage">
+      <img class="lb-image" src="" alt="">
+      <button class="lb-nav lb-prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button>
+      <button class="lb-nav lb-next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
+    </div>
     <button class="lb-close" type="button" aria-label="Close image viewer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     <div class="lb-count" aria-live="polite"></div>`;
 
