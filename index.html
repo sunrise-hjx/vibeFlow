@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="VibeFlow — An AI-native CAE workstation for traceable engineering research.">
-  <title>VibeFlow — AI-Native CAE Workstation</title>
+  <meta name="description" content="VibeFlow — An AI-native CAE workbench for traceable engineering research.">
+  <title>VibeFlow — AI-Native CAE Workbench</title>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <style>
     @font-face {
@@ -1301,7 +1301,7 @@
     </div>
     <h1 class="hero-h1 gradient-text">VibeFlow</h1>
     <p class="hero-tagline">
-      <span class="en">AI-native CAE workstation: use natural language for development, modeling, meshing, simulation, post-processing, reports, and papers end to end. Free engineers from tedious CAE operations.</span>
+      <span class="en">AI-native CAE workbench: use natural language for development, modeling, meshing, simulation, post-processing, reports, and papers end to end. Free engineers from tedious CAE operations.</span>
       <span class="zh">AI 原生 CAE 工作台：全流程使用自然语言完成开发，建模，网格，计算，后处理与报告/论文。将人从CAE繁杂操作中彻底解放。</span>
     </p>
     <div class="hero-ctas">
@@ -1334,7 +1334,7 @@
         <div class="kpi-lbl"><span class="en">Usage Pipeline</span><span class="zh">使用模式</span></div>
       </div>
       <div class="kpi">
-        <div class="kpi-val"><em>20+</em></div>
+        <div class="kpi-val"><em>35+</em></div>
         <div class="kpi-lbl"><span class="en">CAE Skills</span><span class="zh">CAE Skills</span></div>
       </div>
       <div class="kpi">
@@ -2373,7 +2373,7 @@
             <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
           </div>
           <div class="faq-a"><div class="faq-a-inner">
-            <span class="en">VibeFlow Studio is an AI-native CAE workstation. It connects natural-language instructions with geometry, meshing, solver-backend input generation, computation, post-processing, Markdown/LaTeX writing, and evidence-traced reports. It provides <strong>Usage Mode</strong> for complete simulation workflows and <strong>Development Mode</strong> for custom solver-side capabilities.</span>
+            <span class="en">VibeFlow Studio is an AI-native CAE workbench. It connects natural-language instructions with geometry, meshing, solver-backend input generation, computation, post-processing, Markdown/LaTeX writing, and evidence-traced reports. It provides <strong>Usage Mode</strong> for complete simulation workflows and <strong>Development Mode</strong> for custom solver-side capabilities.</span>
             <span class="zh">VibeFlow Studio 是一个 AI 原生 CAE 工作台。它把自然语言指令与几何、网格、求解器后端输入生成、计算、后处理、Markdown/LaTeX 写作和证据追溯报告连接起来。它提供面向完整仿真流程的<strong>使用模式</strong>，以及面向自定义求解能力的<strong>开发模式</strong>。</span>
           </div></div>
         </div>
@@ -2462,7 +2462,7 @@
       <div class="foot-brand">
         <img src="assets/logo.svg" alt="VibeFlow">
         <div class="name">VibeFlow</div>
-        <p><span class="en">An AI-native CAE workstation for traceable engineering research.</span><span class="zh">面向可追溯工程研究的 AI 原生 CAE 工作台</span></p>
+        <p><span class="en">An AI-native CAE workbench for traceable engineering research.</span><span class="zh">面向可追溯工程研究的 AI 原生 CAE 工作台</span></p>
       </div>
       <div class="foot-col">
         <h4><span class="en">Product</span><span class="zh">产品</span></h4>
@@ -2680,7 +2680,7 @@ function toggleLang() {
   document.body.classList.toggle('lang-en', lang === 'en');
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'English';
-  document.title = lang === 'zh' ? 'VibeFlow — AI 原生 CAE 工作台' : 'VibeFlow — AI-Native CAE Workstation';
+  document.title = lang === 'zh' ? 'VibeFlow — AI 原生 CAE 工作台' : 'VibeFlow — AI-Native CAE Workbench';
   if (activeUsageStage >= 0) renderStage('usage', activeUsageStage);
   if (activeDevStage   >= 0) renderStage('dev',   activeDevStage);
   renderDemoTitle();
