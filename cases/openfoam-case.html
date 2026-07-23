@@ -38,6 +38,7 @@
     .result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px}.result-card{border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;background:var(--bg2);text-decoration:none}.result-card img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;background:#020811}.result-card span{display:block;padding:10px 12px;color:var(--text2);font-size:12px;line-height:1.5}
     @media(max-width:900px){.detail-layout{grid-template-columns:1fr;gap:24px}.side{position:static}}@media(max-width:620px){.detail-layout{padding:42px 0 70px}.result-grid{grid-template-columns:1fr}}
   </style>
+  <link rel="stylesheet" href="../assets/site-nav.css">
 </head>
 <body class="lang-zh">
 
@@ -47,23 +48,46 @@
       <img src="../assets/logo.svg" alt="VibeFlow">
       <span class="nav-logo-name">VibeFlow</span>
     </a>
-    <nav class="nav-links">
-      <a href="../index.html#modes"><span class="en">Modes</span><span class="zh">模式</span></a>
-      <a href="../index.html#features"><span class="en">Features</span><span class="zh">功能</span></a>
-      <a href="../index.html#workflow"><span class="en">Workflow</span><span class="zh">工作流</span></a>
-      <a href="../index.html#gallery"><span class="en">Gallery</span><span class="zh">预览</span></a>
-      <a href="index.html"><span class="en">Cases</span><span class="zh">案例库</span></a>
-      <a href="../index.html#demo"><span class="en">Demo</span><span class="zh">演示</span></a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <div class="nav-menu nav-menu-product">
+        <button class="nav-menu-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="en">Product</span><span class="zh">产品</span>
+          <svg class="nav-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <div class="nav-dropdown">
+          <a href="../index.html#modes"><span class="nav-drop-copy"><strong><span class="en">Modes</span><span class="zh">模式</span></strong><small><span class="en">Usage and development paths</span><span class="zh">使用与开发两种路径</span></small></span></a>
+          <a href="../index.html#features"><span class="nav-drop-copy"><strong><span class="en">Features</span><span class="zh">功能</span></strong><small><span class="en">Capabilities built for CAE</span><span class="zh">面向 CAE 的核心能力</span></small></span></a>
+          <a href="../index.html#workflow"><span class="nav-drop-copy"><strong><span class="en">Workflow</span><span class="zh">工作流</span></strong><small><span class="en">Stage-gated engineering pipeline</span><span class="zh">阶段门控工程流程</span></small></span></a>
+          <a href="../index.html#comparison"><span class="nav-drop-copy"><strong><span class="en">Comparison</span><span class="zh">对比</span></strong><small><span class="en">See the workflow difference</span><span class="zh">了解工作方式的差异</span></small></span></a>
+          <a href="../index.html#tech"><span class="nav-drop-copy"><strong><span class="en">Integrations</span><span class="zh">集成生态</span></strong><small><span class="en">Connect the complete CAE toolchain</span><span class="zh">连接完整 CAE 工具链</span></small></span></a>
+        </div>
+      </div>
+      <div class="nav-menu">
+        <button class="nav-menu-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="en">Experience</span><span class="zh">体验</span>
+          <svg class="nav-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <div class="nav-dropdown">
+          <a href="../index.html#gallery"><span class="nav-drop-copy"><strong><span class="en">Gallery</span><span class="zh">预览</span></strong><small><span class="en">Explore the product interface</span><span class="zh">浏览产品界面与能力</span></small></span></a>
+          <a href="../index.html#demo"><span class="nav-drop-copy"><strong><span class="en">Demos</span><span class="zh">演示</span></strong><small><span class="en">Watch complete CAE workflows</span><span class="zh">观看完整 CAE 工作流</span></small></span></a>
+        </div>
+      </div>
+      <div class="nav-menu">
+        <button class="nav-menu-trigger" type="button" aria-expanded="false" aria-haspopup="true">
+          <span class="en">Resources</span><span class="zh">资源</span>
+          <svg class="nav-caret" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg>
+        </button>
+        <div class="nav-dropdown">
+          <a href="index.html"><span class="nav-drop-copy"><strong><span class="en">Case Library</span><span class="zh">案例库</span></strong><small><span class="en">Browse engineering examples</span><span class="zh">浏览工程仿真案例</span></small></span></a>
+          <a href="../index.html#links"><span class="nav-drop-copy"><strong><span class="en">Documentation</span><span class="zh">文档</span></strong><small><span class="en">Guides, references and downloads</span><span class="zh">指南、参考资料与下载</span></small></span></a>
+        </div>
+      </div>
       <a href="../index.html#pricing"><span class="en">Pricing</span><span class="zh">定价</span></a>
       <a href="../index.html#faq"><span class="en">FAQ</span><span class="zh">常见问题</span></a>
       <a href="../privacy.html"><span class="en">Privacy</span><span class="zh">隐私</span></a>
-      <a href="../index.html#links"><span class="en">Docs</span><span class="zh">文档</span></a>
     </nav>
     <div class="nav-btns">
       <button class="btn-lang" id="langBtn" onclick="toggleLang()">English</button>
-      <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" title="Toggle theme" aria-label="Toggle theme">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      </button>
       <a href="../index.html#download" class="btn-dl"><span class="en">Get Studio</span><span class="zh">下载 Studio</span></a>
     </div>
   </div>
@@ -72,6 +96,7 @@
 <main id="caseRoot"></main>
 <footer><div class="wrap"><div class="foot-row"><span>© 2026 VibeFlow</span><a href="index.html"><span class="en">Back to Case Library</span><span class="zh">返回案例库</span></a></div></div></footer>
 <script src="data/openfoam-cases.js"></script>
+<script src="../assets/site-nav.js"></script>
 <script>
 
 let lang = 'zh';
@@ -84,19 +109,6 @@ function toggleLang(){
   if (typeof render === 'function') render();
 }
 document.body.classList.add('lang-zh');
-let theme = localStorage.getItem('vf-theme') || 'dark';
-function applyTheme(){
-  document.body.classList.toggle('theme-light', theme === 'light');
-  const btn = document.getElementById('themeBtn');
-  if(btn){
-    btn.innerHTML = theme === 'light'
-      ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-      : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
-    btn.title = theme === 'light' ? 'Switch to Dark' : 'Switch to Light';
-  }
-}
-function toggleTheme(){ theme = theme === 'dark' ? 'light' : 'dark'; localStorage.setItem('vf-theme', theme); applyTheme(); }
-applyTheme();
 const navEl = document.getElementById('nav');
 window.addEventListener('scroll',()=>{navEl.classList.toggle('stuck',scrollY>50)},{passive:true});
 const ro = new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.1});
