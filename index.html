@@ -85,46 +85,6 @@
     }
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--text); font-family: var(--body); line-height: 1.65; overflow-x: hidden; }
-    .vf-cursor {
-      position: fixed; z-index: 10000; left: 0; top: 0; width: 24px; height: 24px;
-      display: grid; place-items: center; pointer-events: none; opacity: 0;
-      transform: translate3d(-40px,-40px,0); transition: opacity .18s ease;
-      will-change: transform;
-    }
-    .vf-cursor.is-visible { opacity: 1; }
-    .vf-cursor img {
-      width: 19px; height: 19px; object-fit: contain; transform: rotate(-45deg);
-      filter: drop-shadow(0 0 7px rgba(255,48,48,.62));
-      transition: transform .2s var(--ease), filter .2s var(--ease);
-    }
-    .vf-cursor::before,
-    .vf-cursor::after {
-      content: ''; position: absolute; left: 50%; top: 50%; background: rgba(255,255,255,.84);
-      transform: translate(-50%,-50%) scale(0); opacity: 0; border-radius: 999px;
-    }
-    .vf-cursor::before { width: 1px; height: 28px; }
-    .vf-cursor::after { width: 28px; height: 1px; }
-    .vf-cursor.is-link img { transform: rotate(-45deg) scale(1.28); filter: drop-shadow(0 0 10px rgba(34,211,238,.78)); }
-    .vf-cursor.is-link::before,
-    .vf-cursor.is-link::after { animation: vfCursorGlint .8s ease-in-out infinite; }
-    .vf-cursor.is-down img { transform: rotate(-45deg) scale(.82); }
-    @keyframes vfCursorGlint { 0%,100% { transform: translate(-50%,-50%) scale(0); opacity: 0; } 45% { transform: translate(-50%,-50%) scale(1); opacity: .8; } 70% { opacity: 0; } }
-    .vf-spark-layer { position: fixed; z-index: 9999; inset: 0; overflow: hidden; pointer-events: none; }
-    .vf-pointer-spark {
-      --spark-x: 0px; --spark-y: 0px; --spark-color: #fff;
-      position: absolute; width: 3px; height: 3px; border-radius: 1px;
-      background: var(--spark-color); box-shadow: 0 0 8px var(--spark-color);
-      animation: vfPointerSpark .72s cubic-bezier(.2,.7,.2,1) forwards;
-    }
-    @keyframes vfPointerSpark {
-      0% { opacity: 0; transform: translate(-50%,-50%) rotate(45deg) scale(.25); }
-      22% { opacity: 1; transform: translate(-50%,-50%) rotate(45deg) scale(1.7); }
-      100% { opacity: 0; transform: translate(calc(-50% + var(--spark-x)),calc(-50% + var(--spark-y))) rotate(135deg) scale(0); }
-    }
-    @media (pointer: fine) {
-      html.vf-custom-cursor,
-      html.vf-custom-cursor * { cursor: none !important; }
-    }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--text3); border-radius: 3px; }
@@ -2953,89 +2913,6 @@ function openStage(mode, idx) {
       startStars();
     }
   });
-})();
-
-/* ── VibeFlow logo cursor ───────── */
-(function () {
-  if (!window.matchMedia('(pointer: fine)').matches) return;
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const cursor = document.createElement('div');
-  const sparkLayer = document.createElement('div');
-  cursor.className = 'vf-cursor';
-  cursor.setAttribute('aria-hidden', 'true');
-  cursor.innerHTML = '<img src="assets/logo.svg" alt="">';
-  sparkLayer.className = 'vf-spark-layer';
-  sparkLayer.setAttribute('aria-hidden', 'true');
-  document.body.append(cursor, sparkLayer);
-  document.documentElement.classList.add('vf-custom-cursor');
-
-  let targetX = -40;
-  let targetY = -40;
-  let currentX = -40;
-  let currentY = -40;
-  let lastX = -40;
-  let lastY = -40;
-  let lastSpark = 0;
-  let cursorRaf = 0;
-  const sparkColors = ['#ffffff', '#8ee9ff', '#6b8cff', '#ff967d'];
-
-  function createSpark(x, y, velocity) {
-    const amount = velocity > 22 ? 2 : 1;
-    for (let i = 0; i < amount; i++) {
-      const spark = document.createElement('i');
-      const angle = Math.random() * Math.PI * 2;
-      const distance = 8 + Math.random() * 19 + Math.min(velocity, 30) * .28;
-      spark.className = 'vf-pointer-spark';
-      spark.style.left = `${x + (Math.random() - .5) * 8}px`;
-      spark.style.top = `${y + (Math.random() - .5) * 8}px`;
-      spark.style.setProperty('--spark-x', `${Math.cos(angle) * distance}px`);
-      spark.style.setProperty('--spark-y', `${Math.sin(angle) * distance}px`);
-      spark.style.setProperty('--spark-color', sparkColors[Math.floor(Math.random() * sparkColors.length)]);
-      sparkLayer.appendChild(spark);
-      spark.addEventListener('animationend', () => spark.remove(), { once: true });
-    }
-  }
-
-  function moveCursor(event) {
-    targetX = event.clientX;
-    targetY = event.clientY;
-    cursor.classList.add('is-visible');
-    const velocity = Math.hypot(targetX - lastX, targetY - lastY);
-    const now = performance.now();
-    if (!reduceMotion && now - lastSpark > 28 && velocity > 2) {
-      createSpark(targetX, targetY, velocity);
-      lastSpark = now;
-    }
-    lastX = targetX;
-    lastY = targetY;
-    const interactive = event.target instanceof Element && event.target.closest('a,button,[role="button"],input,textarea,select,.gallery-img-wrap,.faq-item');
-    cursor.classList.toggle('is-link', Boolean(interactive));
-  }
-
-  function animateCursor() {
-    currentX += (targetX - currentX) * .42;
-    currentY += (targetY - currentY) * .42;
-    cursor.style.transform = `translate3d(${currentX - 12}px,${currentY - 12}px,0)`;
-    cursorRaf = requestAnimationFrame(animateCursor);
-  }
-
-  window.addEventListener('pointermove', moveCursor, { passive: true });
-  window.addEventListener('pointerdown', () => cursor.classList.add('is-down'), { passive: true });
-  window.addEventListener('pointerup', () => cursor.classList.remove('is-down'), { passive: true });
-  window.addEventListener('mouseout', event => {
-    if (!event.relatedTarget) cursor.classList.remove('is-visible');
-  });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && cursorRaf) {
-      cancelAnimationFrame(cursorRaf);
-      cursorRaf = 0;
-    } else if (!cursorRaf) {
-      cursorRaf = requestAnimationFrame(animateCursor);
-    }
-  });
-
-  cursorRaf = requestAnimationFrame(animateCursor);
 })();
 
 /* ── Rotating CAE ecosystem ─────── */
