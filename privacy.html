@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="VibeFlow Privacy Policy — local-first privacy practices for AI-native CAE workflows.">
-  <title>VibeFlow — 隐私政策</title>
+  <title>VibeFlow — Privacy Policy</title>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <style>
     @font-face {
@@ -241,7 +241,7 @@
   <link rel="stylesheet" href="assets/site-nav.css">
 </head>
 
-<body class="lang-zh">
+<body class="lang-en">
 <nav id="nav">
   <div class="nav-row">
     <a href="index.html#hero" class="nav-logo">
@@ -287,7 +287,7 @@
       <a href="privacy.html"><span class="en">Privacy</span><span class="zh">隐私</span></a>
     </nav>
     <div class="nav-btns">
-      <button class="btn-lang" id="langBtn" onclick="toggleLang()">English</button>
+      <button class="btn-lang" id="langBtn" onclick="toggleLang()">中文</button>
       <a href="index.html#download" class="btn-dl"><span class="en">Get Studio</span><span class="zh">下载 Studio</span></a>
     </div>
   </div>
@@ -479,7 +479,7 @@
 
 <script src="assets/site-nav.js"></script>
 <script>
-let lang = 'zh';
+let lang = 'en';
 function toggleLang() {
   lang = lang === 'en' ? 'zh' : 'en';
   document.body.classList.toggle('lang-zh', lang === 'zh');
@@ -488,7 +488,7 @@ function toggleLang() {
   document.getElementById('langBtn').textContent = lang === 'en' ? '中文' : 'English';
   document.title = lang === 'zh' ? 'VibeFlow — 隐私政策' : 'VibeFlow — Privacy Policy';
 }
-document.body.classList.add('lang-zh');
+document.body.classList.add('lang-en');
 
 const navEl = document.getElementById('nav');
 window.addEventListener('scroll', () => { navEl.classList.toggle('stuck', scrollY > 50); }, { passive: true });
