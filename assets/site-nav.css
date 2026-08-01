@@ -1,10 +1,27 @@
+:root {
+  --site-edge-gutter: clamp(12px, 1vw, 20px);
+}
+
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 .nav-row {
   width: 100%;
   max-width: none;
   margin-left: 0;
   margin-right: 0;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: var(--site-edge-gutter);
+  padding-right: var(--site-edge-gutter);
 }
 
 .nav-links {
@@ -99,8 +116,8 @@ footer > .wrap {
   max-width: none;
   margin-left: 0;
   margin-right: 0;
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: var(--site-edge-gutter);
+  padding-right: var(--site-edge-gutter);
 }
 
 @media (max-width: 920px) {
