@@ -1,3 +1,12 @@
+.nav-row {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -84,6 +93,15 @@
 .nav-drop-copy strong { display: block; font-family: var(--display); font-size: 13px; font-weight: 600; line-height: 1.25; }
 .nav-drop-copy small { display: block; margin-top: 3px; color: var(--text3); font-size: 11px; line-height: 1.35; }
 body.theme-light .nav-dropdown { background: rgba(239,245,249,.97); box-shadow: 0 24px 60px rgba(29,48,68,.18); }
+
+footer > .wrap {
+  width: 100%;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
 
 @media (max-width: 920px) {
   .nav-links { display: none; }

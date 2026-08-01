@@ -159,7 +159,7 @@
     .toc a { display: block; color: var(--text2); text-decoration: none; font-size: 13px; line-height: 1.45; padding: 8px 0; transition: color .2s; }
     .toc a:hover { color: var(--cyan); }
 
-    .policy-doc { max-width: none; }
+    .policy-doc { max-width: none; min-width: 0; }
     .policy-section { padding: 0 0 42px; margin-bottom: 42px; border-bottom: 1px solid var(--border); scroll-margin-top: 110px; }
     .policy-section:last-child { margin-bottom: 0; }
     .policy-section h2 {
@@ -233,7 +233,7 @@
       .toc { grid-template-columns: 1fr; padding: 18px 0; }
       .policy-section { padding-bottom: 32px; margin-bottom: 32px; }
       .policy-section p, .policy-section li { font-size: 13.5px; line-height: 1.8; }
-      .policy-table { display: block; overflow-x: auto; white-space: nowrap; }
+      .policy-table { display: block; width: 100%; max-width: 100%; overflow-x: auto; white-space: nowrap; }
       .policy-table td { white-space: normal; min-width: 180px; }
       .foot-row { flex-direction: column; align-items: flex-start; }
     }
